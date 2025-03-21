@@ -1,115 +1,144 @@
 
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Book, Menu, MessageCircle, X } from 'lucide-react';
-import { useState } from 'react';
+import { Moon, Sun, Menu, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { useTheme } from '@/components/ThemeProvider';
 import { cn } from '@/lib/utils';
+import useMobileDetect from '@/hooks/use-mobile';
 
 const Header = () => {
+  const { theme, setTheme } = useTheme();
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
-
-  const isActive = (path: string) => location.pathname === path;
-
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
+  const isMobile = useMobileDetect();
+  
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location]);
+  
+  // Handle scroll event to change header styles
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  
+  const navigation = [
+    { name: 'Home', path: '/' },
+    { name: 'Debates', path: '/debate' },
+    { name: 'Biblioteca', path: '/library' },
+  ];
+  
   return (
-    <header className="fixed w-full top-0 z-50 glass-effect">
-      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-        <Link 
-          to="/" 
-          className="text-2xl font-display font-medium flex items-center gap-2 transition-all duration-300 hover:opacity-80"
-        >
-          <span className="title-gradient">Debate Crítico</span>
-        </Link>
-        
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
-          <NavLink to="/" active={isActive('/')}>
-            Início
-          </NavLink>
-          <NavLink to="/debate" active={isActive('/debate')}>
-            <MessageCircle className="w-4 h-4 mr-1" />
-            Debates
-          </NavLink>
-          <NavLink to="/library" active={isActive('/library')}>
-            <Book className="w-4 h-4 mr-1" />
-            Biblioteca
-          </NavLink>
-        </nav>
-        
-        {/* Mobile Menu Button */}
-        <button 
-          onClick={toggleMenu}
-          className="md:hidden flex items-center text-gray-600 p-2 rounded-full hover:bg-gray-100 transition-colors"
-          aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
-        >
-          {isMenuOpen ? (
-            <X className="h-6 w-6" />
-          ) : (
-            <Menu className="h-6 w-6" />
-          )}
-        </button>
+    <header className={cn(
+      "fixed w-full top-0 z-50 transition-all duration-300",
+      isScrolled ? "backdrop-blur-md bg-white/90 dark:bg-gray-900/90 border-b border-gray-200 dark:border-gray-800" : ""
+    )}>
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-2">
+            <span className="text-xl font-bold text-burgundy dark:text-burgundy">
+              Debate Crítico
+            </span>
+            <span className="text-xl font-light text-navy dark:text-navy">
+              - Espelho Invertido
+            </span>
+          </Link>
+          
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center space-x-1">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                to={item.path}
+                className={cn(
+                  "px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                  location.pathname === item.path || 
+                  (item.path !== '/' && location.pathname.startsWith(item.path))
+                    ? "text-primary"
+                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                )}
+              >
+                {item.name}
+              </Link>
+            ))}
+            
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className="ml-2"
+              aria-label="Toggle dark mode"
+            >
+              {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            </Button>
+          </nav>
+          
+          {/* Mobile menu button */}
+          <div className="flex md:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Open menu"
+            >
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </Button>
+          </div>
+        </div>
       </div>
       
-      {/* Mobile Navigation */}
+      {/* Mobile navigation */}
       {isMenuOpen && (
-        <div className="md:hidden animate-fade-in absolute top-full left-0 w-full glass-effect py-4 shadow-medium">
-          <nav className="flex flex-col space-y-3 px-6">
-            <MobileNavLink to="/" onClick={toggleMenu} active={isActive('/')}>
-              Início
-            </MobileNavLink>
-            <MobileNavLink to="/debate" onClick={toggleMenu} active={isActive('/debate')}>
-              <MessageCircle className="w-5 h-5 mr-2" />
-              Debates
-            </MobileNavLink>
-            <MobileNavLink to="/library" onClick={toggleMenu} active={isActive('/library')}>
-              <Book className="w-5 h-5 mr-2" />
-              Biblioteca
-            </MobileNavLink>
-          </nav>
+        <div className="md:hidden bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+          <div className="container mx-auto px-4 py-3 space-y-1">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                to={item.path}
+                className={cn(
+                  "block px-3 py-2 rounded-md text-base font-medium",
+                  location.pathname === item.path || 
+                  (item.path !== '/' && location.pathname.startsWith(item.path))
+                    ? "text-primary bg-gray-100 dark:bg-gray-800"
+                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                )}
+              >
+                {item.name}
+              </Link>
+            ))}
+            
+            <div className="pt-4 pb-2 border-t border-gray-200 dark:border-gray-800">
+              <Button 
+                variant="ghost" 
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="w-full justify-start"
+              >
+                {theme === 'dark' ? (
+                  <>
+                    <Sun className="h-5 w-5 mr-2" />
+                    Modo claro
+                  </>
+                ) : (
+                  <>
+                    <Moon className="h-5 w-5 mr-2" />
+                    Modo escuro
+                  </>
+                )}
+              </Button>
+            </div>
+          </div>
         </div>
       )}
     </header>
   );
 };
-
-interface NavLinkProps {
-  to: string;
-  active: boolean;
-  children: React.ReactNode;
-}
-
-const NavLink = ({ to, active, children }: NavLinkProps) => (
-  <Link
-    to={to}
-    className={cn(
-      "flex items-center px-3 py-2 rounded-full text-sm font-medium transition-all duration-300",
-      active 
-        ? "bg-primary/10 text-primary" 
-        : "hover:bg-gray-100 dark:hover:bg-gray-800"
-    )}
-  >
-    {children}
-  </Link>
-);
-
-interface MobileNavLinkProps extends NavLinkProps {
-  onClick: () => void;
-}
-
-const MobileNavLink = ({ to, active, onClick, children }: MobileNavLinkProps) => (
-  <Link
-    to={to}
-    onClick={onClick}
-    className={cn(
-      "flex items-center py-3 px-4 rounded-lg text-base font-medium transition-all duration-300",
-      active 
-        ? "bg-primary/10 text-primary" 
-        : "hover:bg-gray-100 dark:hover:bg-gray-800"
-    )}
-  >
-    {children}
-  </Link>
-);
 
 export default Header;
