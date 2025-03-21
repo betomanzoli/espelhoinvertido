@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -52,16 +53,12 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
-				}
+        burgundy: 'hsl(var(--burgundy))',
+        navy: 'hsl(var(--navy))',
+        'light-gray': 'hsl(var(--light-gray))',
+        'medium-gray': 'hsl(var(--medium-gray))',
+        'dark-gray': 'hsl(var(--dark-gray))',
+        'off-white': 'hsl(var(--off-white))',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,12 +81,35 @@ export default {
 					to: {
 						height: '0'
 					}
-				}
+				},
+        shimmer: {
+          '0%': {
+            backgroundPosition: '-40rem 0',
+          },
+          '100%': {
+            backgroundPosition: '40rem 0',
+          },
+        },
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+        shimmer: 'shimmer 2s infinite linear',
+			},
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['Georgia', 'serif'],
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'dot-pattern': 'radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 0)',
+      },
+      boxShadow: {
+        'soft': '0 2px 15px rgba(0, 0, 0, 0.05)',
+        'medium': '0 4px 20px rgba(0, 0, 0, 0.08)',
+        'strong': '0 8px 30px rgba(0, 0, 0, 0.12)',
+        'inner-soft': 'inset 0 2px 4px rgba(0, 0, 0, 0.06)',
+      },
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
