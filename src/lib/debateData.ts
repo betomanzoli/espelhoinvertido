@@ -1,3 +1,4 @@
+
 // Types
 export interface Character {
   id: string;
@@ -209,7 +210,7 @@ export const chronicles: Chronicle[] = [
     
     As grandes plataformas de tecnologia extraem dados de populações globais, mas concentram o desenvolvimento de tecnologia, patentes e lucros em poucos centros. Enquanto o Vale do Silício se beneficia do processamento e monetização destes dados, as populações que os fornecem raramente participam dos ganhos ou decisões sobre como seus dados são utilizados.
     
-    Alternativas emergentes incluem soberania de dados, tecnologias de código aberto desenvolvidas no Sul Global e movimentos por justiça de dados que buscam reequilibrar estas relações de poder tecnológico.',
+    Alternativas emergentes incluem soberania de dados, tecnologias de código aberto desenvolvidas no Sul Global e movimentos por justiça de dados que buscam reequilibrar estas relações de poder tecnológico.`,
     author: 'Paulo Oliveira',
     date: '2023-12-10',
     url: 'https://espelhoinvertido.substack.com/tecno-colonialismo',
@@ -250,5 +251,5 @@ export const sampleMessages = [
     content: 'Isso me lembra o conceito de "mais-valia" no contexto digital. Quando usamos plataformas "gratuitas", nós somos o produto - nossos dados e atenção geram valor que é capturado pelas empresas sem compensação direta.',
     timestamp: new Date(Date.now() - 1000 * 60 * 18),
     highlightTerms: ['mais-valia'],
-  },
+  }
 ];
