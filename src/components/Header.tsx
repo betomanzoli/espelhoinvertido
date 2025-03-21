@@ -1,9 +1,9 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Moon, Sun, Menu, X } from 'lucide-react';
+import { Moon, Sun, Menu, X, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useTheme } from '@/components/ThemeProvider';
+import { useTheme } from "@/components/ThemeProvider";
 import { cn } from '@/lib/utils';
 import useMobileDetect from '@/hooks/use-mobile';
 
@@ -44,12 +44,19 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <span className="text-xl font-bold text-burgundy dark:text-burgundy">
-              Debate Crítico
-            </span>
-            <span className="text-xl font-light text-navy dark:text-navy">
-              - Espelho Invertido
-            </span>
+            <img 
+              src="/lovable-uploads/08350827-f555-408e-a8ce-c5fa4b9ff4dc.png" 
+              alt="Espelho Invertido Logo" 
+              className="h-12 w-12"
+            />
+            <div className="flex flex-col">
+              <span className="text-xl font-bold text-burgundy dark:text-burgundy">
+                Debate Crítico
+              </span>
+              <span className="text-sm font-light text-navy dark:text-navy">
+                - Espelho Invertido
+              </span>
+            </div>
           </Link>
           
           {/* Desktop nav */}
@@ -69,6 +76,16 @@ const Header = () => {
                 {item.name}
               </Link>
             ))}
+            
+            <a
+              href="https://espelhoinvertido.substack.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-2 rounded-md text-sm font-medium transition-colors flex items-center space-x-1 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
+              <span>Substack</span>
+              <ExternalLink className="h-3.5 w-3.5" />
+            </a>
             
             <Button 
               variant="ghost" 
@@ -114,6 +131,16 @@ const Header = () => {
                 {item.name}
               </Link>
             ))}
+            
+            <a
+              href="https://espelhoinvertido.substack.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-1 px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
+              <span>Substack</span>
+              <ExternalLink className="h-4 w-4" />
+            </a>
             
             <div className="pt-4 pb-2 border-t border-gray-200 dark:border-gray-800">
               <Button 

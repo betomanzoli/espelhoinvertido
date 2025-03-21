@@ -11,6 +11,7 @@ import Debate from "./pages/Debate";
 import Library from "./pages/Library";
 import ChronicleDetail from "./pages/ChronicleDetail";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 const queryClient = new QueryClient();
 
@@ -21,16 +22,21 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Header />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/debate" element={<Debate />} />
-            <Route path="/debate/:topicId" element={<Debate />} />
-            <Route path="/library" element={<Library />} />
-            <Route path="/library/chronicle/:chronicleId" element={<ChronicleDetail />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="flex-grow pt-20">
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/debate" element={<Debate />} />
+                <Route path="/debate/:topicId" element={<Debate />} />
+                <Route path="/library" element={<Library />} />
+                <Route path="/library/chronicle/:chronicleId" element={<ChronicleDetail />} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+            <Footer />
+          </div>
         </BrowserRouter>
       </TooltipProvider>
     </ThemeProvider>
