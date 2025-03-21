@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 
 /**
@@ -10,19 +9,16 @@ const useMobileDetect = (): boolean => {
   
   useEffect(() => {
     const checkIfMobile = () => {
-      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-      const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+      const userAgent = typeof navigator !== 'undefined' ? navigator.userAgent : '';
+      const mobileRegex = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile/i;
       
-      // Additional check for screen width
       const isMobileByWidth = window.innerWidth < 768;
       
       setIsMobile(mobileRegex.test(userAgent) || isMobileByWidth);
     };
     
-    // Check on mount
     checkIfMobile();
     
-    // Check on resize
     window.addEventListener('resize', checkIfMobile);
     
     return () => {
@@ -32,5 +28,7 @@ const useMobileDetect = (): boolean => {
   
   return isMobile;
 };
+
+export const useIsMobile = useMobileDetect;
 
 export default useMobileDetect;
