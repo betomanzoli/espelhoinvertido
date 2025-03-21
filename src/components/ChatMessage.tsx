@@ -56,29 +56,47 @@ const ChatMessage = ({
       return <p>{content}</p>;
     }
 
-    let processedContent = content;
+    // This approach properly maintains spaces and formatting
     let segments: React.ReactNode[] = [];
+    let lastIndex = 0;
+    const contentLower = content.toLowerCase();
     
-    // Simple approach for demonstration - could be enhanced with regex for better matching
-    highlightTerms.forEach((term) => {
-      const parts = processedContent.split(new RegExp(`(${term})`, 'gi'));
-      processedContent = parts.join(''); // This is just to avoid double-processing
+    // Process each term to highlight
+    highlightTerms.forEach(term => {
+      const termLower = term.toLowerCase();
+      let startPos = 0;
       
-      segments = parts.map((part, index) => {
-        if (part.toLowerCase() === term.toLowerCase()) {
-          return (
-            <ConceptTooltip key={`${id}-${term}-${index}`} term={term}>
-              <span className="bg-yellow-100 dark:bg-yellow-900/30 px-1 rounded cursor-help">
-                {part}
-              </span>
-            </ConceptTooltip>
-          );
+      // Find all occurrences of the term
+      while ((startPos = contentLower.indexOf(termLower, lastIndex)) !== -1) {
+        // Add text before the term
+        if (startPos > lastIndex) {
+          segments.push(content.substring(lastIndex, startPos));
         }
-        return part;
-      });
+        
+        // Add the term with tooltip
+        const endPos = startPos + term.length;
+        const actualTerm = content.substring(startPos, endPos); // Preserve original case
+        
+        segments.push(
+          <ConceptTooltip 
+            key={`${id}-${term}-${startPos}`} 
+            term={term}
+            variant={char.accent === 'burgundy' ? 'burgundy' : 'navy'}
+          >
+            {actualTerm}
+          </ConceptTooltip>
+        );
+        
+        lastIndex = endPos;
+      }
     });
-
-    return <div>{segments.length ? segments : content}</div>;
+    
+    // Add remaining text
+    if (lastIndex < content.length) {
+      segments.push(content.substring(lastIndex));
+    }
+    
+    return segments.length ? <p>{segments}</p> : <p>{content}</p>;
   };
 
   return (
