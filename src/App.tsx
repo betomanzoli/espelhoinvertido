@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 import Debate from "./pages/Debate";
 import Library from "./pages/Library";
 import ChronicleDetail from "./pages/ChronicleDetail";
+import Resources from "./pages/Resources";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
@@ -31,6 +32,7 @@ const App = () => (
                 <Route path="/debate/:topicId" element={<Debate />} />
                 <Route path="/library" element={<Library />} />
                 <Route path="/library/chronicle/:chronicleId" element={<ChronicleDetail />} />
+                <Route path="/resources" element={<Resources />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

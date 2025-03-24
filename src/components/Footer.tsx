@@ -27,7 +27,7 @@ const Footer = () => {
               <ExternalLink className="h-4 w-4" />
             </a>
             
-            <div className="flex space-x-4">
+            <div className="flex flex-wrap justify-center gap-4">
               <Link to="/" className="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors">
                 Home
               </Link>
@@ -36,6 +36,9 @@ const Footer = () => {
               </Link>
               <Link to="/library" className="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors">
                 Biblioteca
+              </Link>
+              <Link to="/resources" className="text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors">
+                Recursos
               </Link>
             </div>
           </div>
