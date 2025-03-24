@@ -54,51 +54,52 @@ const Index = () => {
               title="Debate Crítico"
               description="Dialogue com Rafael e Luísa, personagens que analisam temas contemporâneos através de diferentes perspectivas ideológicas."
               link="/debate"
+              launched={true}
               delay={0}
             />
             
             <ProjectCard 
               icon={<MapPin className="w-8 h-8" />}
               title="Mapa de Conflitos Ideológicos"
-              description="Explore camadas de informações sobre conflitos históricos e atuais, analisando como narrativas são construídas."
-              link="#"
-              soon={true}
+              description="Uma plataforma cartográfica que mapeia territórios ideológicos ao longo do tempo, mostrando como diferentes perspectivas interpretam os mesmos eventos históricos."
+              link="/mapa-conflitos"
+              launched={true}
               delay={0.1}
             />
             
             <ProjectCard 
               icon={<LineChart className="w-8 h-8" />}
               title="Simulador de Revoluções"
-              description="Jogo de estratégia onde você gerencia uma sociedade em crise, equilibrando demandas de classes sociais."
-              link="#"
-              soon={true}
+              description="Um jogo de estratégia que simula as complexas dinâmicas sociais, econômicas e políticas que precedem e acompanham transformações revolucionárias."
+              link="/simulador"
+              launched={true}
               delay={0.2}
             />
             
             <ProjectCard 
               icon={<PenTool className="w-8 h-8" />}
               title="Escreva Sua Crônica"
-              description="Plataforma colaborativa para criação de histórias que exploram contradições ideológicas."
-              link="#"
-              soon={true}
+              description="Plataforma colaborativa para criação de histórias que exploram contradições ideológicas através de múltiplas perspectivas narrativas."
+              link="/cronicas"
+              launched={true}
               delay={0.3}
             />
             
             <ProjectCard 
               icon={<FileSearch className="w-8 h-8" />}
               title="Análise de Discurso"
-              description="Ferramenta que identifica vieses ideológicos, falácias e conexões históricas em textos e discursos."
-              link="#"
-              soon={true}
+              description="Ferramenta que identifica vieses ideológicos, falácias e conexões históricas em textos e discursos, revelando pressupostos implícitos."
+              link="/analise-discurso"
+              launched={true}
               delay={0.4}
             />
             
             <ProjectCard 
               icon={<BarChart className="w-8 h-8" />}
               title="Economia em Ação"
-              description="Simulador de políticas econômicas e sociais para testar teorias em um país virtual."
-              link="#"
-              soon={true}
+              description="Simulador de políticas econômicas que permite testar diferentes abordagens e visualizar suas consequências em uma sociedade virtual baseada em dados reais."
+              link="/economia"
+              launched={true}
               delay={0.5}
             />
           </div>
@@ -155,6 +156,54 @@ const Index = () => {
         </div>
       </section>
       
+      {/* Simulador de Revoluções Highlight */}
+      <section className="py-16 md:py-24 bg-light-gray dark:bg-gray-900">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="order-2 md:order-1">
+              <div className="glass-card p-6 h-full flex items-center justify-center">
+                <div className="text-center">
+                  <LineChart className="w-24 h-24 mx-auto text-primary mb-4" />
+                  <h3 className="text-2xl font-medium mb-2">Simulador de Revoluções</h3>
+                  <p className="text-gray-600 dark:text-gray-400">Experimente as complexas dinâmicas sociais e políticas</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="order-1 md:order-2">
+              <div className="inline-block mb-6 text-primary">
+                <LineChart className="w-10 h-10" />
+              </div>
+              
+              <h2 className="text-3xl md:text-4xl font-display font-bold mb-6">
+                Simulador de Revoluções
+              </h2>
+              
+              <p className="text-lg text-gray-700 dark:text-gray-300 mb-8">
+                Um jogo de estratégia baseado em eventos históricos reais onde você experimenta
+                as complexas dinâmicas sociais, econômicas e políticas que precedem e acompanham transformações revolucionárias.
+              </p>
+              
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button asChild className="gap-2">
+                  <Link to="/simulador">
+                    Experimentar Simulador
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
+                </Button>
+                
+                <Button asChild variant="outline" className="gap-2">
+                  <Link to="/resources">
+                    <BookOpen className="w-5 h-5" />
+                    Recursos Relacionados
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
       {/* Call to Action */}
       <section className="py-16 md:py-24 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-radial from-primary/5 to-transparent"></div>
@@ -201,11 +250,11 @@ interface ProjectCardProps {
   title: string;
   description: string;
   link: string;
-  soon?: boolean;
+  launched?: boolean;
   delay: number;
 }
 
-const ProjectCard = ({ icon, title, description, link, soon = false, delay }: ProjectCardProps) => (
+const ProjectCard = ({ icon, title, description, link, launched = false, delay }: ProjectCardProps) => (
   <div 
     className="glass-card p-6 animate-slide-up" 
     style={{ animationDelay: `${delay}s` }}
@@ -220,16 +269,16 @@ const ProjectCard = ({ icon, title, description, link, soon = false, delay }: Pr
       {description}
     </p>
     
-    {soon ? (
-      <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-gray-200 dark:bg-gray-700">
-        Em breve
-      </span>
-    ) : (
+    {launched ? (
       <Button asChild variant="link" className="p-0 h-auto font-medium">
         <Link to={link} className="flex items-center gap-1">
           Acessar <ArrowRight className="w-4 h-4" />
         </Link>
       </Button>
+    ) : (
+      <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-gray-200 dark:bg-gray-700">
+        Em breve
+      </span>
     )}
   </div>
 );

@@ -13,6 +13,7 @@ import ChronicleDetail from "./pages/ChronicleDetail";
 import Resources from "./pages/Resources";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import ProjectComingSoon from "./pages/ProjectComingSoon";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,14 @@ const App = () => (
                 <Route path="/library" element={<Library />} />
                 <Route path="/library/chronicle/:chronicleId" element={<ChronicleDetail />} />
                 <Route path="/resources" element={<Resources />} />
+                
+                {/* New project routes */}
+                <Route path="/mapa-conflitos" element={<ProjectComingSoon title="Mapa de Conflitos Ideológicos" />} />
+                <Route path="/simulador" element={<ProjectComingSoon title="Simulador de Revoluções" />} />
+                <Route path="/cronicas" element={<ProjectComingSoon title="Escreva Sua Crônica" />} />
+                <Route path="/analise-discurso" element={<ProjectComingSoon title="Análise de Discurso" />} />
+                <Route path="/economia" element={<ProjectComingSoon title="Economia em Ação" />} />
+                
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

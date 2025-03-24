@@ -48,32 +48,32 @@ const Footer = () => {
           </div>
           
           <div>
-            <h3 className="font-medium mb-4">Projetos Futuros</h3>
+            <h3 className="font-medium mb-4">Projetos</h3>
             <ul className="space-y-2">
               <li>
-                <span className="text-sm text-gray-600 dark:text-gray-400">
-                  Mapa de Conflitos Ideológicos
-                </span>
-              </li>
-              <li>
-                <span className="text-sm text-gray-600 dark:text-gray-400">
+                <Link to="/simulador" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors">
                   Simulador de Revoluções
-                </span>
+                </Link>
               </li>
               <li>
-                <span className="text-sm text-gray-600 dark:text-gray-400">
+                <Link to="/mapa-conflitos" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors">
+                  Mapa de Conflitos Ideológicos
+                </Link>
+              </li>
+              <li>
+                <Link to="/cronicas" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors">
                   Escreva Sua Crônica
-                </span>
+                </Link>
               </li>
               <li>
-                <span className="text-sm text-gray-600 dark:text-gray-400">
+                <Link to="/analise-discurso" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors">
                   Análise de Discurso
-                </span>
+                </Link>
               </li>
               <li>
-                <span className="text-sm text-gray-600 dark:text-gray-400">
+                <Link to="/economia" className="text-sm text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition-colors">
                   Economia em Ação
-                </span>
+                </Link>
               </li>
             </ul>
           </div>
