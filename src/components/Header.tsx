@@ -31,8 +31,9 @@ const Header = () => {
   
   const navigation = [
     { name: 'Home', path: '/' },
-    { name: 'Debates', path: '/debate' },
+    { name: 'Debate Crítico', path: '/debate' },
     { name: 'Biblioteca', path: '/library' },
+    { name: 'Recursos', path: '/resources' },
   ];
   
   return (
@@ -51,10 +52,10 @@ const Header = () => {
             />
             <div className="flex flex-col">
               <span className="text-xl font-bold text-burgundy dark:text-burgundy">
-                Debate Crítico
+                Espelho Invertido
               </span>
               <span className="text-sm font-light text-navy dark:text-navy">
-                - Espelho Invertido
+                Pensamento crítico em movimento
               </span>
             </div>
           </Link>
