@@ -90,7 +90,7 @@ const Debate = () => {
                   </div>
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todas Categorias</SelectItem>
+                  <SelectItem value="all">Todas Categorias</SelectItem>
                   {categories.map(category => (
                     <SelectItem key={category} value={category}>
                       {category}
@@ -104,7 +104,7 @@ const Debate = () => {
                   <SelectValue placeholder="Dificuldade" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Todas Dificuldades</SelectItem>
+                  <SelectItem value="all">Todas Dificuldades</SelectItem>
                   <SelectItem value="basic">Básico</SelectItem>
                   <SelectItem value="intermediate">Intermediário</SelectItem>
                   <SelectItem value="advanced">Avançado</SelectItem>
