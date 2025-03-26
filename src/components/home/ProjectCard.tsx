@@ -9,11 +9,10 @@ interface ProjectCardProps {
   title: string;
   description: string;
   link: string;
-  launched?: boolean;
   delay: number;
 }
 
-const ProjectCard = ({ icon, title, description, link, launched = false, delay }: ProjectCardProps) => (
+const ProjectCard = ({ icon, title, description, link, delay }: ProjectCardProps) => (
   <div 
     className="glass-card p-6 animate-slide-up" 
     style={{ animationDelay: `${delay}s` }}
@@ -28,17 +27,11 @@ const ProjectCard = ({ icon, title, description, link, launched = false, delay }
       {description}
     </p>
     
-    {launched ? (
-      <Button asChild variant="link" className="p-0 h-auto font-medium">
-        <Link to={link} className="flex items-center gap-1">
-          Acessar <ArrowRight className="w-4 h-4" />
-        </Link>
-      </Button>
-    ) : (
-      <span className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-gray-200 dark:bg-gray-700">
-        Em breve
-      </span>
-    )}
+    <Button asChild variant="link" className="p-0 h-auto font-medium">
+      <Link to={link} className="flex items-center gap-1">
+        Saiba mais <ArrowRight className="w-4 h-4" />
+      </Link>
+    </Button>
   </div>
 );
 

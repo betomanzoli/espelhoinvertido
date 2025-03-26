@@ -2,6 +2,7 @@
 import { ArrowLeft, ExternalLink } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface ProjectComingSoonProps {
   title: string;
@@ -22,6 +23,26 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
             "Eventos Históricos Documentados como a Primavera de Praga e a Comuna de Paris",
             "Modo Educacional com linha do tempo interativa e glossário contextual"
           ],
+          tabs: {
+            gameplay: [
+              "Jogue como diferentes classes sociais com recursos e motivações únicas",
+              "Tome decisões que afetam a economia e sociedade",
+              "Construa alianças e gerencie conflitos sociais",
+              "Experimente cenários históricos recreados com precisão"
+            ],
+            educational: [
+              "Aprenda sobre modos de produção através de linha do tempo interativa",
+              "Analise contradições sociais em tempo real",
+              "Compare suas decisões com eventos históricos reais",
+              "Acesse material complementar sobre cada período histórico"
+            ],
+            technical: [
+              "Jogo baseado em navegador com interface responsiva",
+              "Sistema econômico modelado com dados históricos",
+              "Suporte para múltiplos idiomas",
+              "Salvamento automático de progresso"
+            ]
+          },
           icon: "⚔️"
         };
       case "Mapa de Conflitos Ideológicos":
@@ -70,8 +91,13 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
         };
       default:
         return {
-          description: "Este projeto está em desenvolvimento e estará disponível em breve.",
-          features: ["Detalhes serão divulgados próximamente."],
+          description: "Detalhes deste projeto serão divulgados em breve.",
+          features: [],
+          tabs: {
+            overview: [],
+            features: [],
+            technical: []
+          },
           icon: "🚀"
         };
     }
@@ -96,30 +122,50 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
             <div className="text-center mb-8">
               <div className="text-6xl mb-4">{projectInfo.icon}</div>
               <h1 className="text-3xl md:text-4xl font-display font-bold mb-4">{title}</h1>
-              <div className="inline-block px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300">
-                Projeto Lançado
-              </div>
             </div>
             
             <div className="mb-8">
-              <h2 className="text-xl md:text-2xl font-semibold mb-4">Sobre o Projeto</h2>
-              <p className="text-gray-700 dark:text-gray-300 mb-6 text-lg">
+              <p className="text-gray-700 dark:text-gray-300 mb-8 text-lg">
                 {projectInfo.description}
               </p>
               
-              <h3 className="text-lg font-semibold mb-3">Funcionalidades Principais:</h3>
-              <ul className="space-y-2 pl-6 list-disc text-gray-700 dark:text-gray-300">
-                {projectInfo.features.map((feature, index) => (
-                  <li key={index}>{feature}</li>
-                ))}
-              </ul>
+              <Tabs defaultValue="overview" className="w-full">
+                <TabsList className="grid w-full grid-cols-3">
+                  <TabsTrigger value="overview">Visão Geral</TabsTrigger>
+                  <TabsTrigger value="features">Funcionalidades</TabsTrigger>
+                  <TabsTrigger value="technical">Tecnologia</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="overview" className="mt-6">
+                  <h3 className="text-lg font-semibold mb-3">Principais Características:</h3>
+                  <ul className="space-y-2 pl-6 list-disc text-gray-700 dark:text-gray-300">
+                    {projectInfo.features.map((feature, index) => (
+                      <li key={index}>{feature}</li>
+                    ))}
+                  </ul>
+                </TabsContent>
+                
+                <TabsContent value="features" className="mt-6">
+                  <h3 className="text-lg font-semibold mb-3">Funcionalidades Detalhadas:</h3>
+                  <ul className="space-y-2 pl-6 list-disc text-gray-700 dark:text-gray-300">
+                    {projectInfo.tabs.gameplay?.map((feature, index) => (
+                      <li key={index}>{feature}</li>
+                    ))}
+                  </ul>
+                </TabsContent>
+                
+                <TabsContent value="technical" className="mt-6">
+                  <h3 className="text-lg font-semibold mb-3">Aspectos Técnicos:</h3>
+                  <ul className="space-y-2 pl-6 list-disc text-gray-700 dark:text-gray-300">
+                    {projectInfo.tabs.technical?.map((feature, index) => (
+                      <li key={index}>{feature}</li>
+                    ))}
+                  </ul>
+                </TabsContent>
+              </Tabs>
             </div>
             
             <div className="text-center">
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
-                Este projeto está implementado parcialmente. Estamos trabalhando para disponibilizar todas as funcionalidades em breve.
-              </p>
-              
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg">
                   <a href="https://espelhoinvertido.substack.com/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">

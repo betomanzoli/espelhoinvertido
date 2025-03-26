@@ -23,7 +23,6 @@ const ProjectsSection = () => {
             title="Debate Crítico"
             description="Dialogue com Rafael e Luísa, personagens que analisam temas contemporâneos através de diferentes perspectivas ideológicas."
             link="/debate"
-            launched={true}
             delay={0}
           />
           
@@ -32,7 +31,6 @@ const ProjectsSection = () => {
             title="Mapa de Conflitos Ideológicos"
             description="Uma plataforma cartográfica que mapeia territórios ideológicos ao longo do tempo, mostrando como diferentes perspectivas interpretam os mesmos eventos históricos."
             link="/mapa-conflitos"
-            launched={true}
             delay={0.1}
           />
           
@@ -41,7 +39,6 @@ const ProjectsSection = () => {
             title="Simulador de Revoluções"
             description="Um jogo de estratégia que simula as complexas dinâmicas sociais, econômicas e políticas que precedem e acompanham transformações revolucionárias."
             link="/simulador"
-            launched={true}
             delay={0.2}
           />
           
@@ -50,7 +47,6 @@ const ProjectsSection = () => {
             title="Escreva Sua Crônica"
             description="Plataforma colaborativa para criação de histórias que exploram contradições ideológicas através de múltiplas perspectivas narrativas."
             link="/cronicas"
-            launched={true}
             delay={0.3}
           />
           
@@ -59,7 +55,6 @@ const ProjectsSection = () => {
             title="Análise de Discurso"
             description="Ferramenta que identifica vieses ideológicos, falácias e conexões históricas em textos e discursos, revelando pressupostos implícitos."
             link="/analise-discurso"
-            launched={true}
             delay={0.4}
           />
           
@@ -68,7 +63,6 @@ const ProjectsSection = () => {
             title="Economia em Ação"
             description="Simulador de políticas econômicas que permite testar diferentes abordagens e visualizar suas consequências em uma sociedade virtual baseada em dados reais."
             link="/economia"
-            launched={true}
             delay={0.5}
           />
         </div>
