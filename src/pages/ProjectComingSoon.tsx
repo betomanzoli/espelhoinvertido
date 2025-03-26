@@ -54,6 +54,26 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
             "Ferramentas de Análise Textual para identificar termos carregados ideologicamente",
             "Estudos de Caso Interativos como a Revolução Russa com múltiplas perspectivas"
           ],
+          tabs: {
+            gameplay: [
+              "Explore diferentes camadas de interpretação para o mesmo evento histórico",
+              "Navegue por mapas de influência ideológica em diferentes épocas",
+              "Descubra como narrativas hegemônicas se desenvolveram ao longo do tempo",
+              "Compare fontes contraditórias sobre eventos históricos importantes"
+            ],
+            educational: [
+              "Aprenda como eventos são moldados por perspectivas ideológicas",
+              "Visualize a expansão global de correntes de pensamento político",
+              "Entenda como interesses econômicos influenciam narrativas históricas",
+              "Descontrua análises simplistas de eventos históricos complexos"
+            ],
+            technical: [
+              "Mapas interativos com múltiplas camadas de informação",
+              "Linha do tempo sincronizada com visualizações geográficas",
+              "Integração com fontes históricas digitalizadas",
+              "Interface responsiva para desktop e dispositivos móveis"
+            ]
+          },
           icon: "🗺️"
         };
       case "Escreva Sua Crônica":
@@ -65,6 +85,26 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
             "Sistema de Desafios Narrativos semanais",
             "Comunidade e Feedback com revisão por pares e círculos de leitura virtuais"
           ],
+          tabs: {
+            gameplay: [
+              "Escreva narrativas de ficção que exploram contradições sociais",
+              "Desenvolva personagens baseados em arquétipos históricos",
+              "Participe de desafios narrativos com temas políticos e sociais",
+              "Receba e ofereça feedback dentro da comunidade literária"
+            ],
+            educational: [
+              "Exercite sua capacidade de compreender perspectivas ideológicas diversas",
+              "Aprenda técnicas narrativas para representar contradições sociais",
+              "Explore como diferentes classes sociais percebem o mesmo evento",
+              "Desenvolva empatia através de exercícios de escrita dialética"
+            ],
+            technical: [
+              "Editor colaborativo com suporte para múltiplas perspectivas",
+              "Sistema de comentários ancorados em trechos específicos do texto",
+              "Análise de consistência ideológica entre diferentes perspectivas",
+              "Ferramentas de publicação e compartilhamento social"
+            ]
+          },
           icon: "✍️"
         };
       case "Análise de Discurso":
@@ -76,6 +116,26 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
             "Sistema Educativo Progressivo para ensinar análise crítica de discurso",
             "Comparador de Fontes que mostra como diferentes veículos cobrem o mesmo evento"
           ],
+          tabs: {
+            gameplay: [
+              "Analise textos políticos e identifique pressupostos ideológicos ocultos",
+              "Compare como diferentes fontes representam o mesmo evento",
+              "Rastreie a evolução histórica de conceitos políticos ao longo do tempo",
+              "Desafie-se com exercícios progressivos de análise de discurso"
+            ],
+            educational: [
+              "Aprenda técnicas de análise crítica de discurso",
+              "Compreenda como a linguagem reflete e constrói relações de poder",
+              "Identifique como interesses de classe moldam narrativas midiáticas",
+              "Desenvolva imunidade cognitiva contra manipulação discursiva"
+            ],
+            technical: [
+              "Motor de análise baseado em processamento de linguagem natural",
+              "Banco de dados com histórico terminológico e conceitual",
+              "Ferramentas de comparação textual e visual de narrativas",
+              "APIs para integração com outras plataformas educacionais"
+            ]
+          },
           icon: "🔍"
         };
       case "Economia em Ação":
@@ -87,15 +147,66 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
             "Sistema de Reações Sociais que simula resistência de classe",
             "Componente Educacional com casos históricos comparativos"
           ],
+          tabs: {
+            gameplay: [
+              "Implemente diferentes políticas econômicas e observe seus efeitos",
+              "Gerencie contradições entre classes sociais e interesses econômicos",
+              "Navegue por crises econômicas e sociais emergentes da simulação",
+              "Compare seus resultados com casos históricos reais"
+            ],
+            educational: [
+              "Compreenda como diferentes teorias econômicas funcionam na prática",
+              "Visualize contradições internas de sistemas econômicos",
+              "Aprenda sobre ciclos econômicos, crises e suas consequências sociais",
+              "Explore a relação entre economia, política e lutas de classe"
+            ],
+            technical: [
+              "Modelo econômico com equações derivadas de teorias marxistas e keynesianas",
+              "Visualização dinâmica de dados e tendências econômicas",
+              "Sistema de feedback que mostra consequências de curto e longo prazo",
+              "Interface intuitiva com controles de política econômica e social"
+            ]
+          },
           icon: "📊"
+        };
+      case "Diálogo com Rafael e Luísa":
+        return {
+          description: "Um chat interativo que simula conversas com dois personagens fictícios que discutem perspectivas ideológicas diversas, com foco especial no Manifesto Comunista e sua aplicação contemporânea.",
+          features: [
+            "Sistema de Personalidades Duplas que alternam conforme o tipo de pergunta",
+            "Contextualização Automática de conceitos do Manifesto Comunista",
+            "Modos de Interação com conversação livre ou diálogos guiados",
+            "Biblioteca Referencial com acesso a trechos originais do Manifesto"
+          ],
+          tabs: {
+            gameplay: [
+              "Converse com Rafael sobre questões teóricas e históricas",
+              "Dialogue com Luísa sobre aplicações práticas e exemplos contemporâneos",
+              "Explore temas específicos ou faça perguntas livremente",
+              "Desafie os personagens com perguntas provocativas e críticas"
+            ],
+            educational: [
+              "Aprenda conceitos do Manifesto Comunista de forma acessível",
+              "Contextualize teorias marxistas com exemplos contemporâneos",
+              "Descubra conexões entre conceitos históricos e realidades atuais",
+              "Desenvolva pensamento crítico sobre narrativas econômicas e políticas"
+            ],
+            technical: [
+              "Sistema de IA treinado com abordagens pedagógicas distintas",
+              "Banco de dados de referências históricas e contemporâneas",
+              "Interface conversacional intuitiva e responsiva",
+              "Integração com outras plataformas educacionais do projeto"
+            ]
+          },
+          icon: "💬"
         };
       default:
         return {
           description: "Detalhes deste projeto serão divulgados em breve.",
           features: [],
           tabs: {
-            overview: [],
-            features: [],
+            gameplay: [],
+            educational: [],
             technical: []
           },
           icon: "🚀"
