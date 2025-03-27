@@ -14,10 +14,10 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ icon, title, description, link, delay }: ProjectCardProps) => (
   <div 
-    className="glass-card p-6 animate-slide-up" 
+    className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 animate-slide-up" 
     style={{ animationDelay: `${delay}s` }}
   >
-    <div className="flex items-center justify-center w-14 h-14 mb-4 rounded-full bg-primary/10 text-primary">
+    <div className="flex items-center justify-center w-14 h-14 mb-4 text-3xl">
       {icon}
     </div>
     
@@ -27,9 +27,10 @@ const ProjectCard = ({ icon, title, description, link, delay }: ProjectCardProps
       {description}
     </p>
     
-    <Button asChild variant="link" className="p-0 h-auto font-medium">
-      <Link to={link} className="flex items-center gap-1">
-        Saiba mais <ArrowRight className="w-4 h-4" />
+    <Button asChild variant="default" className="w-full justify-center gap-2 bg-teal-500 hover:bg-teal-600">
+      <Link to={link}>
+        Acessar
+        <ArrowRight className="w-4 h-4" />
       </Link>
     </Button>
   </div>

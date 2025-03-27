@@ -48,16 +48,11 @@ const Header = () => {
             <img 
               src="/lovable-uploads/08350827-f555-408e-a8ce-c5fa4b9ff4dc.png" 
               alt="Espelho Invertido Logo" 
-              className="h-12 w-12"
+              className="h-10 w-10"
             />
-            <div className="flex flex-col">
-              <span className="text-xl font-bold text-burgundy dark:text-burgundy">
-                Espelho Invertido
-              </span>
-              <span className="text-sm font-light text-navy dark:text-navy">
-                Pensamento crítico em movimento
-              </span>
-            </div>
+            <span className="text-xl font-bold text-gray-900 dark:text-white">
+              Espelho Invertido
+            </span>
           </Link>
           
           {/* Desktop nav */}
@@ -70,7 +65,7 @@ const Header = () => {
                   "px-3 py-2 rounded-md text-sm font-medium transition-colors",
                   location.pathname === item.path || 
                   (item.path !== '/' && location.pathname.startsWith(item.path))
-                    ? "text-primary"
+                    ? "text-blue-700 dark:text-teal-400"
                     : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                 )}
               >
@@ -125,7 +120,7 @@ const Header = () => {
                   "block px-3 py-2 rounded-md text-base font-medium",
                   location.pathname === item.path || 
                   (item.path !== '/' && location.pathname.startsWith(item.path))
-                    ? "text-primary bg-gray-100 dark:bg-gray-800"
+                    ? "text-blue-700 dark:text-teal-400 bg-gray-100 dark:bg-gray-800"
                     : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                 )}
               >
