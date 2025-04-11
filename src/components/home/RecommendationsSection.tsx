@@ -1,5 +1,5 @@
 
-import { Chronicle } from './ChronicleCard';
+import { Chronicle } from '@/lib/debateData';
 import RecommendationCard from './RecommendationCard';
 
 interface RecommendationsSectionProps {

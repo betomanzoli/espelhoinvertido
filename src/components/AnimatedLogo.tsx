@@ -111,46 +111,76 @@ const AnimatedLogo = ({ size = 'md', showText = true, className }: AnimatedLogoP
               "transform transition-all duration-500",
               isAnimating ? "scale-105" : "scale-100",
             )}>
-              {/* Logo inclui um espelho na parte inferior com opacidade reduzida */}
-              <div className="relative">
-                <svg 
-                  viewBox="0 0 100 112" 
+              {/* Hexágono com efeito de espelho */}
+              <svg 
+                viewBox="0 0 100 112" 
+                className={cn(
+                  "h-full w-auto",
+                  "transition-all duration-500",
+                  isAnimating ? "filter drop-shadow(0 0 8px rgba(56, 178, 172, 0.7))" : ""
+                )}
+              >
+                <defs>
+                  <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#3B82F6" className="transition-all duration-500" />
+                    <stop offset="100%" stopColor="#14B8A6" className="transition-all duration-500" />
+                  </linearGradient>
+                  <filter id="glow">
+                    <feGaussianBlur stdDeviation="2" result="blur" />
+                    <feComposite in="blur" operator="over" in2="SourceGraphic" />
+                  </filter>
+                </defs>
+                {/* Hexágono principal */}
+                <path 
+                  fill="url(#logoGradient)"
+                  d="M50 0 L100 25 L100 75 L50 100 L0 75 L0 25 Z" 
                   className={cn(
-                    "h-full w-auto",
+                    "transition-all duration-700",
+                    isAnimating ? "opacity-100" : "opacity-90"
+                  )}
+                />
+                
+                {/* Letras "EI" dentro do hexágono */}
+                <text
+                  x="50"
+                  y="60"
+                  textAnchor="middle"
+                  fontSize="48"
+                  fontWeight="bold"
+                  fill="white"
+                  className={cn(
                     "transition-all duration-500",
-                    isAnimating ? "filter drop-shadow(0 0 8px rgba(56, 178, 172, 0.7))" : ""
+                    isAnimating ? "filter drop-shadow(0 0 5px rgba(255, 255, 255, 0.8))" : ""
                   )}
                 >
-                  <defs>
-                    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#3B82F6" className="transition-all duration-500" />
-                      <stop offset="100%" stopColor="#14B8A6" className="transition-all duration-500" />
-                    </linearGradient>
-                    <filter id="glow">
-                      <feGaussianBlur stdDeviation="2" result="blur" />
-                      <feComposite in="blur" operator="over" in2="SourceGraphic" />
-                    </filter>
-                  </defs>
-                  {/* Ícone de espelho ou similar */}
-                  <path 
-                    fill="url(#logoGradient)"
-                    d="M50 0 L100 25 L100 75 L50 100 L0 75 L0 25 Z" 
-                    className={cn(
-                      "transition-all duration-700",
-                      isAnimating ? "opacity-100" : "opacity-90"
-                    )}
-                  />
-                  {/* Linha divisória simulando efeito espelho */}
-                  <line x1="0" y1="50" x2="100" y2="50" stroke="rgba(255,255,255,0.7)" strokeWidth="2" />
-                  {/* Reflexo na parte inferior com opacidade reduzida */}
-                  <path 
-                    fill="url(#logoGradient)"
-                    d="M50 100 L100 75 L100 100 L50 112 L0 100 L0 75 Z" 
-                    opacity="0.3"
-                    className="animate-pulse"
-                  />
-                </svg>
-              </div>
+                  EI
+                </text>
+                
+                {/* Linha divisória simulando efeito espelho */}
+                <line x1="0" y1="50" x2="100" y2="50" stroke="rgba(255,255,255,0.7)" strokeWidth="1" />
+                
+                {/* Reflexo na parte inferior com opacidade reduzida */}
+                <path 
+                  fill="url(#logoGradient)"
+                  d="M50 100 L100 75 L100 100 L50 112 L0 100 L0 75 Z" 
+                  opacity="0.3"
+                  className="animate-pulse"
+                />
+                
+                {/* Reflexo das letras "EI" */}
+                <text
+                  x="50"
+                  y="110"
+                  textAnchor="middle"
+                  fontSize="32"
+                  fontWeight="bold"
+                  fill="white"
+                  opacity="0.2"
+                  transform="scale(1, -0.5) translate(0, -170)"
+                >
+                  EI
+                </text>
+              </svg>
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
-import { ExternalLink, MessageCircle, History, Users, Scale, Briefcase, Puzzle } from 'lucide-react';
+
+import { Briefcase, ExternalLink, History, MessageCircle, Puzzle, Scale, Users } from 'lucide-react';
 
 export interface Character {
   id: string;
@@ -36,15 +37,16 @@ export interface Chronicle {
   date: string;
   author: string;
   tags: string[];
-  content: string;
   url: string;
-  relatedTopics?: string[];
+  image?: string;
 }
 
 export interface Concept {
+  id: string;
   term: string;
   definition: string;
   source: string;
+  relatedTerms: string[];
 }
 
 export const characters: Character[] = [
@@ -167,108 +169,75 @@ export const sampleMessages: MessageType[] = [
   }
 ];
 
-export const conceptLibrary: Concept[] = [
+// Adicionar crônicas para a biblioteca
+export const chronicles: Chronicle[] = [
   {
-    term: "Mais-valia",
-    definition: "Conceito central na teoria marxista que descreve o valor produzido pelo trabalhador que excede o valor de seu salário e é apropriado pelo capitalista como lucro.",
-    source: "O Capital, Karl Marx (1867)"
+    id: '1',
+    title: 'A Digitalização do Trabalho e suas Contradições',
+    excerpt: 'Como as plataformas digitais estão transformando nossas relações de trabalho e revivendo formas de exploração que pareciam superadas.',
+    date: '2023-11-15',
+    author: 'Rafael Martins',
+    tags: ['Trabalho', 'Digital', 'Plataformas'],
+    url: '/library/chronicle/1',
+    image: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&auto=format&fit=crop&q=60'
   },
   {
-    term: "Alienação",
-    definition: "Processo no qual os trabalhadores se tornam estranhos ao produto de seu trabalho, à atividade produtiva, à sua natureza humana e a outros trabalhadores devido às condições do trabalho capitalista.",
-    source: "Manuscritos Econômico-Filosóficos, Karl Marx (1844)"
+    id: '2',
+    title: 'Redes Sociais como Novos Aparelhos Ideológicos',
+    excerpt: 'Análise de como as plataformas de mídia social funcionam como aparelhos ideológicos contemporâneos, moldando nossa percepção da realidade.',
+    date: '2023-10-22',
+    author: 'Luísa Campos',
+    tags: ['Mídia', 'Ideologia', 'Redes Sociais'],
+    url: '/library/chronicle/2',
+    image: 'https://images.unsplash.com/photo-1611162618071-b39a2ec055fb?w=800&auto=format&fit=crop&q=60'
   },
   {
-    term: "Fetichismo da mercadoria",
-    definition: "Fenômeno social e psicológico onde as mercadorias parecem ter vida própria e valores intrínsecos, ocultando as relações sociais envolvidas em sua produção.",
-    source: "O Capital, Karl Marx (1867)"
-  },
-  {
-    term: "Hegemonia cultural",
-    definition: "Dominação ideológica de uma classe social sobre outras através do controle de instituições culturais, estabelecendo suas visões de mundo como naturais e inevitáveis.",
-    source: "Cadernos do Cárcere, Antonio Gramsci (1929-1935)"
-  },
-  {
-    term: "Neoliberalismo",
-    definition: "Conjunto de políticas econômicas que enfatizam a desregulamentação dos mercados, privatização, austeridade fiscal e redução do papel do Estado na economia.",
-    source: "Breve História do Neoliberalismo, David Harvey (2005)"
+    id: '3',
+    title: 'Comuns Digitais e a Luta contra a Mercantilização do Conhecimento',
+    excerpt: 'Explorando iniciativas de conhecimento aberto e software livre como formas de resistência à apropriação privada dos bens comuns intelectuais.',
+    date: '2023-09-05',
+    author: 'Rafael Martins',
+    tags: ['Economia', 'Conhecimento', 'Digital'],
+    url: '/library/chronicle/3',
+    image: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&auto=format&fit=crop&q=60'
   }
 ];
 
-export const chronicles: Chronicle[] = [
+// Adicionar biblioteca de conceitos
+export const conceptLibrary: Concept[] = [
   {
-    id: "1",
-    title: "Duas Bibliotecas, Uma História",
-    excerpt: "Como diferentes narrativas históricas são construídas a partir das mesmas fontes primárias.",
-    date: "2024-02-15",
-    author: "Rafael Martins",
-    tags: ["História", "Ideologia", "Narrativas"],
-    content: `Entrei em duas bibliotecas no mesmo dia. A primeira, organizada pela Fundação Liberal, e a segunda, mantida pelo Centro de Estudos Socialistas. Ambas eram dedicadas ao mesmo período histórico: as revoluções e contrarrevoluções do século XX.
-
-Na primeira biblioteca, os livros estavam organizados para contar uma história sobre o perigo das utopias coletivistas e como os regimes socialistas inevitavelmente levaram à opressão e ao fracasso econômico. Na segunda, os volumes contavam a história de movimentos populares lutando por direitos e dignidade, frequentemente esmagados por intervenções imperialistas e sabotagem econômica.
-
-O mais fascinante era que, em muitos casos, ambas as bibliotecas utilizavam as mesmas fontes primárias - os mesmos documentos, cartas, relatórios econômicos - mas construíam narrativas completamente distintas.
-
-Nos dias seguintes, passei a examinar como cada biblioteca tratava eventos específicos. A Revolução Russa, por exemplo: na primeira biblioteca, era retratada exclusivamente como uma tomada violenta de poder que levou ao totalitarismo. Na segunda, como um levante popular contra condições desumanas que, apesar de suas contradições posteriores, demonstrou a possibilidade de uma reorganização social radical.
-
-É tentador concluir que "a verdade está no meio", mas essa seria uma saída fácil. O que aprendi foi algo diferente: que a história nunca é apenas uma coleção de "fatos", mas sempre uma narrativa construída a partir deles. E nessa construção, quem escolhe quais fatos incluir, quais omitir, e como contextualizá-los, exerce um imenso poder ideológico.
-
-O mais revelador foi perceber que esse fenômeno não estava limitado a temas obviamente políticos. Mesmo em assuntos aparentemente técnicos, como história econômica, as mesmas estatísticas eram interpretadas de maneiras radicalmente diferentes.
-
-Voltei às duas bibliotecas várias vezes. Não para escolher uma delas como "a verdadeira", mas para aprender a ler criticamente, identificando as premissas não declaradas, as omissões estratégicas e as estruturas narrativas em cada uma. Foi um exercício intelectual que me ensinou mais sobre ideologia do que qualquer curso teórico poderia ter feito.
-
-No final, entendi que o verdadeiro poder não está apenas em quem controla os meios de produção material, mas também em quem controla os meios de produção das narrativas históricas. Como dizia Marx no Manifesto Comunista, "as ideias da classe dominante são, em cada época, as ideias dominantes", e isso se reflete diretamente na forma como a história é escrita, organizada e disseminada.`,
-    url: "/library/chronicle/1",
-    relatedTopics: ["introducao-manifesto", "contranarrativas"]
+    id: 'alienacao',
+    term: 'Alienação',
+    definition: 'Processo pelo qual a atividade produtiva humana se converte em algo estranho e hostil ao trabalhador, fazendo com que o produto do trabalho e o próprio processo produtivo apareçam como forças independentes e dominadoras.',
+    source: 'Marx, Manuscritos Econômico-Filosóficos',
+    relatedTerms: ['trabalho', 'fetichismo', 'mercadoria']
   },
   {
-    id: "2",
-    title: "O Espectro Que Recusamos Ver",
-    excerpt: "Uma análise contemporânea do primeiro parágrafo do Manifesto Comunista.",
-    date: "2024-01-22",
-    author: "Luísa Campos",
-    tags: ["Ideologia", "Manifesto", "Teoria", "Mídia"],
-    content: `"Um espectro ronda a Europa — o espectro do comunismo. Todas as potências da velha Europa uniram-se numa Santa Aliança para conjurá-lo: o papa e o czar, Metternich e Guizot, radicais franceses e policiais alemães."
-
-Este é o célebre parágrafo de abertura do Manifesto Comunista, escrito por Marx e Engels em 1848. O que me fascina não é apenas seu valor histórico, mas como ele permanece surpreendentemente atual — ainda que de maneiras que seus autores jamais poderiam prever.
-
-Hoje, mais de 175 anos depois, não é tanto um espectro que ronda a Europa ou o mundo, mas um nome que continua a provocar reações viscerais. Mencione "Marx" ou "comunismo" em uma conversa casual, e observe as reações. Mesmo entre pessoas que nunca leram uma linha sequer de teoria marxista, há frequentemente uma rejeição imediata, um fechamento ao diálogo.
-
-Este fenômeno me interessa profundamente como jornalista. Por que certas ideias são rejeitadas antes mesmo de serem compreendidas? Como se formam essas barreiras cognitivas que impedem até mesmo a consideração de determinadas perspectivas?
-
-Em minhas pesquisas sobre algoritmos de redes sociais, descobri algo revelador: conteúdos que mencionam positivamente termos como "socialismo" ou "Marx" frequentemente enfrentam shadowbans ou redução de alcance em diversas plataformas. Não por política explícita dessas empresas, mas por uma combinação de fatores mais sutis: os algoritmos aprendem que tais conteúdos geram polarização, o que pode reduzir o tempo que os usuários passam na plataforma (ou não — a polarização também pode aumentar o engajamento, dependendo de como é apresentada).
-
-A "Santa Aliança" contemporânea não é composta por papas e czares, mas por algoritmos, vieses cognitivos e uma infraestrutura midiática que normaliza certos pressupostos econômicos como "realistas" e outros como "utópicos" ou "perigosos".
-
-Meu ponto não é defender o comunismo como sistema — sistemas políticos devem ser debatidos criticamente em seus méritos e falhas. O que me preocupa é a impossibilidade de termos debates genuínos quando certas ideias são descartadas automaticamente, não por seus conteúdos, mas pelos rótulos a elas atribuídos.
-
-Como dizia o próprio Marx, "a tradição de todas as gerações mortas oprime como um pesadelo o cérebro dos vivos". Talvez nosso desafio hoje seja reconhecer os pesadelos históricos e ideológicos que continuam a moldar nosso pensamento, muitas vezes sem que percebamos.`,
-    url: "/library/chronicle/2",
-    relatedTopics: ["introducao-manifesto", "contranarrativas"]
+    id: 'fetichismo-mercadoria',
+    term: 'Fetichismo da Mercadoria',
+    definition: 'Fenômeno social no qual as relações entre pessoas assumem a forma de relações entre coisas, ocultando as relações sociais subjacentes à produção de mercadorias.',
+    source: 'Marx, O Capital, Vol. 1',
+    relatedTerms: ['alienação', 'mercadoria', 'valor']
   },
   {
-    id: "3",
-    title: "Capitalismo de Plataforma",
-    excerpt: "Como as novas relações de trabalho digital mascaram formas tradicionais de exploração.",
-    date: "2024-03-05",
-    author: "Rafael Martins",
-    tags: ["Economia", "Tecnologia", "Trabalho", "Digital"],
-    content: `O motorista do aplicativo trabalha 14 horas por dia para compensar as taxas crescentes da plataforma. A influenciadora digital produz conteúdo incessantemente para satisfazer o algoritmo que determina sua visibilidade. O entregador pedala sob chuva, sem direitos trabalhistas, recebendo por entrega. Bem-vindos ao capitalismo de plataforma — a mais recente metamorfose de um sistema em constante reinvenção.
-
-O conceito marxista de mais-valia — o valor excedente extraído do trabalho e apropriado como lucro — nunca esteve tão presente, ainda que camuflado sob novas roupagens. A diferença é que agora os trabalhadores são chamados de "parceiros", "colaboradores" ou "empreendedores", enquanto as relações de exploração se intensificam sob a aparência de liberdade e flexibilidade.
-
-O que torna o capitalismo de plataforma particularmente eficaz é sua capacidade de obscurecer as relações de classe. Quando o trabalhador entrega comida através de um aplicativo, ele não vê um patrão, mas uma interface digital. A exploração é mediada por algoritmos que, apresentados como neutros e objetivos, são na verdade expressões codificadas de relações de poder.
-
-Analisemos o caso dos motoristas de aplicativo. Enquanto a narrativa dominante enfatiza a flexibilidade de horários e a "autonomia", a realidade econômica revela outra história: muitos precisam trabalhar jornadas exaustivas para garantir a sobrevivência, enquanto as empresas capturam uma parcela cada vez maior do valor gerado sem assumir responsabilidades trabalhistas.
-
-O mais fascinante é como as tecnologias digitais permitem formas de controle e supervisão que seriam inimagináveis nas fábricas do século XIX que Marx observou. Os trabalhadores são constantemente monitorados, avaliados por sistemas de reputação que funcionam como disciplinadores invisíveis, e submetidos a um gerenciamento algorítmico que intensifica o ritmo de trabalho através de incentivos gamificados.
-
-Historicamente, cada evolução do capitalismo foi acompanhada por narrativas que obscureciam sua natureza exploratória. No século XIX, era a ideia de que trabalhadores e industriais eram "parceiros" no progresso. Hoje, é o mito do empreendedorismo digital e da "economia compartilhada" — que de compartilhada tem muito pouco quando examinamos os fluxos de capital.
-
-Como historiador, o que me impressiona é a continuidade sob a aparência de ruptura. Os conflitos fundamentais entre capital e trabalho permanecem, ainda que transformados. E as ferramentas conceituais desenvolvidas por Marx — adaptadas ao contexto contemporâneo — continuam surpreendentemente úteis para desvelar essas relações.
-
-A questão que nos cabe é: que formas de organização e resistência são possíveis neste novo contexto? Como trabalhadores atomizados, sem um chão de fábrica comum, podem desenvolver consciência coletiva e poder de barganha? As respostas ainda estão sendo construídas, mas começam pela desmistificação das relações reais que se escondem sob o verniz tecnológico.`,
-    url: "/library/chronicle/3",
-    relatedTopics: ["alienacao-digital", "classes-digitais"]
+    id: 'hegemonia',
+    term: 'Hegemonia',
+    definition: 'Domínio ideológico e cultural exercido por grupos dominantes, não apenas através da coerção, mas principalmente pelo consentimento obtido pela disseminação de valores, crenças e práticas que normalizam a ordem social vigente.',
+    source: 'Gramsci, Cadernos do Cárcere',
+    relatedTerms: ['ideologia', 'consenso', 'sociedade civil']
+  },
+  {
+    id: 'mais-valia',
+    term: 'Mais-valia',
+    definition: 'Parte do valor produzido pelo trabalho que é apropriada pelo capitalista, representando a diferença entre o valor total criado pelo trabalhador e o valor pago como salário.',
+    source: 'Marx, O Capital',
+    relatedTerms: ['exploração', 'força de trabalho', 'lucro']
+  },
+  {
+    id: 'classes',
+    term: 'Classes Sociais',
+    definition: 'Grupos definidos pela sua relação com os meios de produção, criando interesses materiais fundamentalmente antagônicos que moldam a dinâmica da sociedade e da história.',
+    source: 'Marx & Engels, Manifesto Comunista',
+    relatedTerms: ['luta de classes', 'burguesia', 'proletariado']
   }
 ];
