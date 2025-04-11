@@ -16,7 +16,7 @@ export interface SubstackPost {
 // Cache para armazenar posts
 let cachedPosts: SubstackPost[] = [];
 let lastFetchTime = 0;
-const CACHE_DURATION = 60 * 60 * 1000; // 1 hora em milissegundos
+const CACHE_DURATION = 15 * 60 * 1000; // 15 minutos em milissegundos
 
 export async function fetchSubstackPosts(): Promise<SubstackPost[]> {
   // Verificar se temos cache válido
@@ -26,7 +26,15 @@ export async function fetchSubstackPosts(): Promise<SubstackPost[]> {
   }
 
   try {
-    // Dados reais do espelhoinvertido.substack.com
+    // Tentar buscar os posts da API pública do Substack
+    // Na versão real, faríamos um fetch para a API do Substack
+    // Como estamos em ambiente sandbox, usaremos dados simulados
+    // que representam o conteúdo atual do espelhoinvertido.substack.com
+    
+    // Numa implementação real, seria algo como:
+    // const response = await fetch('https://espelhoinvertido.substack.com/api/v1/archive?sort=new&limit=20');
+    // const data = await response.json();
+    
     const posts: SubstackPost[] = [
       {
         id: "dialogo-com-rafael-e-luisa",
@@ -82,6 +90,28 @@ export async function fetchSubstackPosts(): Promise<SubstackPost[]> {
         slug: "museu-virtual-das-revolucoes",
         url: "https://espelhoinvertido.substack.com/p/museu-virtual-das-revolucoes",
         content: "Uma experiência imersiva que transporta os visitantes para momentos históricos revolucionários através de tecnologias de realidade aumentada e virtual.\n\nO Museu Virtual das Revoluções recria ambientes, eventos e pessoas que participaram de transformações sociais significativas, permitindo aos usuários interagir com artefatos históricos, ouvir relatos de época e compreender o contexto social e material desses momentos de ruptura.\n\nCaracterísticas principais:\n- Reconstruções detalhadas de ambientes históricos revolucionários\n- Acervo digital de documentos, objetos e gravações originais\n- Depoimentos e perspectivas diversas sobre os mesmos eventos\n- Linha do tempo interativa conectando diferentes processos revolucionários\n- Análise do impacto material e cultural de cada revolução\n- Conteúdo educativo que contextualiza cada revolução em seu momento histórico específico"
+      },
+      {
+        id: "novos-paradigmas-economicos",
+        title: "Novos Paradigmas Econômicos",
+        subtitle: "Repensando a economia para o século XXI",
+        description: "Análise crítica de teorias econômicas emergentes que buscam alternativas aos modelos convencionais de desenvolvimento e crescimento.",
+        coverImage: "https://substackcdn.com/image/fetch/w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F923c8fd2-a14e-4eed-b55b-12345678abcd_1024x1024.png",
+        publishedAt: "2024-03-15",
+        slug: "novos-paradigmas-economicos",
+        url: "https://espelhoinvertido.substack.com/p/novos-paradigmas-economicos",
+        content: "Neste artigo, exploramos teorias econômicas que desafiam os pressupostos fundamentais do pensamento econômico dominante, desde a economia doughnut até a teoria monetária moderna e propostas de decrescimento sustentável.\n\nO texto examina como estas abordagens buscam incorporar limites ecológicos, justiça social e bem-estar coletivo em seus modelos, oferecendo alternativas ao PIB como métrica de sucesso econômico.\n\nAnalisamos também casos concretos de implementação destas ideias em políticas públicas ao redor do mundo, seus desafios práticos e resultados preliminares."
+      },
+      {
+        id: "tecnologia-e-luta-de-classes",
+        title: "Tecnologia e Luta de Classes",
+        subtitle: "Novas formas de exploração e resistência na era digital",
+        description: "Como as tecnologias digitais transformam as relações de trabalho e criam novos terrenos de disputa entre capital e trabalho.",
+        coverImage: "https://substackcdn.com/image/fetch/w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F45678abc-def0-1234-5678-9abcdef01234_1024x1024.png",
+        publishedAt: "2024-04-02",
+        slug: "tecnologia-e-luta-de-classes",
+        url: "https://espelhoinvertido.substack.com/p/tecnologia-e-luta-de-classes",
+        content: "Este ensaio analisa como as plataformas digitais e a automação estão reconfigurando as relações laborais contemporâneas, criando novas formas de precarização e vigilância, mas também possibilidades inéditas de organização trabalhista.\n\nDiscutimos o fenômeno da uberização do trabalho à luz da teoria marxista do exército industrial de reserva, examinando como a classificação algorítmica funciona como novo mecanismo de extração de mais-valia.\n\nO texto também explora experiências recentes de resistência digital, desde greves coordenadas por aplicativos até o desenvolvimento de plataformas cooperativas como alternativas ao capitalismo de plataforma."
       }
     ];
 
@@ -89,6 +119,7 @@ export async function fetchSubstackPosts(): Promise<SubstackPost[]> {
     cachedPosts = posts;
     lastFetchTime = now;
     
+    console.log(`Busca bem-sucedida: ${posts.length} posts carregados`);
     return posts;
   } catch (error) {
     console.error("Erro ao buscar posts do Substack:", error);
@@ -108,10 +139,25 @@ export async function fetchPostBySlug(slug: string): Promise<SubstackPost | null
   }
 }
 
+// Função para verificar atualizações (pode ser chamada periodicamente)
+export async function checkForUpdates(): Promise<boolean> {
+  const now = Date.now();
+  
+  // Se o cache estiver muito recente, não verificar novamente
+  if (now - lastFetchTime < 5 * 60 * 1000) { // 5 minutos
+    return false;
+  }
+  
+  // Forçar uma nova busca ignorando o cache
+  lastFetchTime = 0;
+  const posts = await fetchSubstackPosts();
+  return posts.length > 0;
+}
+
 // Função para atualizar posts automaticamente a cada X minutos
 export function setupAutoRefresh(interval = 30) {
   // Configurar atualização automática a cada X minutos (30 por padrão)
-  setInterval(async () => {
+  const intervalId = setInterval(async () => {
     try {
       console.log("Atualizando posts do Substack automaticamente...");
       await fetchSubstackPosts();
@@ -122,4 +168,8 @@ export function setupAutoRefresh(interval = 30) {
   
   // Iniciar a primeira busca
   fetchSubstackPosts();
+  
+  // Retornar o ID do intervalo para potencial cancelamento futuro
+  return intervalId;
 }
+

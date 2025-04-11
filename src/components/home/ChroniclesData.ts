@@ -1,17 +1,14 @@
 
 import { Chronicle } from '@/lib/debateData';
-import { fetchSubstackPosts, SubstackPost } from '@/services/substackService';
-
-// Cache temporário para as crônicas
-let cachedChronicles: Chronicle[] = [];
+import { SubstackPost } from '@/services/substackService';
 
 // Converter posts do Substack para o formato Chronicle
-const convertSubstackPostsToChronicles = (posts: SubstackPost[]): Chronicle[] => {
+export const convertSubstackPostsToChronicles = (posts: SubstackPost[]): Chronicle[] => {
   return posts.map(post => ({
     id: post.id,
     title: post.title,
     excerpt: post.subtitle || post.description.substring(0, 120) + '...',
-    content: post.description,
+    content: post.content || post.description,
     date: post.publishedAt,
     author: 'Espelho Invertido',
     tags: ['Substack'],
@@ -21,29 +18,11 @@ const convertSubstackPostsToChronicles = (posts: SubstackPost[]): Chronicle[] =>
   }));
 };
 
-// Função para obter todas as crônicas
-export const getChronicles = async (): Promise<Chronicle[]> => {
-  if (cachedChronicles.length > 0) {
-    return cachedChronicles;
-  }
-  
-  try {
-    const posts = await fetchSubstackPosts();
-    cachedChronicles = convertSubstackPostsToChronicles(posts);
-    return cachedChronicles;
-  } catch (error) {
-    console.error('Erro ao carregar crônicas:', error);
-    return [];
-  }
-};
-
 // Recomendações baseadas em categoria
-export const getRecommendations = async (category: string): Promise<Chronicle[]> => {
-  const chronicles = await getChronicles();
-  
+export const getRecommendations = (posts: Chronicle[], category: string): Chronicle[] => {
   // Filtrando por categoria, se houver
   if (category && category !== 'todas') {
-    const filtered = chronicles.filter(chronicle => 
+    const filtered = posts.filter(chronicle => 
       chronicle.title.toLowerCase().includes(category.toLowerCase()) ||
       chronicle.excerpt.toLowerCase().includes(category.toLowerCase())
     );
@@ -54,17 +33,15 @@ export const getRecommendations = async (category: string): Promise<Chronicle[]>
   }
   
   // Se não encontrar específicas ou não houver categoria, retorna os mais recentes
-  return chronicles.slice(0, 2);
+  return posts.slice(0, 2);
 };
 
-export const getFilteredChronicles = async (category: string): Promise<Chronicle[]> => {
-  const chronicles = await getChronicles();
-  
+export const getFilteredChronicles = (posts: Chronicle[], category: string): Chronicle[] => {
   if (category === 'todas') {
-    return chronicles;
+    return posts;
   }
   
-  return chronicles.filter(chronicle => 
+  return posts.filter(chronicle => 
     chronicle.title.toLowerCase().includes(category.toLowerCase()) ||
     chronicle.excerpt.toLowerCase().includes(category.toLowerCase()) ||
     chronicle.tags.some(tag => tag.toLowerCase().includes(category.toLowerCase()))

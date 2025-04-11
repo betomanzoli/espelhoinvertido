@@ -1,16 +1,18 @@
 
 import { useState } from 'react';
-import { useProjectInfo } from '@/hooks/useProjectInfo';
+import { useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useProjectInfo } from '@/hooks/useProjectInfo';
 import ProjectHeader from '@/components/project/ProjectHeader';
+import MuseuLoading from '@/components/museu/MuseuLoading';
 import MuseuOverview from '@/components/museu/MuseuOverview';
 import MuseuExhibits from '@/components/museu/MuseuExhibits';
 import MuseuExperience from '@/components/museu/MuseuExperience';
 import MuseuActions from '@/components/museu/MuseuActions';
-import MuseuLoading from '@/components/museu/MuseuLoading';
 
 const MuseuVirtual = () => {
   const { projectInfo, isLoading } = useProjectInfo('Museu Virtual das Revoluções');
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
 
   if (isLoading) {
@@ -43,16 +45,16 @@ const MuseuVirtual = () => {
                     <TabsTrigger value="experience">Experiência</TabsTrigger>
                   </TabsList>
                   
-                  <TabsContent value="overview" className="space-y-6">
+                  <TabsContent value="overview">
                     <MuseuOverview />
                   </TabsContent>
                   
-                  <TabsContent value="exhibits" className="space-y-8">
+                  <TabsContent value="exhibits">
                     <MuseuExhibits />
                   </TabsContent>
                   
-                  <TabsContent value="experience" className="space-y-6">
-                    <MuseuExperience educationalPerspectives={projectInfo?.tabs?.educational} />
+                  <TabsContent value="experience">
+                    <MuseuExperience />
                   </TabsContent>
                 </Tabs>
               </div>

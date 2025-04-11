@@ -1,60 +1,52 @@
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ChronicleCard from './ChronicleCard';
 import RecommendationsSection from './RecommendationsSection';
-import { getFilteredChronicles, getRecommendations } from './ChroniclesData';
+import { convertSubstackPostsToChronicles, getFilteredChronicles, getRecommendations } from './ChroniclesData';
 import { Chronicle } from '@/lib/debateData';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useSubstackData } from '@/hooks/useSubstackData';
+import { toast } from 'sonner';
 
 const ChroniclesSection = () => {
   const [activeTab, setActiveTab] = useState('todas');
   const [chronicles, setChronicles] = useState<Chronicle[]>([]);
   const [recommendations, setRecommendations] = useState<Record<string, Chronicle[]>>({});
-  const [loading, setLoading] = useState(true);
+  const { posts, loading, error, refreshData } = useSubstackData();
   
+  // Converter posts para crônicas quando os dados do Substack chegarem
   useEffect(() => {
-    const loadChronicles = async () => {
-      setLoading(true);
-      try {
-        const allChronicles = await getFilteredChronicles('todas');
-        setChronicles(allChronicles);
-        
-        // Carregar recomendações para cada categoria
-        const historiaRecs = await getRecommendations('História');
-        const economiaRecs = await getRecommendations('Economia');
-        const ideologiaRecs = await getRecommendations('Ideologia');
-        
-        setRecommendations({
-          'História': historiaRecs,
-          'Economia': economiaRecs,
-          'Ideologia': ideologiaRecs
-        });
-      } catch (error) {
-        console.error('Erro ao carregar crônicas:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    loadChronicles();
-  }, []);
-  
-  const handleTabChange = async (value: string) => {
-    setActiveTab(value);
-    setLoading(true);
-    
-    try {
-      const filtered = await getFilteredChronicles(value === 'todas' ? 'todas' : value);
-      setChronicles(filtered);
-    } catch (error) {
-      console.error('Erro ao filtrar crônicas:', error);
-    } finally {
-      setLoading(false);
+    if (posts.length > 0) {
+      const allChronicles = convertSubstackPostsToChronicles(posts);
+      setChronicles(allChronicles);
+      
+      // Carregar recomendações para cada categoria
+      setRecommendations({
+        'História': getRecommendations(allChronicles, 'História'),
+        'Economia': getRecommendations(allChronicles, 'Economia'),
+        'Ideologia': getRecommendations(allChronicles, 'Ideologia')
+      });
     }
+  }, [posts]);
+  
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    if (posts.length > 0) {
+      const allChronicles = convertSubstackPostsToChronicles(posts);
+      const filtered = getFilteredChronicles(allChronicles, value);
+      setChronicles(filtered);
+    }
+  };
+  
+  const handleRefresh = () => {
+    refreshData();
+    toast.info("Atualizando crônicas", {
+      description: "Buscando as publicações mais recentes..."
+    });
   };
   
   const renderSkeletons = () => {
@@ -74,10 +66,18 @@ const ChroniclesSection = () => {
   return (
     <section className="py-16 md:py-24">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl font-display font-bold text-center mb-4">
-          Crônicas Ideológicas
-        </h2>
-        <p className="text-center text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-3xl md:text-4xl font-display font-bold mb-0">
+            Crônicas Ideológicas
+          </h2>
+          
+          <Button variant="outline" size="sm" onClick={handleRefresh} className="gap-2">
+            <RefreshCw className="h-4 w-4" />
+            Atualizar
+          </Button>
+        </div>
+        
+        <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl">
           Explore diferentes perspectivas sobre temas contemporâneos através de nossas crônicas
         </p>
         
