@@ -35,9 +35,10 @@ const App = () => (
                 <Route path="/library/chronicle/:chronicleId" element={<ChronicleDetail />} />
                 <Route path="/resources" element={<Resources />} />
                 
-                {/* New project routes */}
+                {/* Project routes */}
                 <Route path="/mapa-conflitos" element={<ProjectComingSoon title="Mapa de Conflitos Ideológicos" />} />
                 <Route path="/simulador" element={<ProjectComingSoon title="Simulador de Revoluções" />} />
+                <Route path="/museu" element={<ProjectComingSoon title="Museu Virtual das Revoluções" />} />
                 <Route path="/cronicas" element={<ProjectComingSoon title="Escreva Sua Crônica" />} />
                 <Route path="/analise-discurso" element={<ProjectComingSoon title="Análise de Discurso" />} />
                 <Route path="/economia" element={<ProjectComingSoon title="Economia em Ação" />} />

@@ -1,8 +1,9 @@
 
 import { Link } from 'react-router-dom';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
+import AnimatedLogo from '@/components/AnimatedLogo';
 
 const phrases = [
   "Explore ideias que desafiam suas certezas.",
@@ -50,12 +51,9 @@ const HeroSection = () => {
       
       <div className="container mx-auto px-4 relative">
         <div className="max-w-3xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-6 text-white animate-slide-up">
-            Espelho Invertido
-            <span className="inline-block ml-3">
-              <Sparkles className="w-8 h-8 text-yellow-200 animate-pulse" />
-            </span>
-          </h1>
+          <div className="mb-6 text-white animate-slide-up">
+            <AnimatedLogo size="lg" showText={true} className="justify-center" />
+          </div>
           
           <div className="h-24 md:h-20">
             <p className="text-lg md:text-xl text-white mb-8 animate-slide-up min-h-[4rem]" style={{ animationDelay: '0.1s' }}>

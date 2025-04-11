@@ -3,6 +3,9 @@ import { ArrowLeft, ExternalLink } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useEffect, useState } from "react";
+import { fetchSubstackPosts, SubstackPost } from "@/services/substackService";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface ProjectComingSoonProps {
   title: string;
@@ -10,8 +13,233 @@ interface ProjectComingSoonProps {
 
 const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
   const navigate = useNavigate();
+  const [projectInfo, setProjectInfo] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
   
-  const getProjectDescription = () => {
+  useEffect(() => {
+    const fetchProjectInfo = async () => {
+      setIsLoading(true);
+      try {
+        // Buscar posts do Substack
+        const posts = await fetchSubstackPosts();
+        
+        // Encontrar o post correspondente ao projeto atual
+        const projectPost = posts.find(post => {
+          return post.title.toLowerCase().includes(title.toLowerCase()) ||
+                 title.toLowerCase().includes(post.title.toLowerCase());
+        });
+        
+        if (projectPost) {
+          // Converter o formato para o que o componente espera
+          setProjectInfo({
+            description: projectPost.description || projectPost.subtitle || "Detalhes deste projeto serão divulgados em breve.",
+            features: parseFeatures(projectPost.description || ""),
+            tabs: {
+              gameplay: generateGameplayFeatures(projectPost.title),
+              educational: generateEducationalFeatures(projectPost.title),
+              technical: generateTechnicalFeatures(projectPost.title)
+            },
+            icon: getProjectIcon(title),
+            substackUrl: projectPost.url,
+            coverImage: projectPost.coverImage
+          });
+        } else {
+          // Fallback para informações predefinidas
+          setProjectInfo(getDefaultProjectDescription(title));
+        }
+      } catch (error) {
+        console.error("Erro ao buscar informações do projeto:", error);
+        setProjectInfo(getDefaultProjectDescription(title));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchProjectInfo();
+  }, [title]);
+  
+  // Extrai características do texto de descrição
+  const parseFeatures = (description: string): string[] => {
+    // Dividir o texto em sentenças
+    const sentences = description.split(/[.!?]+/).filter(s => s.trim().length > 10);
+    
+    // Limitar a no máximo 5 características
+    return sentences.slice(0, Math.min(5, sentences.length));
+  };
+  
+  // Gera características específicas baseadas no título do projeto
+  const generateGameplayFeatures = (projectTitle: string): string[] => {
+    if (projectTitle.toLowerCase().includes('simulador')) {
+      return [
+        "Jogue como diferentes classes sociais com recursos e motivações únicas",
+        "Tome decisões que afetam a economia e sociedade",
+        "Construa alianças e gerencie conflitos sociais",
+        "Experimente cenários históricos recreados com precisão"
+      ];
+    } else if (projectTitle.toLowerCase().includes('mapa')) {
+      return [
+        "Explore diferentes camadas de interpretação para o mesmo evento histórico",
+        "Navegue por mapas de influência ideológica em diferentes épocas",
+        "Descubra como narrativas hegemônicas se desenvolveram ao longo do tempo",
+        "Compare fontes contraditórias sobre eventos históricos importantes"
+      ];
+    } else if (projectTitle.toLowerCase().includes('museu')) {
+      return [
+        "Explore ambientes 3D de eventos históricos importantes",
+        "Interaja com artefatos históricos digitalizados",
+        "Acesse depoimentos e perspectivas de diferentes atores históricos",
+        "Participe de visitas guiadas virtuais com especialistas"
+      ];
+    } else if (projectTitle.toLowerCase().includes('crônica')) {
+      return [
+        "Escreva narrativas de ficção que exploram contradições sociais",
+        "Desenvolva personagens baseados em arquétipos históricos",
+        "Participe de desafios narrativos com temas políticos e sociais",
+        "Receba e ofereça feedback dentro da comunidade literária"
+      ];
+    } else if (projectTitle.toLowerCase().includes('análise') || projectTitle.toLowerCase().includes('analise')) {
+      return [
+        "Analise textos políticos e identifique pressupostos ideológicos ocultos",
+        "Compare como diferentes fontes representam o mesmo evento",
+        "Rastreie a evolução histórica de conceitos políticos ao longo do tempo",
+        "Desafie-se com exercícios progressivos de análise de discurso"
+      ];
+    } else if (projectTitle.toLowerCase().includes('economia')) {
+      return [
+        "Implemente diferentes políticas econômicas e observe seus efeitos",
+        "Gerencie contradições entre classes sociais e interesses econômicos",
+        "Navegue por crises econômicas e sociais emergentes da simulação",
+        "Compare seus resultados com casos históricos reais"
+      ];
+    } else {
+      return [
+        "Explore diferentes perspectivas sobre questões contemporâneas",
+        "Interaja com conteúdos baseados em análises críticas",
+        "Participe de debates guiados sobre temas socioeconômicos",
+        "Descubra conexões entre teoria e práticas cotidianas"
+      ];
+    }
+  };
+  
+  const generateEducationalFeatures = (projectTitle: string): string[] => {
+    if (projectTitle.toLowerCase().includes('simulador')) {
+      return [
+        "Aprenda sobre modos de produção através de linha do tempo interativa",
+        "Analise contradições sociais em tempo real",
+        "Compare suas decisões com eventos históricos reais",
+        "Acesse material complementar sobre cada período histórico"
+      ];
+    } else if (projectTitle.toLowerCase().includes('mapa')) {
+      return [
+        "Aprenda como eventos são moldados por perspectivas ideológicas",
+        "Visualize a expansão global de correntes de pensamento político",
+        "Entenda como interesses econômicos influenciam narrativas históricas",
+        "Descontrua análises simplistas de eventos históricos complexos"
+      ];
+    } else if (projectTitle.toLowerCase().includes('museu')) {
+      return [
+        "Compare diferentes narrativas sobre o mesmo evento revolucionário",
+        "Descubra conexões entre revoluções separadas pelo tempo e espaço",
+        "Desenvolva compreensão contextual sobre transformações históricas",
+        "Investigue o legado material e imaterial de processos revolucionários"
+      ];
+    } else if (projectTitle.toLowerCase().includes('crônica')) {
+      return [
+        "Exercite sua capacidade de compreender perspectivas ideológicas diversas",
+        "Aprenda técnicas narrativas para representar contradições sociais",
+        "Explore como diferentes classes sociais percebem o mesmo evento",
+        "Desenvolva empatia através de exercícios de escrita dialética"
+      ];
+    } else if (projectTitle.toLowerCase().includes('análise') || projectTitle.toLowerCase().includes('analise')) {
+      return [
+        "Aprenda técnicas de análise crítica de discurso",
+        "Compreenda como a linguagem reflete e constrói relações de poder",
+        "Identifique como interesses de classe moldam narrativas midiáticas",
+        "Desenvolva imunidade cognitiva contra manipulação discursiva"
+      ];
+    } else if (projectTitle.toLowerCase().includes('economia')) {
+      return [
+        "Compreenda como diferentes teorias econômicas funcionam na prática",
+        "Visualize contradições internas de sistemas econômicos",
+        "Aprenda sobre ciclos econômicos, crises e suas consequências sociais",
+        "Explore a relação entre economia, política e lutas de classe"
+      ];
+    } else {
+      return [
+        "Desenvolva pensamento crítico sobre narrativas econômicas e políticas",
+        "Contextualize teorias com exemplos contemporâneos",
+        "Aprenda conceitos complexos através de diálogos acessíveis",
+        "Explore conexões entre ideias teóricas e experiências cotidianas"
+      ];
+    }
+  };
+  
+  const generateTechnicalFeatures = (projectTitle: string): string[] => {
+    if (projectTitle.toLowerCase().includes('simulador')) {
+      return [
+        "Jogo baseado em navegador com interface responsiva",
+        "Sistema econômico modelado com dados históricos",
+        "Suporte para múltiplos idiomas",
+        "Salvamento automático de progresso"
+      ];
+    } else if (projectTitle.toLowerCase().includes('mapa')) {
+      return [
+        "Mapas interativos com múltiplas camadas de informação",
+        "Linha do tempo sincronizada com visualizações geográficas",
+        "Integração com fontes históricas digitalizadas",
+        "Interface responsiva para desktop e dispositivos móveis"
+      ];
+    } else if (projectTitle.toLowerCase().includes('museu')) {
+      return [
+        "Tecnologia de visualização 3D baseada em navegador",
+        "Integração com acervos digitalizados de museus reais",
+        "Sistema de realidade aumentada para dispositivos móveis",
+        "Plataforma colaborativa para adição de conteúdo comunitário"
+      ];
+    } else if (projectTitle.toLowerCase().includes('crônica')) {
+      return [
+        "Editor colaborativo com suporte para múltiplas perspectivas",
+        "Sistema de comentários ancorados em trechos específicos do texto",
+        "Análise de consistência ideológica entre diferentes perspectivas",
+        "Ferramentas de publicação e compartilhamento social"
+      ];
+    } else if (projectTitle.toLowerCase().includes('análise') || projectTitle.toLowerCase().includes('analise')) {
+      return [
+        "Motor de análise baseado em processamento de linguagem natural",
+        "Banco de dados com histórico terminológico e conceitual",
+        "Ferramentas de comparação textual e visual de narrativas",
+        "APIs para integração com outras plataformas educacionais"
+      ];
+    } else if (projectTitle.toLowerCase().includes('economia')) {
+      return [
+        "Modelo econômico com equações derivadas de teorias marxistas e keynesianas",
+        "Visualização dinâmica de dados e tendências econômicas",
+        "Sistema de feedback que mostra consequências de curto e longo prazo",
+        "Interface intuitiva com controles de política econômica e social"
+      ];
+    } else {
+      return [
+        "Sistema de IA treinado com abordagens pedagógicas distintas",
+        "Banco de dados de referências históricas e contemporâneas",
+        "Interface conversacional intuitiva e responsiva",
+        "Integração com outras plataformas educacionais do projeto"
+      ];
+    }
+  };
+  
+  const getProjectIcon = (title: string): string => {
+    if (title.toLowerCase().includes('simulador')) return "⚔️";
+    if (title.toLowerCase().includes('mapa')) return "🗺️";
+    if (title.toLowerCase().includes('museu')) return "🏛️";
+    if (title.toLowerCase().includes('crônica')) return "✍️";
+    if (title.toLowerCase().includes('análise') || title.toLowerCase().includes('analise')) return "🔍";
+    if (title.toLowerCase().includes('economia')) return "📊";
+    if (title.toLowerCase().includes('diálogo') || title.toLowerCase().includes('chat')) return "💬";
+    return "🚀";
+  };
+  
+  // Fallback para descrições predefinidas
+  const getDefaultProjectDescription = (title: string) => {
     switch (title) {
       case "Simulador de Revoluções":
         return {
@@ -253,8 +481,49 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
         };
     }
   };
-  
-  const projectInfo = getProjectDescription();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen pt-16 pb-16 bg-light-gray dark:bg-gray-900">
+        <div className="container mx-auto px-4 py-8">
+          <Button 
+            variant="ghost" 
+            onClick={() => navigate(-1)} 
+            className="mb-8 flex items-center gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Voltar
+          </Button>
+          
+          <div className="max-w-4xl mx-auto">
+            <div className="glass-card p-8 md:p-12">
+              <div className="text-center mb-8">
+                <Skeleton className="h-24 w-24 rounded-full mx-auto mb-4" />
+                <Skeleton className="h-10 w-2/3 mx-auto mb-2" />
+                <Skeleton className="h-6 w-1/3 mx-auto" />
+              </div>
+              
+              <div className="space-y-4 mb-8">
+                <Skeleton className="h-6 w-full" />
+                <Skeleton className="h-6 w-full" />
+                <Skeleton className="h-6 w-3/4" />
+              </div>
+              
+              <div className="space-y-4">
+                <Skeleton className="h-10 w-full" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <Skeleton className="h-12 w-full" />
+                  <Skeleton className="h-12 w-full" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!projectInfo) return null;
 
   return (
     <div className="min-h-screen pt-16 pb-16 bg-light-gray dark:bg-gray-900">
@@ -269,73 +538,94 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
         </Button>
         
         <div className="max-w-4xl mx-auto">
-          <div className="glass-card p-8 md:p-12">
-            <div className="text-center mb-8">
-              <div className="text-6xl mb-4">{projectInfo.icon}</div>
-              <h1 className="text-3xl md:text-4xl font-display font-bold mb-4">{title}</h1>
-              
-              {projectInfo.substackUrl && (
-                <div className="inline-block text-sm bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-3 py-1 rounded-full">
-                  Artigo disponível no Substack
+          <div className="glass-card overflow-hidden">
+            {projectInfo.coverImage && (
+              <div className="w-full h-48 md:h-64 overflow-hidden relative">
+                <img 
+                  src={projectInfo.coverImage} 
+                  alt={title} 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                <div className="absolute bottom-0 left-0 w-full p-6">
+                  <div className="text-6xl mb-2">{projectInfo.icon}</div>
+                  <h1 className="text-3xl md:text-4xl font-display font-bold text-white mb-2">{title}</h1>
+                </div>
+              </div>
+            )}
+            
+            <div className="p-8 md:p-12">
+              {!projectInfo.coverImage && (
+                <div className="text-center mb-8">
+                  <div className="text-6xl mb-4">{projectInfo.icon}</div>
+                  <h1 className="text-3xl md:text-4xl font-display font-bold mb-4">{title}</h1>
+                  
+                  {projectInfo.substackUrl && (
+                    <div className="inline-block text-sm bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-3 py-1 rounded-full">
+                      Artigo disponível no Substack
+                    </div>
+                  )}
                 </div>
               )}
-            </div>
-            
-            <div className="mb-8">
-              <p className="text-gray-700 dark:text-gray-300 mb-8 text-lg">
-                {projectInfo.description}
-              </p>
               
-              <Tabs defaultValue="overview" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="overview">Visão Geral</TabsTrigger>
-                  <TabsTrigger value="features">Funcionalidades</TabsTrigger>
-                  <TabsTrigger value="technical">Tecnologia</TabsTrigger>
-                </TabsList>
+              <div className="mb-8">
+                <p className="text-gray-700 dark:text-gray-300 mb-8 text-lg">
+                  {projectInfo.description}
+                </p>
                 
-                <TabsContent value="overview" className="mt-6">
-                  <h3 className="text-lg font-semibold mb-3">Principais Características:</h3>
-                  <ul className="space-y-2 pl-6 list-disc text-gray-700 dark:text-gray-300">
-                    {projectInfo.features.map((feature, index) => (
-                      <li key={index}>{feature}</li>
-                    ))}
-                  </ul>
-                </TabsContent>
-                
-                <TabsContent value="features" className="mt-6">
-                  <h3 className="text-lg font-semibold mb-3">Funcionalidades Detalhadas:</h3>
-                  <ul className="space-y-2 pl-6 list-disc text-gray-700 dark:text-gray-300">
-                    {projectInfo.tabs.gameplay && projectInfo.tabs.gameplay.map((feature, index) => (
-                      <li key={index}>{feature}</li>
-                    ))}
-                  </ul>
-                </TabsContent>
-                
-                <TabsContent value="technical" className="mt-6">
-                  <h3 className="text-lg font-semibold mb-3">Aspectos Técnicos:</h3>
-                  <ul className="space-y-2 pl-6 list-disc text-gray-700 dark:text-gray-300">
-                    {projectInfo.tabs.technical && projectInfo.tabs.technical.map((feature, index) => (
-                      <li key={index}>{feature}</li>
-                    ))}
-                  </ul>
-                </TabsContent>
-              </Tabs>
-            </div>
-            
-            <div className="text-center">
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button asChild size="lg">
-                  <a href={projectInfo.substackUrl || "https://espelhoinvertido.substack.com/"} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                    Acompanhe no Substack
-                    <ExternalLink className="h-4 w-4" />
-                  </a>
-                </Button>
-                
-                <Button asChild variant="outline" size="lg">
-                  <a href="/resources" className="flex items-center gap-2">
-                    Explorar Recursos Relacionados
-                  </a>
-                </Button>
+                <Tabs defaultValue="overview" className="w-full">
+                  <TabsList className="grid w-full grid-cols-3">
+                    <TabsTrigger value="overview">Visão Geral</TabsTrigger>
+                    <TabsTrigger value="features">Funcionalidades</TabsTrigger>
+                    <TabsTrigger value="technical">Tecnologia</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="overview" className="mt-6">
+                    <h3 className="text-lg font-semibold mb-3">Principais Características:</h3>
+                    <ul className="space-y-2 pl-6 list-disc text-gray-700 dark:text-gray-300">
+                      {projectInfo.features.map((feature: string, index: number) => (
+                        <li key={index}>{feature}</li>
+                      ))}
+                    </ul>
+                  </TabsContent>
+                  
+                  <TabsContent value="features" className="mt-6">
+                    <h3 className="text-lg font-semibold mb-3">Funcionalidades Detalhadas:</h3>
+                    <ul className="space-y-2 pl-6 list-disc text-gray-700 dark:text-gray-300">
+                      {projectInfo.tabs.gameplay && projectInfo.tabs.gameplay.map((feature: string, index: number) => (
+                        <li key={index}>{feature}</li>
+                      ))}
+                    </ul>
+                  </TabsContent>
+                  
+                  <TabsContent value="technical" className="mt-6">
+                    <h3 className="text-lg font-semibold mb-3">Aspectos Técnicos:</h3>
+                    <ul className="space-y-2 pl-6 list-disc text-gray-700 dark:text-gray-300">
+                      {projectInfo.tabs.technical && projectInfo.tabs.technical.map((feature: string, index: number) => (
+                        <li key={index}>{feature}</li>
+                      ))}
+                    </ul>
+                  </TabsContent>
+                </Tabs>
+              </div>
+              
+              <div className="text-center">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  {projectInfo.substackUrl && (
+                    <Button asChild size="lg">
+                      <a href={projectInfo.substackUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                        Acompanhe no Substack
+                        <ExternalLink className="h-4 w-4" />
+                      </a>
+                    </Button>
+                  )}
+                  
+                  <Button asChild variant="outline" size="lg">
+                    <a href="/resources" className="flex items-center gap-2">
+                      Explorar Recursos Relacionados
+                    </a>
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

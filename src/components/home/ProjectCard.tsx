@@ -1,9 +1,10 @@
 
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ReactNode, useState } from 'react';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
+import { cn } from '@/lib/utils';
 
 interface ProjectCardProps {
   icon: ReactNode;
@@ -13,6 +14,9 @@ interface ProjectCardProps {
   delay: number;
   comingSoon?: boolean;
   imageUrl?: string;
+  substackUrl?: string;
+  iconBackground?: string;
+  iconTextColor?: string;
 }
 
 const ProjectCard = ({ 
@@ -22,7 +26,10 @@ const ProjectCard = ({
   link, 
   delay, 
   comingSoon = false,
-  imageUrl 
+  imageUrl,
+  substackUrl,
+  iconBackground = "bg-gradient-to-r from-blue-500 to-teal-400",
+  iconTextColor = "text-white"
 }: ProjectCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
   
@@ -53,7 +60,7 @@ const ProjectCard = ({
       <div className="p-6">
         <div className={`flex items-center justify-center w-16 h-16 mx-auto mb-4 text-3xl rounded-full ${
           isHovered 
-            ? 'bg-gradient-to-r from-blue-500 to-teal-400 text-white transform scale-110' 
+            ? iconBackground + ' ' + iconTextColor + ' transform scale-110' 
             : 'bg-blue-50 dark:bg-gray-700 text-blue-600 dark:text-teal-400'
           } transition-all duration-300`}>
           {icon}
@@ -79,20 +86,35 @@ const ProjectCard = ({
           {description}
         </p>
         
-        <Button 
-          asChild 
-          variant="default" 
-          className={`w-full justify-center gap-2 ${
-            isHovered 
-              ? 'bg-gradient-to-r from-blue-500 to-teal-400 hover:from-blue-600 hover:to-teal-500' 
-              : 'bg-teal-500 hover:bg-teal-600'
-            } transition-all duration-300`}
-        >
-          <Link to={link}>
-            {comingSoon ? 'Saiba mais' : 'Acessar'}
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </Button>
+        <div className="flex flex-col gap-2">
+          <Button 
+            asChild 
+            variant="default" 
+            className={`w-full justify-center gap-2 ${
+              isHovered 
+                ? 'bg-gradient-to-r from-blue-500 to-teal-400 hover:from-blue-600 hover:to-teal-500' 
+                : 'bg-teal-500 hover:bg-teal-600'
+              } transition-all duration-300`}
+          >
+            <Link to={link}>
+              {comingSoon ? 'Saiba mais' : 'Acessar'}
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </Button>
+
+          {substackUrl && (
+            <Button 
+              asChild 
+              variant="outline" 
+              className="w-full justify-center gap-2"
+            >
+              <a href={substackUrl} target="_blank" rel="noopener noreferrer">
+                Ver no Substack
+                <ExternalLink className="w-4 h-4" />
+              </a>
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );
