@@ -90,11 +90,51 @@ export default {
             backgroundPosition: '40rem 0',
           },
         },
+        'slide-up': {
+          '0%': {
+            transform: 'translateY(20px)',
+            opacity: '0',
+          },
+          '100%': {
+            transform: 'translateY(0)',
+            opacity: '1',
+          },
+        },
+        'float': {
+          '0%, 100%': {
+            transform: 'translateY(0)',
+          },
+          '50%': {
+            transform: 'translateY(-10px)',
+          },
+        },
+        'pulse-glow': {
+          '0%, 100%': {
+            opacity: '0.6',
+            transform: 'scale(1)',
+          },
+          '50%': {
+            opacity: '1',
+            transform: 'scale(1.05)',
+          },
+        },
+        'rotate-slow': {
+          '0%': {
+            transform: 'rotate(0deg)',
+          },
+          '100%': {
+            transform: 'rotate(360deg)',
+          },
+        },
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
         shimmer: 'shimmer 2s infinite linear',
+        'slide-up': 'slide-up 0.6s ease-out forwards',
+        'float': 'float 3s ease-in-out infinite',
+        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+        'rotate-slow': 'rotate-slow 10s linear infinite',
 			},
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -102,13 +142,14 @@ export default {
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'dot-pattern': 'radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 0)',
+        'dot-pattern': 'radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 0)',
       },
       boxShadow: {
         'soft': '0 2px 15px rgba(0, 0, 0, 0.05)',
         'medium': '0 4px 20px rgba(0, 0, 0, 0.08)',
         'strong': '0 8px 30px rgba(0, 0, 0, 0.12)',
         'inner-soft': 'inset 0 2px 4px rgba(0, 0, 0, 0.06)',
+        'glow': '0 0 15px rgba(56, 178, 172, 0.5)',
       },
 		}
 	},
