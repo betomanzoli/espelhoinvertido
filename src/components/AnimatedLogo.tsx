@@ -23,7 +23,36 @@ const AnimatedLogo = ({ size = 'md', showText = true, className }: AnimatedLogoP
       setTimeout(() => setIsAnimating(false), 2000);
     }, 10000);
     
-    return () => clearInterval(interval);
+    // Ativa a animação quando o mouse passa sobre o logo
+    const handleMouseEnter = () => setIsAnimating(true);
+    const handleMouseLeave = () => {
+      // Mantém a animação por um tempo após o mouse sair
+      setTimeout(() => {
+        if (!isHovering) setIsAnimating(false);
+      }, 1000);
+    };
+    
+    let isHovering = false;
+    const logoElement = document.querySelector('.animated-logo');
+    
+    if (logoElement) {
+      logoElement.addEventListener('mouseenter', () => {
+        isHovering = true;
+        handleMouseEnter();
+      });
+      logoElement.addEventListener('mouseleave', () => {
+        isHovering = false;
+        handleMouseLeave();
+      });
+    }
+    
+    return () => {
+      clearInterval(interval);
+      if (logoElement) {
+        logoElement.removeEventListener('mouseenter', handleMouseEnter);
+        logoElement.removeEventListener('mouseleave', handleMouseLeave);
+      }
+    };
   }, []);
 
   const sizeClasses = {
@@ -33,7 +62,7 @@ const AnimatedLogo = ({ size = 'md', showText = true, className }: AnimatedLogoP
   };
 
   return (
-    <Link to="/" className={cn("flex items-center group", className)}>
+    <Link to="/" className={cn("flex items-center group animated-logo", className)}>
       <div className="relative">
         <div className={cn(
           "transition-all duration-700",
@@ -41,7 +70,8 @@ const AnimatedLogo = ({ size = 'md', showText = true, className }: AnimatedLogoP
         )}>
           <div className={cn(
             sizeClasses[size],
-            "font-display font-bold gradient-text"
+            "font-display font-bold gradient-text",
+            isAnimating ? "animate-pulse" : ""
           )}>
             EI
           </div>
@@ -62,7 +92,9 @@ const AnimatedLogo = ({ size = 'md', showText = true, className }: AnimatedLogoP
       {showText && (
         <span className={cn(
           sizeClasses[size],
-          "ml-2 font-display font-bold group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-teal-400 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-500"
+          "ml-2 font-display font-bold transition-all duration-500",
+          isAnimating ? "bg-gradient-to-r from-blue-500 to-teal-400 bg-clip-text text-transparent" : "",
+          "group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-teal-400 group-hover:bg-clip-text group-hover:text-transparent"
         )}>
           Espelho Invertido
         </span>

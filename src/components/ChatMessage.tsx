@@ -52,7 +52,7 @@ const ChatMessage = ({
 
   // Process content to highlight terms
   const processContent = () => {
-    if (highlightTerms.length === 0 || isTyping) {
+    if (highlightTerms?.length === 0 || isTyping) {
       return <p>{content}</p>;
     }
 
@@ -62,7 +62,7 @@ const ChatMessage = ({
     const contentLower = content.toLowerCase();
     
     // Process each term to highlight
-    highlightTerms.forEach(term => {
+    highlightTerms?.forEach(term => {
       const termLower = term.toLowerCase();
       let startPos = 0;
       

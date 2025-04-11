@@ -1,7 +1,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { DebateTopic, sampleMessages, characters } from '@/lib/debateData';
+import { DebateTopic, sampleMessages, characters, MessageType } from '@/lib/debateData';
 import { ArrowLeft, InfoIcon, SendIcon, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -12,13 +12,14 @@ import { fetchSubstackPosts, SubstackPost } from '@/services/substackService';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { toast } from 'sonner';
 
 interface ChatInterfaceProps {
   topic: DebateTopic;
 }
 
 const ChatInterface = ({ topic }: ChatInterfaceProps) => {
-  const [messages, setMessages] = useState([...sampleMessages]);
+  const [messages, setMessages] = useState<MessageType[]>([...sampleMessages]);
   const [newMessage, setNewMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
@@ -35,6 +36,7 @@ const ChatInterface = ({ topic }: ChatInterfaceProps) => {
         setSubstackPosts(posts);
       } catch (error) {
         console.error("Erro ao carregar posts:", error);
+        toast.error("Não foi possível carregar as crônicas do Substack");
       }
     };
     
@@ -53,7 +55,7 @@ const ChatInterface = ({ topic }: ChatInterfaceProps) => {
     if (!newMessage.trim()) return;
     
     // Add user message
-    const userMessage = {
+    const userMessage: MessageType = {
       id: `user-${Date.now()}`,
       character: 'user',
       content: newMessage,
@@ -82,9 +84,12 @@ const ChatInterface = ({ topic }: ChatInterfaceProps) => {
       
       let responseContent = '';
       let highlightTerms: string[] = [];
+      let mentionedPostId: string | undefined = undefined;
       
       // If the message mentions a post, generate a response related to it
       if (mentionedPost) {
+        mentionedPostId = mentionedPost.id;
+        
         if (respondingCharacter === 'rafael') {
           responseContent = `Interessante você mencionar "${mentionedPost.title}". Essa crônica traz elementos históricos importantes que podemos analisar sob a perspectiva do materialismo dialético. O conflito entre forças produtivas e relações de produção fica evidente quando examinamos este tema em seu contexto histórico mais amplo.`;
           highlightTerms = ['materialismo dialético', 'forças produtivas', 'relações de produção'];
@@ -118,13 +123,13 @@ const ChatInterface = ({ topic }: ChatInterfaceProps) => {
         }
       }
       
-      const aiMessage = {
+      const aiMessage: MessageType = {
         id: `${respondingCharacter}-${Date.now()}`,
         character: respondingCharacter,
         content: responseContent,
         timestamp: new Date(),
         highlightTerms,
-        mentionedPost: mentionedPost ? mentionedPost.id : undefined
+        mentionedPost: mentionedPostId
       };
       
       setMessages(prev => [...prev, aiMessage]);
@@ -135,7 +140,7 @@ const ChatInterface = ({ topic }: ChatInterfaceProps) => {
     setSearchOpen(false);
     
     // Adicionar mensagem do usuário sobre a crônica
-    const userMessage = {
+    const userMessage: MessageType = {
       id: `user-${Date.now()}`,
       character: 'user',
       content: `Quero saber mais sobre a crônica "${post.title}".`,
@@ -152,7 +157,7 @@ const ChatInterface = ({ topic }: ChatInterfaceProps) => {
     const secondRespondingCharacter = 'luisa';
     
     setTimeout(() => {
-      const firstResponse = {
+      const firstResponse: MessageType = {
         id: `${respondingCharacter}-${Date.now()}`,
         character: respondingCharacter,
         content: `Sobre "${post.title}", essa crônica aborda questões fundamentais do pensamento crítico. Na perspectiva histórica, podemos ver como os conceitos do Manifesto Comunista ainda se aplicam às contradições contemporâneas discutidas no texto.`,
@@ -169,7 +174,7 @@ const ChatInterface = ({ topic }: ChatInterfaceProps) => {
         
         setTimeout(() => {
           setIsTyping(false);
-          const secondResponse = {
+          const secondResponse: MessageType = {
             id: `${secondRespondingCharacter}-${Date.now()}`,
             character: secondRespondingCharacter,
             content: `Complementando o que Rafael disse, essa crônica é especialmente relevante quando observamos exemplos concretos em nosso cotidiano. A questão da ${Math.random() > 0.5 ? 'alienação' : 'mercantilização'} discutida no texto se manifesta claramente nas relações de trabalho digitais atuais.`,

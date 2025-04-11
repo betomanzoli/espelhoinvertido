@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import ProjectCard from './ProjectCard';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { MessageSquare, Swords, Globe, Building, PenTool, BarChart3, Search } from 'lucide-react';
-import { fetchSubstackPosts, SubstackPost } from '@/services/substackService';
+import { fetchSubstackPosts, SubstackPost, setupAutoRefresh } from '@/services/substackService';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const ProjectsSection = () => {
@@ -17,6 +17,9 @@ const ProjectsSection = () => {
       try {
         const posts = await fetchSubstackPosts();
         setSubstackPosts(posts);
+        
+        // Configurar atualização automática a cada 30 minutos
+        setupAutoRefresh(30);
       } catch (error) {
         console.error("Erro ao carregar posts:", error);
       } finally {
@@ -28,12 +31,20 @@ const ProjectsSection = () => {
   }, []);
 
   // Função para encontrar a URL do Substack para um projeto específico
-  const findSubstackUrl = (projectTitle: string) => {
+  const findSubstackInfo = (projectTitle: string): {url?: string, image?: string} => {
     const post = substackPosts.find(post => 
       post.title.toLowerCase().includes(projectTitle.toLowerCase()) ||
       projectTitle.toLowerCase().includes(post.title.toLowerCase())
     );
-    return post?.url;
+    
+    if (post) {
+      return {
+        url: post.url,
+        image: post.coverImage
+      };
+    }
+    
+    return {};
   };
   
   const projects = [
@@ -45,7 +56,6 @@ const ProjectsSection = () => {
       delay: 0,
       category: "discussion",
       available: true,
-      imageUrl: "https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=800&auto=format&fit=crop&q=80",
       iconBackground: "bg-gradient-to-r from-indigo-500 to-purple-500"
     },
     {
@@ -56,7 +66,6 @@ const ProjectsSection = () => {
       delay: 0.1,
       category: "simulation",
       available: false,
-      imageUrl: "https://images.unsplash.com/photo-1569335529517-d3c129a088a2?w=800&auto=format&fit=crop&q=80",
       iconBackground: "bg-gradient-to-r from-red-500 to-orange-500"
     },
     {
@@ -67,7 +76,6 @@ const ProjectsSection = () => {
       delay: 0.2,
       category: "exploration",
       available: false,
-      imageUrl: "https://images.unsplash.com/photo-1589519160732-57fc498494f8?w=800&auto=format&fit=crop&q=80",
       iconBackground: "bg-gradient-to-r from-blue-500 to-cyan-400"
     },
     {
@@ -78,7 +86,6 @@ const ProjectsSection = () => {
       delay: 0.3,
       category: "exploration",
       available: false,
-      imageUrl: "https://images.unsplash.com/photo-1626131760295-c9d242438edb?w=800&auto=format&fit=crop&q=80",
       iconBackground: "bg-gradient-to-r from-yellow-500 to-amber-500"
     },
     {
@@ -89,7 +96,6 @@ const ProjectsSection = () => {
       delay: 0.4,
       category: "creation",
       available: false,
-      imageUrl: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&auto=format&fit=crop&q=80",
       iconBackground: "bg-gradient-to-r from-green-500 to-emerald-500"
     },
     {
@@ -100,7 +106,6 @@ const ProjectsSection = () => {
       delay: 0.5,
       category: "analysis",
       available: false,
-      imageUrl: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?w=800&auto=format&fit=crop&q=80",
       iconBackground: "bg-gradient-to-r from-purple-500 to-pink-500"
     },
     {
@@ -111,7 +116,6 @@ const ProjectsSection = () => {
       delay: 0.6,
       category: "simulation",
       available: false,
-      imageUrl: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&auto=format&fit=crop&q=80",
       iconBackground: "bg-gradient-to-r from-blue-600 to-green-500"
     },
   ];
@@ -156,20 +160,23 @@ const ProjectsSection = () => {
               </div>
             ))
           ) : (
-            filteredProjects.map((project) => (
-              <ProjectCard 
-                key={project.title}
-                icon={project.icon}
-                title={project.title}
-                description={project.description}
-                link={project.link}
-                delay={project.delay}
-                comingSoon={!project.available}
-                imageUrl={project.imageUrl}
-                substackUrl={findSubstackUrl(project.title)}
-                iconBackground={project.iconBackground}
-              />
-            ))
+            filteredProjects.map((project) => {
+              const substackInfo = findSubstackInfo(project.title);
+              return (
+                <ProjectCard 
+                  key={project.title}
+                  icon={project.icon}
+                  title={project.title}
+                  description={project.description}
+                  link={project.link}
+                  delay={project.delay}
+                  comingSoon={!project.available}
+                  imageUrl={substackInfo.image}
+                  substackUrl={substackInfo.url}
+                  iconBackground={project.iconBackground}
+                />
+              );
+            })
           )}
         </div>
       </div>

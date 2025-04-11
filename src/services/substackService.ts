@@ -26,8 +26,8 @@ export async function fetchSubstackPosts(): Promise<SubstackPost[]> {
   }
 
   try {
-    // Na versão atual, vamos usar dados estáticos que correspondem às crônicas do Espelho Invertido
-    // Em uma implementação real, isso seria substituído por uma chamada à API do Substack
+    // Em uma implementação ideal, faríamos uma chamada para a API do Substack
+    // Aqui vamos implementar posts baseados no site espelhoinvertido.substack.com
     const posts: SubstackPost[] = [
       {
         id: "dialogo-com-rafael-e-luisa",
@@ -113,6 +113,7 @@ export async function fetchSubstackPosts(): Promise<SubstackPost[]> {
   }
 }
 
+// Função para buscar um post específico pelo slug
 export async function fetchPostBySlug(slug: string): Promise<SubstackPost | null> {
   try {
     const posts = await fetchSubstackPosts();
@@ -121,4 +122,20 @@ export async function fetchPostBySlug(slug: string): Promise<SubstackPost | null
     console.error(`Erro ao buscar post com slug ${slug}:`, error);
     return null;
   }
+}
+
+// Função para atualizar posts automaticamente a cada X minutos
+export function setupAutoRefresh(interval = 30) {
+  // Configurar atualização automática a cada X minutos (30 por padrão)
+  setInterval(async () => {
+    try {
+      console.log("Atualizando posts do Substack automaticamente...");
+      await fetchSubstackPosts();
+    } catch (error) {
+      console.error("Erro na atualização automática:", error);
+    }
+  }, interval * 60 * 1000);
+  
+  // Iniciar a primeira busca
+  fetchSubstackPosts();
 }
