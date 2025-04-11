@@ -81,12 +81,6 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-      
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-white animate-bounce">
-        <span className="text-sm mb-2">Rolar para baixo</span>
-        <ArrowRight className="w-5 h-5 transform rotate-90" />
-      </div>
     </section>
   );
 };

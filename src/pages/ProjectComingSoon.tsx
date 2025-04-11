@@ -43,7 +43,8 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
               "Salvamento automático de progresso"
             ]
           },
-          icon: "⚔️"
+          icon: "⚔️",
+          substackUrl: "https://espelhoinvertido.substack.com/p/simulador-de-revolucoes"
         };
       case "Mapa de Conflitos Ideológicos":
         return {
@@ -74,7 +75,8 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
               "Interface responsiva para desktop e dispositivos móveis"
             ]
           },
-          icon: "🗺️"
+          icon: "🗺️",
+          substackUrl: "https://espelhoinvertido.substack.com/p/mapa-de-conflitos-ideologicos"
         };
       case "Escreva Sua Crônica":
         return {
@@ -105,7 +107,8 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
               "Ferramentas de publicação e compartilhamento social"
             ]
           },
-          icon: "✍️"
+          icon: "✍️",
+          substackUrl: "https://espelhoinvertido.substack.com/p/escreva-sua-cronica"
         };
       case "Análise de Discurso":
         return {
@@ -136,7 +139,8 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
               "APIs para integração com outras plataformas educacionais"
             ]
           },
-          icon: "🔍"
+          icon: "🔍",
+          substackUrl: "https://espelhoinvertido.substack.com/p/analise-de-discurso"
         };
       case "Economia em Ação":
         return {
@@ -167,9 +171,43 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
               "Interface intuitiva com controles de política econômica e social"
             ]
           },
-          icon: "📊"
+          icon: "📊",
+          substackUrl: "https://espelhoinvertido.substack.com/p/economia-em-acao"
+        };
+      case "Museu Virtual das Revoluções":
+        return {
+          description: "Um museu virtual em formato de realidade aumentada que permite aos visitantes explorar momentos-chave de transformações revolucionárias históricas.",
+          features: [
+            "Reconstruções 3D de locais históricos revolucionários",
+            "Acervo de documentos primários digitalizados em alta resolução",
+            "Narrativas multilaterais de cada evento histórico",
+            "Integração com atividades educacionais e discussões guiadas"
+          ],
+          tabs: {
+            gameplay: [
+              "Explore ambientes 3D de eventos históricos importantes",
+              "Interaja com artefatos históricos digitalizados",
+              "Acesse depoimentos e perspectivas de diferentes atores históricos",
+              "Participe de visitas guiadas virtuais com especialistas"
+            ],
+            educational: [
+              "Compare diferentes narrativas sobre o mesmo evento revolucionário",
+              "Descubra conexões entre revoluções separadas pelo tempo e espaço",
+              "Desenvolva compreensão contextual sobre transformações históricas",
+              "Investigue o legado material e imaterial de processos revolucionários"
+            ],
+            technical: [
+              "Tecnologia de visualização 3D baseada em navegador",
+              "Integração com acervos digitalizados de museus reais",
+              "Sistema de realidade aumentada para dispositivos móveis",
+              "Plataforma colaborativa para adição de conteúdo comunitário"
+            ]
+          },
+          icon: "🏛️",
+          substackUrl: "https://espelhoinvertido.substack.com/p/museu-virtual-das-revolucoes"
         };
       case "Diálogo com Rafael e Luísa":
+      case "Chat Rafael e Luísa":
         return {
           description: "Um chat interativo que simula conversas com dois personagens fictícios que discutem perspectivas ideológicas diversas, com foco especial no Manifesto Comunista e sua aplicação contemporânea.",
           features: [
@@ -198,7 +236,8 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
               "Integração com outras plataformas educacionais do projeto"
             ]
           },
-          icon: "💬"
+          icon: "💬",
+          substackUrl: "https://espelhoinvertido.substack.com/p/dialogo-com-rafael-e-luisa"
         };
       default:
         return {
@@ -209,7 +248,8 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
             educational: [],
             technical: []
           },
-          icon: "🚀"
+          icon: "🚀",
+          substackUrl: "https://espelhoinvertido.substack.com/"
         };
     }
   };
@@ -233,6 +273,12 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
             <div className="text-center mb-8">
               <div className="text-6xl mb-4">{projectInfo.icon}</div>
               <h1 className="text-3xl md:text-4xl font-display font-bold mb-4">{title}</h1>
+              
+              {projectInfo.substackUrl && (
+                <div className="inline-block text-sm bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200 px-3 py-1 rounded-full">
+                  Artigo disponível no Substack
+                </div>
+              )}
             </div>
             
             <div className="mb-8">
@@ -259,7 +305,7 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
                 <TabsContent value="features" className="mt-6">
                   <h3 className="text-lg font-semibold mb-3">Funcionalidades Detalhadas:</h3>
                   <ul className="space-y-2 pl-6 list-disc text-gray-700 dark:text-gray-300">
-                    {projectInfo.tabs.gameplay?.map((feature, index) => (
+                    {projectInfo.tabs.gameplay && projectInfo.tabs.gameplay.map((feature, index) => (
                       <li key={index}>{feature}</li>
                     ))}
                   </ul>
@@ -268,7 +314,7 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
                 <TabsContent value="technical" className="mt-6">
                   <h3 className="text-lg font-semibold mb-3">Aspectos Técnicos:</h3>
                   <ul className="space-y-2 pl-6 list-disc text-gray-700 dark:text-gray-300">
-                    {projectInfo.tabs.technical?.map((feature, index) => (
+                    {projectInfo.tabs.technical && projectInfo.tabs.technical.map((feature, index) => (
                       <li key={index}>{feature}</li>
                     ))}
                   </ul>
@@ -279,7 +325,7 @@ const ProjectComingSoon = ({ title }: ProjectComingSoonProps) => {
             <div className="text-center">
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg">
-                  <a href="https://espelhoinvertido.substack.com/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                  <a href={projectInfo.substackUrl || "https://espelhoinvertido.substack.com/"} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                     Acompanhe no Substack
                     <ExternalLink className="h-4 w-4" />
                   </a>
