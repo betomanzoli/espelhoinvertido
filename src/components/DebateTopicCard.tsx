@@ -40,6 +40,9 @@ const DebateTopicCard = ({ topic, className }: DebateTopicCardProps) => {
     }
   };
 
+  // Create Icon component dynamically
+  const Icon = topic.icon;
+
   return (
     <div className={cn(
       'glass-card overflow-hidden transition-all duration-300 hover:shadow-medium group',

@@ -26,7 +26,7 @@ export interface DebateTopic {
   category: string;
   difficulty: 'basic' | 'intermediate' | 'advanced';
   tags: string[];
-  icon: React.ReactNode;
+  icon: React.ComponentType;
   coverImage?: string;
 }
 
@@ -67,7 +67,7 @@ export const debateTopics: DebateTopic[] = [
     category: 'Trabalho Digital',
     difficulty: 'intermediate',
     tags: ['Alienação', 'Plataformas', 'Gig Economy', 'Trabalho Digital'],
-    icon: <Briefcase />,
+    icon: Briefcase,
     coverImage: 'https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=800&auto=format&fit=crop&q=60'
   },
   {
@@ -77,7 +77,7 @@ export const debateTopics: DebateTopic[] = [
     category: 'Consumo',
     difficulty: 'advanced',
     tags: ['Fetichismo', 'Mercadoria', 'Redes Sociais', 'Consumo Digital'],
-    icon: <Scale />,
+    icon: Scale,
     coverImage: 'https://images.unsplash.com/photo-1614036634955-ae5e90f9b9eb?w=800&auto=format&fit=crop&q=60'
   },
   {
@@ -87,7 +87,7 @@ export const debateTopics: DebateTopic[] = [
     category: 'Mídia',
     difficulty: 'intermediate',
     tags: ['Contranarrativa', 'Hegemonia', 'Mídia Alternativa', 'Comunicação'],
-    icon: <MessageCircle />,
+    icon: MessageCircle,
     coverImage: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&auto=format&fit=crop&q=60'
   },
   {
@@ -97,7 +97,7 @@ export const debateTopics: DebateTopic[] = [
     category: 'Estrutura Social',
     difficulty: 'advanced',
     tags: ['Classes', 'Digital', 'Desigualdade', 'Estrutura Social'],
-    icon: <Users />,
+    icon: Users,
     coverImage: 'https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=800&auto=format&fit=crop&q=60'
   },
   {
@@ -107,7 +107,7 @@ export const debateTopics: DebateTopic[] = [
     category: 'Teoria',
     difficulty: 'basic',
     tags: ['Manifesto', 'Introdução', 'História', 'Marxismo'],
-    icon: <History />,
+    icon: History,
     coverImage: 'https://images.unsplash.com/photo-1600132806370-bf17e65e942f?w=800&auto=format&fit=crop&q=60'
   },
   {
@@ -117,7 +117,7 @@ export const debateTopics: DebateTopic[] = [
     category: 'Economia',
     difficulty: 'intermediate',
     tags: ['Contradições', 'Crises', 'Capitalismo', 'Economia'],
-    icon: <Puzzle />,
+    icon: Puzzle,
     coverImage: 'https://images.unsplash.com/photo-1579532536935-619928decd08?w=800&auto=format&fit=crop&q=60'
   },
   {
@@ -127,7 +127,7 @@ export const debateTopics: DebateTopic[] = [
     category: 'Digital',
     difficulty: 'intermediate',
     tags: ['Propriedade Intelectual', 'Bens Comuns', 'Copyright', 'Compartilhamento'],
-    icon: <ExternalLink />,
+    icon: ExternalLink,
     coverImage: 'https://images.unsplash.com/photo-1605455587175-1d4b807a69b8?w=800&auto=format&fit=crop&q=60'
   }
 ];
