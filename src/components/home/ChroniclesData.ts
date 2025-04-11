@@ -11,6 +11,9 @@ export const getRecommendations = (category: string): Chronicle[] => {
     "História": ["1", "3"],
     "Economia": ["2", "3"],
     "Ideologia": ["1", "2"],
+    "Trabalho": ["1"],
+    "Digital": ["3"],
+    "Mídia": ["2"]
   };
   
   return chronicles.filter(chronicle => 

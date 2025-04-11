@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Chronicle } from './ChronicleCard';
+import { Chronicle } from '@/lib/debateData';
 
 interface RecommendationCardProps {
   chronicle: Chronicle;
@@ -23,7 +23,7 @@ const RecommendationCard = ({ chronicle }: RecommendationCardProps) => {
         </CardHeader>
         <CardFooter className="p-3 pt-0">
           <Button asChild variant="ghost" size="sm" className="h-7 px-2">
-            <Link to={chronicle.link}>
+            <Link to={chronicle.link || `/library/chronicle/${chronicle.id}`}>
               Ler <ArrowRight className="h-3 w-3 ml-1" />
             </Link>
           </Button>
