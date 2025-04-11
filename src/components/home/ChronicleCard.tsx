@@ -24,7 +24,8 @@ const ChronicleCard = ({ chronicle }: ChronicleCardProps) => {
           alt={chronicle.title}
           className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
           onError={(e) => {
-            e.currentTarget.src = 'https://via.placeholder.com/300x180?text=Espelho+Invertido';
+            const target = e.target as HTMLImageElement;
+            target.src = 'https://via.placeholder.com/300x180?text=Espelho+Invertido';
           }}
         />
         <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent h-24 pointer-events-none" />

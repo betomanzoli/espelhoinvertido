@@ -10,13 +10,21 @@ interface RecommendationCardProps {
 }
 
 const RecommendationCard = ({ chronicle }: RecommendationCardProps) => {
+  const imageUrl = chronicle.image || `https://via.placeholder.com/100x100?text=${chronicle.title}`;
+  
   return (
     <Card className="flex overflow-hidden hover:shadow-lg transition-shadow">
-      <img 
-        src={chronicle.image} 
-        alt={chronicle.title}
-        className="w-24 h-full object-cover"
-      />
+      <div className="w-24 h-full overflow-hidden">
+        <img 
+          src={imageUrl} 
+          alt={chronicle.title}
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = 'https://via.placeholder.com/100x100?text=EI';
+          }}
+        />
+      </div>
       <div className="flex-1">
         <CardHeader className="p-3">
           <CardTitle className="text-sm">{chronicle.title}</CardTitle>

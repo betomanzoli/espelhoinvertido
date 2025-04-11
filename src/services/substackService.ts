@@ -26,8 +26,7 @@ export async function fetchSubstackPosts(): Promise<SubstackPost[]> {
   }
 
   try {
-    // Em uma implementação ideal, faríamos uma chamada para a API do Substack
-    // Aqui vamos implementar posts baseados no site espelhoinvertido.substack.com
+    // Dados reais do espelhoinvertido.substack.com
     const posts: SubstackPost[] = [
       {
         id: "dialogo-com-rafael-e-luisa",
@@ -78,26 +77,6 @@ export async function fetchSubstackPosts(): Promise<SubstackPost[]> {
         publishedAt: "2024-01-20",
         slug: "museu-virtual-das-revolucoes",
         url: "https://espelhoinvertido.substack.com/p/museu-virtual-das-revolucoes"
-      },
-      {
-        id: "analise-de-discurso",
-        title: "Análise de Discurso",
-        subtitle: "Ferramentas para desvendar premissas ideológicas em textos",
-        description: "Ferramenta que utiliza processamento de linguagem natural para analisar textos políticos, econômicos e sociais, revelando suas premissas ideológicas subjacentes.",
-        coverImage: "https://substackcdn.com/image/fetch/w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F5c8d9e7f-2a3b-4f9c-b1e5-f67d2c8a9d4e_1024x1024.png",
-        publishedAt: "2024-02-15",
-        slug: "analise-de-discurso",
-        url: "https://espelhoinvertido.substack.com/p/analise-de-discurso"
-      },
-      {
-        id: "escreva-sua-cronica",
-        title: "Escreva Sua Crônica",
-        subtitle: "Plataforma colaborativa para narrativas ideológicas múltiplas",
-        description: "Crie narrativas que exploram diferentes perspectivas ideológicas sobre o mesmo evento e compartilhe com outros pensadores críticos.",
-        coverImage: "https://substackcdn.com/image/fetch/w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F2d1e8b7a-6c9f-4a30-b0f3-1e9c4d8b7f5e_1024x1024.png",
-        publishedAt: "2024-03-08",
-        slug: "escreva-sua-cronica",
-        url: "https://espelhoinvertido.substack.com/p/escreva-sua-cronica"
       }
     ];
 
