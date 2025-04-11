@@ -23,7 +23,7 @@ const RecommendationCard = ({ chronicle }: RecommendationCardProps) => {
         </CardHeader>
         <CardFooter className="p-3 pt-0">
           <Button asChild variant="ghost" size="sm" className="h-7 px-2">
-            <Link to={chronicle.link || `/library/chronicle/${chronicle.id}`}>
+            <Link to={`/library/chronicle/${chronicle.id}`}>
               Ler <ArrowRight className="h-3 w-3 ml-1" />
             </Link>
           </Button>
