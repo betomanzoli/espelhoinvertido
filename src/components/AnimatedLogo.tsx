@@ -10,9 +10,9 @@ interface AnimatedLogoProps {
 
 const AnimatedLogo = ({ size = 'md', showText = true, className }: AnimatedLogoProps) => {
   const sizeClasses = {
-    sm: 'h-8',
-    md: 'h-12',
-    lg: 'h-20'
+    sm: 'w-8',
+    md: 'w-12',
+    lg: 'w-20'
   };
   
   const textSizeClasses = {
@@ -24,15 +24,11 @@ const AnimatedLogo = ({ size = 'md', showText = true, className }: AnimatedLogoP
   return (
     <Link to="/" className={cn("flex items-center gap-2", className)}>
       <div className={cn("relative", sizeClasses[size])}>
-        <div className="w-auto h-full flex items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-teal-500 border-2 border-white dark:border-gray-800">
-          <span className={cn(
-            "text-white font-bold",
-            size === "lg" ? "text-4xl" : size === "md" ? "text-2xl" : "text-xl", 
-            "font-display tracking-tighter"
-          )}>
-            EI
-          </span>
-        </div>
+        <img 
+          src="/lovable-uploads/8db0aa36-7a12-4278-b21e-31ed151fbeba.png" 
+          alt="Espelho Invertido" 
+          className="w-full h-auto"
+        />
       </div>
       
       {showText && (

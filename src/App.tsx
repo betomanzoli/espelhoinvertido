@@ -14,6 +14,10 @@ import Resources from "./pages/Resources";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ProjectComingSoon from "./pages/ProjectComingSoon";
+import SimuladorRevolucoes from "./pages/SimuladorRevolucoes";
+import MapaConflitos from "./pages/MapaConflitos";
+import MuseuVirtual from "./pages/MuseuVirtual";
+import EconomiaAcao from "./pages/EconomiaAcao";
 
 const queryClient = new QueryClient();
 
@@ -35,13 +39,15 @@ const App = () => (
                 <Route path="/library/chronicle/:chronicleId" element={<ChronicleDetail />} />
                 <Route path="/resources" element={<Resources />} />
                 
-                {/* Project routes */}
-                <Route path="/mapa-conflitos" element={<ProjectComingSoon title="Mapa de Conflitos Ideológicos" />} />
-                <Route path="/simulador" element={<ProjectComingSoon title="Simulador de Revoluções" />} />
-                <Route path="/museu" element={<ProjectComingSoon title="Museu Virtual das Revoluções" />} />
+                {/* Project routes - Agora implementadas */}
+                <Route path="/mapa-conflitos" element={<MapaConflitos />} />
+                <Route path="/simulador" element={<SimuladorRevolucoes />} />
+                <Route path="/museu" element={<MuseuVirtual />} />
+                <Route path="/economia" element={<EconomiaAcao />} />
+                
+                {/* Projetos que ainda estão em desenvolvimento */}
                 <Route path="/cronicas" element={<ProjectComingSoon title="Escreva Sua Crônica" />} />
                 <Route path="/analise-discurso" element={<ProjectComingSoon title="Análise de Discurso" />} />
-                <Route path="/economia" element={<ProjectComingSoon title="Economia em Ação" />} />
                 
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />

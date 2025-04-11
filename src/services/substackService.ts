@@ -36,7 +36,8 @@ export async function fetchSubstackPosts(): Promise<SubstackPost[]> {
         coverImage: "https://substackcdn.com/image/fetch/w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F47317de8-b3be-4af2-ab5a-e8ed59b2cc05_1024x1024.png",
         publishedAt: "2023-09-15",
         slug: "dialogo-com-rafael-e-luisa",
-        url: "https://espelhoinvertido.substack.com/p/dialogo-com-rafael-e-luisa"
+        url: "https://espelhoinvertido.substack.com/p/dialogo-com-rafael-e-luisa",
+        content: "Um chat interativo que permite aos usuários interagir com dois especialistas fictícios que analisam questões políticas, econômicas e sociais a partir de diferentes abordagens, tornando conceitos complexos acessíveis e incentivando pensamento crítico.\n\nRafael Martins (35 anos) é um ex-professor universitário de História e Filosofia Política com abordagem analítica, contextual e baseada em evidências históricas. Utiliza perguntas socráticas e contextualização histórica em seu estilo comunicativo. Formado em família tradicionalista, desenvolveu visão crítica após longa jornada intelectual. Especialista em conectar textos históricos (especialmente o Manifesto Comunista) com realidades contemporâneas.\n\nLuísa Campos (29 anos) é uma jornalista investigativa especializada em mídia digital. Tem uma abordagem pragmática, focada em exemplos concretos e aplicações práticas. É direta, usa exemplos do cotidiano e linguagem acessível. Criada em ambiente progressista, desenvolveu perspectiva crítica sobre bolhas ideológicas. Especialista em conectar conceitos abstratos com situações cotidianas, analisar tecnologia e trabalho digital."
       },
       {
         id: "simulador-de-revolucoes",
@@ -46,7 +47,8 @@ export async function fetchSubstackPosts(): Promise<SubstackPost[]> {
         coverImage: "https://substackcdn.com/image/fetch/w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F7794b7cb-f189-4892-ba18-74133a00793c_1024x1024.png",
         publishedAt: "2023-10-02",
         slug: "simulador-de-revolucoes",
-        url: "https://espelhoinvertido.substack.com/p/simulador-de-revolucoes"
+        url: "https://espelhoinvertido.substack.com/p/simulador-de-revolucoes",
+        content: "Um jogo de estratégia baseado em eventos históricos reais onde você experimenta as complexas dinâmicas sociais, econômicas e políticas que precedem e acompanham transformações revolucionárias.\n\nO Simulador de Revoluções permite aos jogadores explorar diferentes cenários históricos, desde a Revolução Francesa até movimentos contemporâneos, analisando as condições materiais, relações de classe, e fatores ideológicos que contribuem para momentos de ruptura social.\n\nCaracterísticas principais:\n- Mapas históricos detalhados baseados em pesquisas acadêmicas\n- Sistema de simulação social que modela tensões de classe e distribuição de recursos\n- Eventos dinâmicos que respondem às ações do jogador e às condições sociais\n- Múltiplos caminhos históricos possíveis com consequências de longo prazo\n- Ferramentas educativas que conectam os eventos do jogo com textos históricos relevantes"
       },
       {
         id: "mapa-de-conflitos-ideologicos",
@@ -56,7 +58,8 @@ export async function fetchSubstackPosts(): Promise<SubstackPost[]> {
         coverImage: "https://substackcdn.com/image/fetch/w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F3eb227e4-cbf1-41e9-a005-e02877d796e6_1024x1024.png",
         publishedAt: "2023-11-10",
         slug: "mapa-de-conflitos-ideologicos",
-        url: "https://espelhoinvertido.substack.com/p/mapa-de-conflitos-ideologicos"
+        url: "https://espelhoinvertido.substack.com/p/mapa-de-conflitos-ideologicos",
+        content: "Uma ferramenta interativa que permite visualizar e navegar pelo complexo território das ideologias políticas, mapeando suas interconexões, divergências e evolução histórica.\n\nEste projeto oferece uma representação visual das principais correntes ideológicas e seus conceitos-chave, contextualizando debates contemporâneos em suas raízes históricas e teóricas. O mapa facilita a compreensão de como diferentes perspectivas interpretam os mesmos eventos e conceitos, promovendo um entendimento mais nuançado das disputas políticas atuais.\n\nCaracterísticas principais:\n- Visualizações interativas de relações entre ideologias políticas\n- Linhas do tempo que mostram a evolução do pensamento político\n- Análise comparativa de interpretações de eventos históricos\n- Biblioteca de conceitos-chave com explicações contextualizadas\n- Casos de estudo sobre disputas narrativas em eventos contemporâneos"
       },
       {
         id: "economia-em-acao",
@@ -66,7 +69,8 @@ export async function fetchSubstackPosts(): Promise<SubstackPost[]> {
         coverImage: "https://substackcdn.com/image/fetch/w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F84f243b8-6f1b-4e7a-b8a3-054f21b9f4ac_1024x1024.png",
         publishedAt: "2023-12-05",
         slug: "economia-em-acao",
-        url: "https://espelhoinvertido.substack.com/p/economia-em-acao"
+        url: "https://espelhoinvertido.substack.com/p/economia-em-acao",
+        content: "Uma plataforma interativa que permite explorar o impacto de diferentes políticas econômicas em sociedades virtuais modeladas com base em dados históricos reais.\n\nEconomia em Ação oferece um ambiente de simulação onde usuários podem implementar várias abordagens econômicas—desde políticas neoliberais até planejamento centralizado—e observar seus efeitos na distribuição de riqueza, bem-estar social, produção e desenvolvimento tecnológico ao longo do tempo.\n\nCaracterísticas principais:\n- Modelos econômicos baseados em pesquisas e dados históricos\n- Simulações que consideram fatores sociais, ambientais e políticos\n- Cenários históricos diversos desde a revolução industrial até a era digital\n- Ferramentas de análise para comparar resultados entre diferentes políticas\n- Material educativo que conecta os resultados com teorias econômicas clássicas e contemporâneas"
       },
       {
         id: "museu-virtual-das-revolucoes",
@@ -76,7 +80,8 @@ export async function fetchSubstackPosts(): Promise<SubstackPost[]> {
         coverImage: "https://substackcdn.com/image/fetch/w_1200,h_600,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb6c2c3a4-d5e5-4f8a-9b7d-8e10a8b9c2d3_1024x1024.png",
         publishedAt: "2024-01-20",
         slug: "museu-virtual-das-revolucoes",
-        url: "https://espelhoinvertido.substack.com/p/museu-virtual-das-revolucoes"
+        url: "https://espelhoinvertido.substack.com/p/museu-virtual-das-revolucoes",
+        content: "Uma experiência imersiva que transporta os visitantes para momentos históricos revolucionários através de tecnologias de realidade aumentada e virtual.\n\nO Museu Virtual das Revoluções recria ambientes, eventos e pessoas que participaram de transformações sociais significativas, permitindo aos usuários interagir com artefatos históricos, ouvir relatos de época e compreender o contexto social e material desses momentos de ruptura.\n\nCaracterísticas principais:\n- Reconstruções detalhadas de ambientes históricos revolucionários\n- Acervo digital de documentos, objetos e gravações originais\n- Depoimentos e perspectivas diversas sobre os mesmos eventos\n- Linha do tempo interativa conectando diferentes processos revolucionários\n- Análise do impacto material e cultural de cada revolução\n- Conteúdo educativo que contextualiza cada revolução em seu momento histórico específico"
       }
     ];
 
