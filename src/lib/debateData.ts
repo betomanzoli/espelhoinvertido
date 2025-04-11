@@ -30,6 +30,16 @@ export interface DebateTopic {
   coverImage?: string;
 }
 
+export interface Chronicle {
+  id: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  author: string;
+  tags: string[];
+  url: string;
+}
+
 export const characters: Character[] = [
   {
     id: 'rafael',

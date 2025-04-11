@@ -3,97 +3,10 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
-// Exemplo de crônicas (em um projeto real, viria de uma API)
-const chronicles = [
-  {
-    id: 1,
-    title: "Duas Bibliotecas, Uma História",
-    excerpt: "Como diferentes narrativas históricas são construídas a partir das mesmas fontes primárias.",
-    category: "História",
-    image: "https://via.placeholder.com/300x180?text=História",
-    link: "/library/chronicle/1",
-  },
-  {
-    id: 2,
-    title: "O Espectro Que Recusamos Ver",
-    excerpt: "Uma análise contemporânea do primeiro parágrafo do Manifesto Comunista.",
-    category: "Ideologia",
-    image: "https://via.placeholder.com/300x180?text=Ideologia",
-    link: "/library/chronicle/2",
-  },
-  {
-    id: 3,
-    title: "Capitalismo de Plataforma",
-    excerpt: "Como as novas relações de trabalho digital mascaram formas tradicionais de exploração.",
-    category: "Economia",
-    image: "https://via.placeholder.com/300x180?text=Economia",
-    link: "/library/chronicle/3",
-  },
-];
-
-// Sistema de recomendação simulado
-const getRecommendations = (category: string) => {
-  const recommendations = {
-    "História": [1, 3],
-    "Economia": [2, 3],
-    "Ideologia": [1, 2],
-  };
-  
-  return chronicles.filter(chronicle => 
-    recommendations[category as keyof typeof recommendations]?.includes(chronicle.id)
-  ).slice(0, 2);
-};
-
-const ChronicleCard = ({ chronicle }: { chronicle: typeof chronicles[0] }) => (
-  <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-    <img 
-      src={chronicle.image} 
-      alt={chronicle.title}
-      className="w-full h-48 object-cover"
-    />
-    <CardHeader>
-      <div className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 mb-2">
-        {chronicle.category}
-      </div>
-      <CardTitle>{chronicle.title}</CardTitle>
-    </CardHeader>
-    <CardContent>
-      <CardDescription>{chronicle.excerpt}</CardDescription>
-    </CardContent>
-    <CardFooter>
-      <Button asChild variant="ghost" className="gap-1">
-        <Link to={chronicle.link}>
-          Ler mais <ArrowRight className="h-4 w-4" />
-        </Link>
-      </Button>
-    </CardFooter>
-  </Card>
-);
-
-const RecommendationCard = ({ chronicle }: { chronicle: typeof chronicles[0] }) => (
-  <Card className="flex overflow-hidden hover:shadow-lg transition-shadow">
-    <img 
-      src={chronicle.image} 
-      alt={chronicle.title}
-      className="w-24 h-full object-cover"
-    />
-    <div className="flex-1">
-      <CardHeader className="p-3">
-        <CardTitle className="text-sm">{chronicle.title}</CardTitle>
-      </CardHeader>
-      <CardFooter className="p-3 pt-0">
-        <Button asChild variant="ghost" size="sm" className="h-7 px-2">
-          <Link to={chronicle.link}>
-            Ler <ArrowRight className="h-3 w-3 ml-1" />
-          </Link>
-        </Button>
-      </CardFooter>
-    </div>
-  </Card>
-);
+import ChronicleCard from './ChronicleCard';
+import RecommendationsSection from './RecommendationsSection';
+import { chronicles, getRecommendations, getFilteredChronicles } from './ChroniclesData';
 
 const ChroniclesSection = () => {
   const [activeTab, setActiveTab] = useState('todas');
@@ -123,51 +36,36 @@ const ChroniclesSection = () => {
           </TabsContent>
           
           <TabsContent value="historia" className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {chronicles.filter(c => c.category === "História").map((chronicle) => (
+            {getFilteredChronicles('História').map((chronicle) => (
               <ChronicleCard key={chronicle.id} chronicle={chronicle} />
             ))}
             
-            {/* Recomendações */}
-            <div className="md:col-span-3 mt-6">
-              <h3 className="text-xl font-medium mb-4">Recomendações relacionadas</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {getRecommendations("História").map((chronicle) => (
-                  <RecommendationCard key={chronicle.id} chronicle={chronicle} />
-                ))}
-              </div>
-            </div>
+            <RecommendationsSection 
+              category="História"
+              recommendations={getRecommendations('História')}
+            />
           </TabsContent>
           
           <TabsContent value="economia" className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {chronicles.filter(c => c.category === "Economia").map((chronicle) => (
+            {getFilteredChronicles('Economia').map((chronicle) => (
               <ChronicleCard key={chronicle.id} chronicle={chronicle} />
             ))}
             
-            {/* Recomendações */}
-            <div className="md:col-span-3 mt-6">
-              <h3 className="text-xl font-medium mb-4">Recomendações relacionadas</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {getRecommendations("Economia").map((chronicle) => (
-                  <RecommendationCard key={chronicle.id} chronicle={chronicle} />
-                ))}
-              </div>
-            </div>
+            <RecommendationsSection 
+              category="Economia"
+              recommendations={getRecommendations('Economia')}
+            />
           </TabsContent>
           
           <TabsContent value="ideologia" className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {chronicles.filter(c => c.category === "Ideologia").map((chronicle) => (
+            {getFilteredChronicles('Ideologia').map((chronicle) => (
               <ChronicleCard key={chronicle.id} chronicle={chronicle} />
             ))}
             
-            {/* Recomendações */}
-            <div className="md:col-span-3 mt-6">
-              <h3 className="text-xl font-medium mb-4">Recomendações relacionadas</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {getRecommendations("Ideologia").map((chronicle) => (
-                  <RecommendationCard key={chronicle.id} chronicle={chronicle} />
-                ))}
-              </div>
-            </div>
+            <RecommendationsSection 
+              category="Ideologia"
+              recommendations={getRecommendations('Ideologia')}
+            />
           </TabsContent>
         </Tabs>
         
