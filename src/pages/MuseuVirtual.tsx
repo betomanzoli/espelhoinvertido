@@ -1,8 +1,7 @@
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { BookOpen, Calendar, Eye, HistoryIcon, Landmark, PanelsTopLeft, Timeline, Video } from 'lucide-react';
+import { BookOpen, Calendar, Eye, HistoryIcon, Landmark, PanelsTopLeft, History, Video } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -85,7 +84,7 @@ const MuseuVirtual = () => {
                       <Card>
                         <CardHeader>
                           <CardTitle className="flex items-center gap-2">
-                            <Timeline className="text-primary h-5 w-5" />
+                            <History className="text-primary h-5 w-5" />
                             Linha do Tempo
                           </CardTitle>
                         </CardHeader>
@@ -186,7 +185,7 @@ const MuseuVirtual = () => {
                         </li>
                         <li className="flex items-start gap-2">
                           <div className="bg-primary/10 p-1 rounded-full mt-1">
-                            <Timeline className="h-4 w-4 text-primary" />
+                            <History className="h-4 w-4 text-primary" />
                           </div>
                           <span>Possibilidade de acompanhar o desenvolvimento das revoluções dia a dia</span>
                         </li>
