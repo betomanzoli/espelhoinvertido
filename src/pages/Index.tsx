@@ -4,9 +4,10 @@ import HeroSection from '@/components/home/HeroSection';
 import ProjectsSection from '@/components/home/ProjectsSection';
 import ChroniclesSection from '@/components/home/ChroniclesSection';
 import CallToActionSection from '@/components/home/CallToActionSection';
+import SimuladorRevolucoesHighlight from '@/components/home/SimuladorRevolucoesHighlight';
+import DialecticChatbot from '@/components/dialectic/DialecticChatbot';
 import { setupAutoRefresh } from '@/services/substackService';
 import { toast } from 'sonner';
-import SimuladorRevolucoesHighlight from '@/components/home/SimuladorRevolucoesHighlight';
 
 const Index = () => {
   useEffect(() => {
@@ -26,6 +27,7 @@ const Index = () => {
       <SimuladorRevolucoesHighlight />
       <ChroniclesSection />
       <CallToActionSection />
+      <DialecticChatbot />
     </div>
   );
 };
