@@ -1,38 +1,18 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import ProjectCard from './ProjectCard';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MessageSquare, Swords, Globe, Building, PenTool, BarChart3, Search } from 'lucide-react';
-import { fetchSubstackPosts, SubstackPost, setupAutoRefresh } from '@/services/substackService';
+import { useSubstackData } from '@/hooks/useSubstackData';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const ProjectsSection = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [substackPosts, setSubstackPosts] = useState<SubstackPost[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { posts, loading } = useSubstackData();
   
-  useEffect(() => {
-    const loadPosts = async () => {
-      setIsLoading(true);
-      try {
-        const posts = await fetchSubstackPosts();
-        setSubstackPosts(posts);
-        
-        // Configurar atualização automática a cada 30 minutos
-        setupAutoRefresh(30);
-      } catch (error) {
-        console.error("Erro ao carregar posts:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    loadPosts();
-  }, []);
-
   // Função para encontrar a URL do Substack para um projeto específico
   const findSubstackInfo = (projectTitle: string): {url?: string, image?: string} => {
-    const post = substackPosts.find(post => 
+    const post = posts.find(post => 
       post.title.toLowerCase().includes(projectTitle.toLowerCase()) ||
       projectTitle.toLowerCase().includes(post.title.toLowerCase())
     );
@@ -148,7 +128,7 @@ const ProjectsSection = () => {
         </Tabs>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {isLoading ? (
+          {loading ? (
             // Esqueletos de carregamento
             Array.from({ length: 6 }).map((_, idx) => (
               <div key={idx} className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md p-6">
