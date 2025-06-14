@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { SearchIcon, RefreshCw } from 'lucide-react';
-import ChronicleCard from "@/components/ChronicleCard";
+import ChronicleCard from "@/components/home/ChronicleCard";
 import { Chronicle } from '@/lib/debateData';
 import { useSubstackData } from '@/hooks/useSubstackData';
 import { convertSubstackPostsToChronicles } from '@/components/home/ChroniclesData';
