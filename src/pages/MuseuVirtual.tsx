@@ -8,15 +8,35 @@ import MuseuLoading from '@/components/museu/MuseuLoading';
 import MuseuOverview from '@/components/museu/MuseuOverview';
 import MuseuExhibits from '@/components/museu/MuseuExhibits';
 import MuseuExperience from '@/components/museu/MuseuExperience';
-import MuseuActions from '@/components/museu/MuseuActions';
+import VirtualMuseum from '@/components/museu/VirtualMuseum';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
 
 const MuseuVirtual = () => {
   const { projectInfo, isLoading } = useProjectInfo('Museu Virtual das Revoluções');
-  const navigate = useNavigate();
+  const [showMuseum, setShowMuseum] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
 
   if (isLoading) {
     return <MuseuLoading />;
+  }
+
+  if (showMuseum) {
+    return (
+      <div className="min-h-screen pt-16 pb-16 bg-light-gray dark:bg-gray-900">
+        <div className="container mx-auto px-4 py-8">
+          <Button 
+            variant="outline" 
+            onClick={() => setShowMuseum(false)}
+            className="mb-6 gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Voltar à Descrição
+          </Button>
+          <VirtualMuseum />
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -59,7 +79,15 @@ const MuseuVirtual = () => {
                 </Tabs>
               </div>
               
-              <MuseuActions substackUrl={projectInfo?.substackUrl} />
+              <div className="text-center">
+                <Button 
+                  size="lg" 
+                  onClick={() => setShowMuseum(true)}
+                  className="gap-2"
+                >
+                  Visitar Museu Virtual
+                </Button>
+              </div>
             </div>
           </div>
         </div>

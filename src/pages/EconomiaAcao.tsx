@@ -6,10 +6,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import EconomiaOverview from '@/components/economia/EconomiaOverview';
 import EconomiaModels from '@/components/economia/EconomiaModels';
 import EconomiaScenarios from '@/components/economia/EconomiaScenarios';
-import EconomiaActions from '@/components/economia/EconomiaActions';
+import EconomicSimulator from '@/components/economia/EconomicSimulator';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
 
 const EconomiaAcao = () => {
   const { projectInfo, isLoading } = useProjectInfo('Economia em Ação');
+  const [showSimulator, setShowSimulator] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
 
   if (isLoading) {
@@ -17,6 +20,24 @@ const EconomiaAcao = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="flex items-center justify-center h-[60vh]">
           <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (showSimulator) {
+    return (
+      <div className="min-h-screen pt-16 pb-16 bg-light-gray dark:bg-gray-900">
+        <div className="container mx-auto px-4 py-8">
+          <Button 
+            variant="outline" 
+            onClick={() => setShowSimulator(false)}
+            className="mb-6 gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Voltar à Descrição
+          </Button>
+          <EconomicSimulator />
         </div>
       </div>
     );
@@ -62,7 +83,15 @@ const EconomiaAcao = () => {
                 </Tabs>
               </div>
               
-              <EconomiaActions substackUrl={projectInfo?.substackUrl} />
+              <div className="text-center">
+                <Button 
+                  size="lg" 
+                  onClick={() => setShowSimulator(true)}
+                  className="gap-2"
+                >
+                  Iniciar Simulação Econômica
+                </Button>
+              </div>
             </div>
           </div>
         </div>

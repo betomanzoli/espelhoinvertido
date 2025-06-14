@@ -7,14 +7,35 @@ import MapaLoading from '@/components/mapa/MapaLoading';
 import MapaOverview from '@/components/mapa/MapaOverview';
 import MapaFeatures from '@/components/mapa/MapaFeatures';
 import MapaExamples from '@/components/mapa/MapaExamples';
-import MapaActions from '@/components/mapa/MapaActions';
+import InteractiveIdeologyMap from '@/components/mapa/InteractiveIdeologyMap';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft } from 'lucide-react';
 
 const MapaConflitos = () => {
   const { projectInfo, isLoading } = useProjectInfo('Mapa de Conflitos Ideológicos');
+  const [showMap, setShowMap] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
 
   if (isLoading) {
     return <MapaLoading />;
+  }
+
+  if (showMap) {
+    return (
+      <div className="min-h-screen pt-16 pb-16 bg-light-gray dark:bg-gray-900">
+        <div className="container mx-auto px-4 py-8">
+          <Button 
+            variant="outline" 
+            onClick={() => setShowMap(false)}
+            className="mb-6 gap-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Voltar à Descrição
+          </Button>
+          <InteractiveIdeologyMap />
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -57,7 +78,15 @@ const MapaConflitos = () => {
                 </Tabs>
               </div>
               
-              <MapaActions substackUrl={projectInfo?.substackUrl} />
+              <div className="text-center">
+                <Button 
+                  size="lg" 
+                  onClick={() => setShowMap(true)}
+                  className="gap-2"
+                >
+                  Explorar Mapa Interativo
+                </Button>
+              </div>
             </div>
           </div>
         </div>
