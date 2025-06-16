@@ -18,6 +18,8 @@ import SimuladorRevolucoes from "./pages/SimuladorRevolucoes";
 import MapaConflitos from "./pages/MapaConflitos";
 import MuseuVirtual from "./pages/MuseuVirtual";
 import EconomiaAcao from "./pages/EconomiaAcao";
+import Laboratorio from "./pages/Laboratorio";
+import SubstackExpanded from "./pages/SubstackExpanded";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +46,10 @@ const App = () => (
                 <Route path="/simulador" element={<SimuladorRevolucoes />} />
                 <Route path="/museu" element={<MuseuVirtual />} />
                 <Route path="/economia" element={<EconomiaAcao />} />
+                
+                {/* Novas rotas do Laboratório Dialético */}
+                <Route path="/laboratorio" element={<Laboratorio />} />
+                <Route path="/substack" element={<SubstackExpanded />} />
                 
                 {/* Projetos que ainda estão em desenvolvimento */}
                 <Route path="/cronicas" element={<ProjectComingSoon title="Escreva Sua Crônica" />} />
