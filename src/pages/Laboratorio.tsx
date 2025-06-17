@@ -1,7 +1,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Flask, Network, Search } from 'lucide-react';
+import { Beaker, Network, Search } from 'lucide-react';
 import ConceptMap from '@/components/concept/ConceptMap';
 import BiasAnalyzer from '@/components/bias/BiasAnalyzer';
 
@@ -13,7 +13,7 @@ const Laboratorio = () => {
           <Card className="mb-8">
             <CardHeader className="text-center">
               <CardTitle className="flex items-center justify-center gap-2 text-3xl">
-                <Flask className="h-8 w-8" />
+                <Beaker className="h-8 w-8" />
                 Laboratório Dialético
               </CardTitle>
               <CardDescription className="text-lg max-w-3xl mx-auto">
