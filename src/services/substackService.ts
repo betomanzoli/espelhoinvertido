@@ -1,4 +1,3 @@
-
 import { toast } from "sonner";
 
 export interface SubstackPost {
@@ -336,7 +335,7 @@ export async function checkForUpdates(): Promise<boolean> {
   }
 }
 
-export function setupAutoRefresh(intervalMinutes = 15): number {
+export function setupAutoRefresh(intervalMinutes = 15): ReturnType<typeof setInterval> {
   const intervalId = setInterval(async () => {
     try {
       const hasUpdates = await checkForUpdates();
