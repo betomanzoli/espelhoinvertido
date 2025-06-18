@@ -7,8 +7,8 @@ import BiasAnalyzer from '@/components/bias/BiasAnalyzer';
 
 const Laboratorio = () => {
   return (
-    <div className="min-h-screen pt-16 pb-16 bg-light-gray dark:bg-gray-900">
-      <div className="container mx-auto px-4 py-8">
+    <div className="page-container bg-light-gray">
+      <div className="content-wrapper pt-16 pb-16">
         <div className="max-w-6xl mx-auto">
           <Card className="mb-8">
             <CardHeader className="text-center">
@@ -26,7 +26,7 @@ const Laboratorio = () => {
           <Tabs defaultValue="map" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-8">
               <TabsTrigger value="map" className="gap-2">
-                <Network className="h-4 w-4" />
+                <Network className="h-4 w-4"  />
                 Mapa Conceitual
               </TabsTrigger>
               <TabsTrigger value="analyzer" className="gap-2">

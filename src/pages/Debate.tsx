@@ -34,12 +34,14 @@ const Debate = () => {
     const topic = debateTopics.find(t => t.id === topicId);
     if (!topic) {
       return (
-        <div className="container mx-auto px-4 pt-24 pb-16">
-          <div className="text-center">
-            <h2 className="text-2xl font-medium mb-4">Tópico não encontrado</h2>
-            <Link to="/debate" className="text-primary hover:underline">
-              Voltar para a lista de debates
-            </Link>
+        <div className="page-container">
+          <div className="content-wrapper pt-24 pb-16">
+            <div className="text-center">
+              <h2 className="text-2xl font-medium mb-4">Tópico não encontrado</h2>
+              <Link to="/debate" className="text-primary hover:underline">
+                Voltar para a lista de debates
+              </Link>
+            </div>
           </div>
         </div>
       );
@@ -56,8 +58,8 @@ const Debate = () => {
   
   // Show topic selection
   return (
-    <div className="min-h-screen pt-24 pb-16 bg-light-gray dark:bg-gray-900">
-      <div className="container mx-auto px-4">
+    <div className="page-container bg-light-gray">
+      <div className="content-wrapper pt-24 pb-16">
         <h1 className="text-3xl md:text-4xl font-display font-bold mb-2 animate-slide-up">
           Tópicos de Debate
         </h1>

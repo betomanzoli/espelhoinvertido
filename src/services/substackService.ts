@@ -13,200 +13,304 @@ export interface SubstackPost {
   content?: string;
 }
 
-// Cache para armazenar posts
-let cachedPosts: SubstackPost[] = [];
-let lastFetchTime = 0;
-const CACHE_DURATION = 10 * 60 * 1000; // 10 minutos
+// Cache melhorado com controle de estado
+class SubstackCache {
+  private posts: SubstackPost[] = [];
+  private lastFetchTime = 0;
+  private isLoading = false;
+  private failureCount = 0;
+  
+  private readonly CACHE_DURATION = 10 * 60 * 1000; // 10 minutos
+  private readonly MAX_RETRIES = 3;
+  
+  get cachedPosts() { return [...this.posts]; }
+  get loading() { return this.isLoading; }
+  get lastUpdate() { return this.lastFetchTime; }
+  
+  isExpired(): boolean {
+    return Date.now() - this.lastFetchTime > this.CACHE_DURATION;
+  }
+  
+  canRetry(): boolean {
+    return this.failureCount < this.MAX_RETRIES;
+  }
+  
+  setPosts(posts: SubstackPost[]) {
+    this.posts = posts;
+    this.lastFetchTime = Date.now();
+    this.failureCount = 0;
+  }
+  
+  setLoading(loading: boolean) {
+    this.isLoading = loading;
+  }
+  
+  incrementFailure() {
+    this.failureCount++;
+  }
+  
+  reset() {
+    this.failureCount = 0;
+  }
+}
 
-// Parser para RSS do Substack
+const cache = new SubstackCache();
+
+// Parser melhorado para RSS do Substack
 const parseSubstackRSS = (xmlText: string): SubstackPost[] => {
   try {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+    
+    // Verificar se há erros de parsing
+    const parserError = xmlDoc.querySelector('parsererror');
+    if (parserError) {
+      throw new Error('XML parsing failed');
+    }
+    
     const items = xmlDoc.querySelectorAll('item');
+    
+    if (items.length === 0) {
+      console.warn('Nenhum item encontrado no RSS');
+      return [];
+    }
     
     const posts: SubstackPost[] = [];
     
     items.forEach((item, index) => {
-      const title = item.querySelector('title')?.textContent || `Post ${index + 1}`;
-      const description = item.querySelector('description')?.textContent || '';
-      const link = item.querySelector('link')?.textContent || '';
-      const pubDate = item.querySelector('pubDate')?.textContent || new Date().toISOString();
-      const guid = item.querySelector('guid')?.textContent || `post-${index}`;
-      
-      // Extrair imagem da descrição HTML se disponível
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = description;
-      const imgElement = tempDiv.querySelector('img');
-      const coverImage = imgElement?.src || `https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=600&fit=crop`;
-      
-      // Limpar descrição de HTML
-      const cleanDescription = tempDiv.textContent || tempDiv.innerText || description;
-      
-      // Criar slug a partir do link
-      const slug = link.split('/').pop() || guid.replace(/[^a-z0-9]/gi, '-').toLowerCase();
-      
-      posts.push({
-        id: slug,
-        title: title.trim(),
-        subtitle: cleanDescription.substring(0, 100) + '...',
-        description: cleanDescription.substring(0, 300) + '...',
-        coverImage,
-        publishedAt: new Date(pubDate).toISOString(),
-        slug,
-        url: link,
-        content: cleanDescription
-      });
+      try {
+        const title = item.querySelector('title')?.textContent?.trim() || `Post ${index + 1}`;
+        const description = item.querySelector('description')?.textContent || '';
+        const link = item.querySelector('link')?.textContent?.trim() || '';
+        const pubDate = item.querySelector('pubDate')?.textContent || new Date().toISOString();
+        const guid = item.querySelector('guid')?.textContent || `post-${Date.now()}-${index}`;
+        
+        // Extrair imagem da descrição HTML
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = description;
+        const imgElement = tempDiv.querySelector('img');
+        const coverImage = imgElement?.src || 
+          `https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=600&fit=crop&q=80`;
+        
+        // Limpar descrição de HTML
+        const cleanDescription = tempDiv.textContent || tempDiv.innerText || description;
+        const truncatedDescription = cleanDescription.substring(0, 300) + 
+          (cleanDescription.length > 300 ? '...' : '');
+        
+        // Criar slug seguro
+        const slug = link.split('/').pop() || 
+          title.toLowerCase().replace(/[^a-z0-9]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+        
+        posts.push({
+          id: slug,
+          title: title,
+          subtitle: cleanDescription.substring(0, 100) + (cleanDescription.length > 100 ? '...' : ''),
+          description: truncatedDescription,
+          coverImage,
+          publishedAt: new Date(pubDate).toISOString(),
+          slug,
+          url: link,
+          content: cleanDescription
+        });
+      } catch (itemError) {
+        console.warn(`Erro ao processar item ${index}:`, itemError);
+      }
     });
     
-    return posts;
+    return posts.sort((a, b) => 
+      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+    );
   } catch (error) {
     console.error('Erro ao fazer parse do RSS:', error);
-    return [];
+    throw error;
   }
 };
 
-// Fallback com dados reais atualizados
+// Dados de fallback atualizados e expandidos
 const getFallbackPosts = (): SubstackPost[] => {
   return [
     {
       id: "dialogo-com-rafael-e-luisa",
-      title: "Diálogo com Rafael e Luísa",
-      subtitle: "Uma abordagem dialógica para explorar conceitos políticos e econômicos",
-      description: "Um chat interativo que simula conversas com dois personagens fictícios que discutem perspectivas ideológicas diversas, com foco especial no Manifesto Comunista e sua aplicação contemporânea.",
-      coverImage: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=600&fit=crop",
-      publishedAt: "2024-01-15",
+      title: "Diálogo com Rafael e Luísa: Navegando pelo Território Ideológico",
+      subtitle: "Uma abordagem dialógica inovadora para explorar conceitos políticos complexos",
+      description: "Conheça nossos dois personagens centrais: Rafael Martins, historiador e filósofo político, e Luísa Campos, jornalista investigativa especializada em mídia digital. Juntos, eles transformam conceitos abstratos em discussões acessíveis e estimulantes sobre o mundo contemporâneo.",
+      coverImage: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=800&h=600&fit=crop&q=80",
+      publishedAt: "2024-01-15T10:00:00Z",
       slug: "dialogo-com-rafael-e-luisa",
       url: "https://espelhoinvertido.substack.com/p/dialogo-com-rafael-e-luisa",
-      content: "Um chat interativo que permite aos usuários interagir com dois especialistas fictícios que analisam questões políticas, econômicas e sociais a partir de diferentes abordagens, tornando conceitos complexos acessíveis e incentivando pensamento crítico.\n\nRafael Martins é um ex-professor universitário de História e Filosofia Política com abordagem analítica e contextual. Luísa Campos é uma jornalista investigativa especializada em mídia digital com foco em aplicações práticas."
+      content: "Este projeto apresenta uma metodologia única para tornar conceitos marxistas e análises políticas acessíveis através do diálogo entre duas perspectivas complementares. Rafael oferece profundidade histórica e rigor teórico, enquanto Luísa conecta essas ideias com exemplos práticos do cotidiano digital."
     },
     {
-      id: "simulador-de-revolucoes",
-      title: "Simulador de Revoluções",
-      subtitle: "Um jogo de estratégia histórica para entender processos revolucionários",
-      description: "Experimente as dinâmicas sociais antes e depois de transformações revolucionárias em um jogo de estratégia educativo que recria condições históricas reais.",
-      coverImage: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop",
-      publishedAt: "2024-02-02",
-      slug: "simulador-de-revolucoes",
-      url: "https://espelhoinvertido.substack.com/p/simulador-de-revolucoes",
-      content: "Um jogo de estratégia baseado em eventos históricos reais onde você experimenta as complexas dinâmicas sociais, econômicas e políticas que precedem e acompanham transformações revolucionárias."
+      id: "manifesto-comunista-era-digital",
+      title: "O Manifesto Comunista na Era Digital: Relevância Contemporânea",
+      subtitle: "Como as análises de Marx e Engels se aplicam ao capitalismo de plataforma",
+      description: "Uma análise detalhada de como os conceitos centrais do Manifesto Comunista - luta de classes, alienação, mais-valia - se manifestam nas plataformas digitais modernas como Uber, Amazon e redes sociais.",
+      coverImage: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=600&fit=crop&q=80",
+      publishedAt: "2024-02-01T14:30:00Z",
+      slug: "manifesto-comunista-era-digital",
+      url: "https://espelhoinvertido.substack.com/p/manifesto-comunista-era-digital",
+      content: "O capitalismo digital não é uma ruptura com o capitalismo tradicional, mas sua intensificação. As plataformas concentram capital de forma sem precedentes, enquanto socializam riscos e custos para trabalhadores precarizados."
     },
     {
-      id: "mapa-de-conflitos-ideologicos",
-      title: "Mapa de Conflitos Ideológicos",
-      subtitle: "Cartografando o território das ideias políticas",
-      description: "Explore como narrativas históricas são construídas ao longo do tempo e como diferentes grupos interpretam os mesmos eventos através de mapas interativos.",
-      coverImage: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=600&fit=crop",
-      publishedAt: "2024-02-20",
-      slug: "mapa-de-conflitos-ideologicos",
-      url: "https://espelhoinvertido.substack.com/p/mapa-de-conflitos-ideologicos",
-      content: "Uma ferramenta interativa que permite visualizar e navegar pelo complexo território das ideologias políticas, mapeando suas interconexões, divergências e evolução histórica."
+      id: "uberizacao-trabalho-algoritmo",
+      title: "Uberização: Quando o Algoritmo Vira Chefe",
+      subtitle: "A nova face da exploração trabalhista no século XXI",
+      description: "Análise profunda de como aplicativos de delivery e transporte representam uma nova etapa da precarização do trabalho, onde algoritmos substituem supervisores humanos e trabalhadores assumem todos os riscos.",
+      coverImage: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=600&fit=crop&q=80",
+      publishedAt: "2024-02-15T16:45:00Z",
+      slug: "uberizacao-trabalho-algoritmo",
+      url: "https://espelhoinvertido.substack.com/p/uberizacao-trabalho-algoritmo",
+      content: "A uberização representa a subsunção real do trabalho ao capital mediada por algoritmos. O trabalhador perde não apenas o controle sobre os meios de produção, mas também sobre o processo de trabalho, que passa a ser ditado por inteligência artificial."
     },
     {
-      id: "economia-em-acao",
-      title: "Economia em Ação",
-      subtitle: "Simulação de políticas econômicas e seus efeitos sociais",
-      description: "Simule diferentes políticas econômicas e observe suas consequências em uma sociedade virtual baseada em dados reais de diversos períodos históricos.",
-      coverImage: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop",
-      publishedAt: "2024-03-05",
-      slug: "economia-em-acao",
-      url: "https://espelhoinvertido.substack.com/p/economia-em-acao",
-      content: "Uma plataforma interativa que permite explorar o impacto de diferentes políticas econômicas em sociedades virtuais modeladas com base em dados históricos reais."
+      id: "alienacao-redes-sociais",
+      title: "Alienação 2.0: Como as Redes Sociais Mercantilizam Nossas Relações",
+      subtitle: "O conceito marxista de alienação aplicado à economia da atenção",
+      description: "Exploramos como Facebook, Instagram e TikTok transformam nossa sociabilidade em mercadoria, extraindo valor de nossas interações pessoais e criando novas formas de estranhamento social.",
+      coverImage: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=600&fit=crop&q=80",
+      publishedAt: "2024-03-01T11:20:00Z",
+      slug: "alienacao-redes-sociais",
+      url: "https://espelhoinvertido.substack.com/p/alienacao-redes-sociais",
+      content: "As redes sociais aprofundam a alienação ao transformar nossa vida íntima em dados comercializáveis. Perdemos o controle não apenas sobre nosso trabalho, mas sobre nossa própria subjetividade."
     },
     {
-      id: "museu-virtual-das-revolucoes",
-      title: "Museu Virtual das Revoluções",
-      subtitle: "Uma viagem histórica por momentos revolucionários",
-      description: "Viaje no tempo através da realidade aumentada e visite locais históricos revolucionários em diferentes épocas, explorando artefatos e relatos da época.",
-      coverImage: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=600&fit=crop",
-      publishedAt: "2024-03-20",
-      slug: "museu-virtual-das-revolucoes",
-      url: "https://espelhoinvertido.substack.com/p/museu-virtual-das-revolucoes",
-      content: "Uma experiência imersiva que transporta os visitantes para momentos históricos revolucionários através de tecnologias de realidade aumentada e virtual."
+      id: "inteligencia-artificial-luta-classes",
+      title: "IA e Luta de Classes: Automação a Serviço de Quem?",
+      subtitle: "O impacto da inteligência artificial nas relações de trabalho",
+      description: "Investigação sobre como a inteligência artificial está sendo desenvolvida e implementada para intensificar a exploração trabalhista, concentrar capital e manter estruturas de poder existentes.",
+      coverImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop&q=80",
+      publishedAt: "2024-03-15T13:00:00Z",
+      slug: "inteligencia-artificial-luta-classes",
+      url: "https://espelhoinvertido.substack.com/p/inteligencia-artificial-luta-classes",
+      content: "A IA não é neutra. Desenvolvida sob relações capitalistas, ela reproduz e amplifica desigualdades existentes, servindo principalmente para reduzir custos trabalhistas e aumentar controle sobre trabalhadores."
     },
     {
-      id: "alienacao-digital",
-      title: "Alienação na Era Digital",
-      subtitle: "Como a tecnologia transforma o trabalho e as relações sociais",
-      description: "Análise marxista dos novos modos de produção digital e suas implicações para a classe trabalhadora contemporânea.",
-      coverImage: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&h=600&fit=crop",
-      publishedAt: "2024-04-02",
-      slug: "alienacao-digital",
-      url: "https://espelhoinvertido.substack.com/p/alienacao-digital",
-      content: "Este ensaio analisa como as plataformas digitais e a automação estão reconfigurando as relações laborais contemporâneas, criando novas formas de precarização."
+      id: "economia-compartilhada-mito",
+      title: "O Mito da Economia Compartilhada",
+      subtitle: "Por trás do discurso colaborativo, mais concentração de capital",
+      description: "Desmistificamos o conceito de 'economia compartilhada', revelando como Airbnb, Uber e similares na verdade concentram capital e precarizam trabalho sob a retórica da colaboração.",
+      coverImage: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop&q=80",
+      publishedAt: "2024-04-01T09:15:00Z",
+      slug: "economia-compartilhada-mito",
+      url: "https://espelhoinvertido.substack.com/p/economia-compartilhada-mito",
+      content: "A chamada 'economia compartilhada' é uma operação ideológica que mascara a intensificação da extração de mais-valia através de plataformas digitais que intermediam e controlam mercados."
     },
     {
-      id: "capitalismo-de-plataforma",
-      title: "Capitalismo de Plataforma",
-      subtitle: "A nova face da exploração no século XXI",
-      description: "Como aplicativos como Uber e iFood representam uma nova etapa da acumulação capitalista baseada na extração de dados e precarização.",
-      coverImage: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=600&fit=crop",
-      publishedAt: "2024-04-15",
-      slug: "capitalismo-de-plataforma",
-      url: "https://espelhoinvertido.substack.com/p/capitalismo-de-plataforma",
-      content: "O capitalismo de plataforma representa uma nova forma de organização econômica que combina extração de dados, trabalho precarizado e controle algorítmico."
+      id: "resistencia-digital-possibilidades",
+      title: "Resistência Digital: Cooperativas, Hacktivismo e Alternativas",
+      subtitle: "Explorando possibilidades emancipatórias da tecnologia",
+      description: "Análise de iniciativas que buscam usar tecnologia para fins emancipatórios: cooperativas de plataforma, software livre, hacktivismo e outras formas de resistência digital.",
+      coverImage: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop&q=80",
+      publishedAt: "2024-04-15T15:30:00Z",
+      slug: "resistencia-digital-possibilidades",
+      url: "https://espelhoinvertido.substack.com/p/resistencia-digital-possibilidades",
+      content: "A tecnologia contém potencialidades emancipatórias, mas elas só se realizam através de lutas sociais concretas que disputem tanto o controle técnico quanto a propriedade dos meios de produção digitais."
     },
     {
-      id: "historia-dos-manifestos",
-      title: "História dos Manifestos Políticos",
-      subtitle: "Do Manifesto Comunista aos movimentos contemporâneos",
-      description: "Uma análise histórica comparativa dos grandes manifestos políticos e seu impacto nas transformações sociais.",
-      coverImage: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=600&fit=crop",
-      publishedAt: "2024-05-01",
-      slug: "historia-dos-manifestos",
-      url: "https://espelhoinvertido.substack.com/p/historia-dos-manifestos",
-      content: "Os manifestos políticos funcionam como condensações ideológicas de momentos históricos específicos, articulando diagnósticos e propostas de transformação social."
+      id: "vigilancia-capitalismo-controle",
+      title: "Capitalismo de Vigilância: O Panóptico Digital",
+      subtitle: "Como empresas de tecnologia transformaram vigilância em modelo de negócios",
+      description: "Análise do conceito de 'capitalismo de vigilância' de Shoshana Zuboff através de uma lente marxista, explorando como Google, Meta e outras gigantes extraem valor da vigilância massiva.",
+      coverImage: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop&q=80",
+      publishedAt: "2024-05-01T12:00:00Z",
+      slug: "vigilancia-capitalismo-controle",
+      url: "https://espelhoinvertido.substack.com/p/vigilancia-capitalismo-controle",
+      content: "O capitalismo de vigilância representa uma nova forma de acumulação primitiva, onde nossa experiência vivida é convertida em dados comportamentais que alimentam mercados de previsão."
     }
   ];
 };
 
+// Função principal melhorada com múltiplas estratégias
 export async function fetchSubstackPosts(): Promise<SubstackPost[]> {
-  const now = Date.now();
-  
-  // Verificar cache
-  if (cachedPosts.length > 0 && now - lastFetchTime < CACHE_DURATION) {
-    return cachedPosts;
+  // Verificar cache válido
+  if (!cache.isExpired() && cache.cachedPosts.length > 0) {
+    return cache.cachedPosts;
   }
 
-  try {
-    // Tentar buscar RSS do Substack
-    const rssUrl = 'https://espelhoinvertido.substack.com/feed';
-    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(rssUrl)}`;
-    
-    const response = await fetch(proxyUrl, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/rss+xml, application/xml, text/xml'
-      }
-    });
-    
-    if (response.ok) {
-      const xmlText = await response.text();
-      const posts = parseSubstackRSS(xmlText);
-      
-      if (posts.length > 0) {
-        cachedPosts = posts;
-        lastFetchTime = now;
-        console.log(`✅ ${posts.length} posts carregados do Substack RSS`);
+  // Evitar múltiplas requisições simultâneas
+  if (cache.loading) {
+    return cache.cachedPosts.length > 0 ? cache.cachedPosts : getFallbackPosts();
+  }
+
+  cache.setLoading(true);
+
+  // Lista de estratégias para buscar o RSS
+  const strategies = [
+    () => fetchWithProxy('https://api.allorigins.win/raw?url='),
+    () => fetchWithProxy('https://api.codetabs.com/v1/proxy?quest='),
+    () => fetchDirect(),
+  ];
+
+  for (const strategy of strategies) {
+    try {
+      const posts = await strategy();
+      if (posts && posts.length > 0) {
+        cache.setPosts(posts);
+        cache.setLoading(false);
+        console.log(`✅ ${posts.length} posts carregados do Substack`);
         return posts;
       }
+    } catch (error) {
+      console.warn('Estratégia falhou:', error);
+      cache.incrementFailure();
     }
-  } catch (error) {
-    console.warn('Falha ao buscar RSS do Substack, usando fallback:', error);
   }
 
-  // Usar fallback se a busca falhar
+  // Se todas as estratégias falharam, usar fallback
+  cache.setLoading(false);
   const fallbackPosts = getFallbackPosts();
-  cachedPosts = fallbackPosts;
-  lastFetchTime = now;
   
-  toast.info("Usando conteúdo offline", {
-    description: "Conecte-se à internet para ver as últimas publicações"
-  });
+  // Só mostrar toast se não temos posts em cache
+  if (cache.cachedPosts.length === 0) {
+    toast.info("Usando conteúdo offline", {
+      description: "Conecte-se à internet para ver as últimas publicações"
+    });
+  }
   
-  return fallbackPosts;
+  return cache.cachedPosts.length > 0 ? cache.cachedPosts : fallbackPosts;
 }
 
+// Estratégias de fetch
+async function fetchWithProxy(proxyUrl: string): Promise<SubstackPost[]> {
+  const rssUrl = 'https://espelhoinvertido.substack.com/feed';
+  const url = proxyUrl + encodeURIComponent(rssUrl);
+  
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/rss+xml, application/xml, text/xml',
+      'User-Agent': 'Mozilla/5.0 (compatible; RSS Reader)'
+    },
+    signal: AbortSignal.timeout(10000) // 10 segundos timeout
+  });
+  
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+  }
+  
+  const xmlText = await response.text();
+  return parseSubstackRSS(xmlText);
+}
+
+async function fetchDirect(): Promise<SubstackPost[]> {
+  const response = await fetch('https://espelhoinvertido.substack.com/feed', {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+      'Accept': 'application/rss+xml, application/xml, text/xml'
+    },
+    signal: AbortSignal.timeout(8000)
+  });
+  
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+  }
+  
+  const xmlText = await response.text();
+  return parseSubstackRSS(xmlText);
+}
+
+// Funções auxiliares
 export async function fetchPostBySlug(slug: string): Promise<SubstackPost | null> {
   try {
     const posts = await fetchSubstackPosts();
@@ -218,26 +322,42 @@ export async function fetchPostBySlug(slug: string): Promise<SubstackPost | null
 }
 
 export async function checkForUpdates(): Promise<boolean> {
-  const now = Date.now();
-  
-  if (now - lastFetchTime < 5 * 60 * 1000) {
+  if (!cache.isExpired()) {
     return false;
   }
   
-  lastFetchTime = 0;
-  const posts = await fetchSubstackPosts();
-  return posts.length > 0;
+  try {
+    const oldCount = cache.cachedPosts.length;
+    await fetchSubstackPosts();
+    return cache.cachedPosts.length > oldCount;
+  } catch (error) {
+    console.error("Erro ao verificar atualizações:", error);
+    return false;
+  }
 }
 
-export function setupAutoRefresh(interval = 30) {
+export function setupAutoRefresh(intervalMinutes = 15): number {
   const intervalId = setInterval(async () => {
     try {
-      await fetchSubstackPosts();
+      const hasUpdates = await checkForUpdates();
+      if (hasUpdates) {
+        toast.success("Novas publicações encontradas!", {
+          description: "O conteúdo foi atualizado automaticamente"
+        });
+      }
     } catch (error) {
       console.error("Erro na atualização automática:", error);
     }
-  }, interval * 60 * 1000);
+  }, intervalMinutes * 60 * 1000);
   
-  fetchSubstackPosts();
+  // Buscar posts inicialmente
+  fetchSubstackPosts().catch(console.error);
+  
   return intervalId;
+}
+
+// Função para limpar cache (útil para debug)
+export function clearCache(): void {
+  cache.reset();
+  console.log("Cache do Substack limpo");
 }

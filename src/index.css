@@ -77,20 +77,36 @@
   * {
     @apply border-border;
   }
+  
+  html {
+    @apply scroll-smooth;
+  }
+  
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground min-h-screen;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Garantir que o root sempre tenha altura mínima */
+  #root {
+    @apply min-h-screen;
   }
 
   .glass-card {
-    @apply backdrop-blur-sm bg-white/90 dark:bg-gray-800/90 border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm;
+    @apply backdrop-blur-sm bg-white/95 dark:bg-gray-800/95 border border-gray-200/50 dark:border-gray-700/50 rounded-lg shadow-lg;
   }
 
   .bg-light-gray {
-    @apply bg-gray-50 dark:bg-gray-900;
+    @apply bg-gray-50/50 dark:bg-gray-900/50;
   }
   
   .bg-dot-pattern {
-    background-image: radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+  
+  .dark .bg-dot-pattern {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
   }
 
   .gradient-text {
@@ -110,7 +126,7 @@
   .animate-slide-up {
     animation: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px);
   }
 
   @keyframes slide-up {
@@ -122,7 +138,8 @@
   
   .animate-shimmer {
     animation: shimmer 2s infinite linear;
-    background-size: 400% 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background-size: 200% 100%;
   }
   
   @keyframes shimmer {
@@ -135,6 +152,32 @@
   }
   
   .shadow-glow {
-    box-shadow: 0 0 15px rgba(56, 178, 172, 0.7);
+    box-shadow: 0 0 20px rgba(56, 178, 172, 0.3);
   }
+  
+  /* Correções para páginas com tela preta */
+  .page-container {
+    @apply min-h-screen bg-background text-foreground;
+  }
+  
+  .content-wrapper {
+    @apply container mx-auto px-4 py-8;
+  }
+}
+
+/* Correções específicas para React Flow */
+.react-flow__background {
+  @apply bg-gray-50 dark:bg-gray-800;
+}
+
+.react-flow__node {
+  @apply bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600;
+}
+
+.react-flow__controls {
+  @apply bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600;
+}
+
+.react-flow__minimap {
+  @apply bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600;
 }

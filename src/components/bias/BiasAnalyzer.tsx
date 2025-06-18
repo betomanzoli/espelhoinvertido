@@ -1,192 +1,172 @@
 
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Progress } from '@/components/ui/progress';
+import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Search, Zap, AlertTriangle } from 'lucide-react';
-import { RAFAEL, LUISA } from '@/data/personas';
+import { Progress } from '@/components/ui/progress';
+import { Search, AlertTriangle, CheckCircle, Info } from 'lucide-react';
 
-interface BiasAnalysis {
-  originalText: string;
-  ideologicalBias: {
-    capitalism: number;
-    socialism: number;
-    neutrality: number;
-  };
-  rafaelPerspective: string;
-  luisaPerspective: string;
-  contradictions: string[];
-  keywords: string[];
+interface BiasResult {
+  type: string;
+  score: number;
+  description: string;
+  examples: string[];
+  color: string;
 }
 
 const BiasAnalyzer = () => {
-  const [inputText, setInputText] = useState('');
-  const [analysis, setAnalysis] = useState<BiasAnalysis | null>(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [text, setText] = useState('');
+  const [analyzing, setAnalyzing] = useState(false);
+  const [results, setResults] = useState<BiasResult[]>([]);
 
-  const analyzeText = async () => {
-    if (!inputText.trim()) return;
+  const analyzeBias = () => {
+    if (!text.trim()) return;
     
-    setIsAnalyzing(true);
+    setAnalyzing(true);
     
-    // Simular análise (em produção seria via API)
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    
-    const mockAnalysis: BiasAnalysis = {
-      originalText: inputText,
-      ideologicalBias: {
-        capitalism: Math.floor(Math.random() * 40) + 30,
-        socialism: Math.floor(Math.random() * 30) + 20,
-        neutrality: Math.floor(Math.random() * 40) + 30
-      },
-      rafaelPerspective: "Este texto reflete as contradições inerentes ao modo de produção capitalista. A linguagem utilizada revela uma naturalização das relações de exploração, mascarando as verdadeiras relações de classe sob um verniz de neutralidade técnica.",
-      luisaPerspective: "Na prática, esse discurso serve para legitimar estruturas de poder existentes. Observe como os termos utilizados ecoam narrativas corporativas que transferem responsabilidade individual para problemas sistêmicos - uma estratégia clássica da economia de plataforma.",
-      contradictions: [
-        "Contradição entre discurso meritocrático e realidade de desigualdade estrutural",
-        "Naturalização de processos socialmente construídos",
-        "Invisibilização das relações de poder"
-      ],
-      keywords: inputText.toLowerCase().split(' ').filter(word => 
-        ['trabalho', 'empresa', 'mercado', 'economia', 'individual', 'sucesso'].includes(word)
-      )
-    };
-    
-    setAnalysis(mockAnalysis);
-    setIsAnalyzing(false);
+    // Simular análise - em implementação real seria uma API
+    setTimeout(() => {
+      const mockResults: BiasResult[] = [
+        {
+          type: 'Viés de Confirmação',
+          score: 65,
+          description: 'Tendência a interpretar informações de forma que confirme crenças preexistentes',
+          examples: ['Seleção apenas de fontes que apoiam o argumento', 'Ignorar dados contraditórios'],
+          color: 'orange'
+        },
+        {
+          type: 'Viés Ideológico',
+          score: 45,
+          description: 'Presença de elementos que revelam posicionamento político específico',
+          examples: ['Uso de termos carregados ideologicamente', 'Pressupostos não explicitados'],
+          color: 'blue'
+        },
+        {
+          type: 'Viés de Fonte',
+          score: 30,
+          description: 'Dependência excessiva de fontes limitadas ou tendenciosas',
+          examples: ['Citação apenas de autores alinhados', 'Falta de diversidade de perspectivas'],
+          color: 'green'
+        }
+      ];
+      
+      setResults(mockResults);
+      setAnalyzing(false);
+    }, 2000);
+  };
+
+  const getScoreColor = (score: number) => {
+    if (score >= 70) return 'text-red-600';
+    if (score >= 40) return 'text-orange-600';
+    return 'text-green-600';
+  };
+
+  const getScoreIcon = (score: number) => {
+    if (score >= 70) return <AlertTriangle className="h-4 w-4 text-red-600" />;
+    if (score >= 40) return <Info className="h-4 w-4 text-orange-600" />;
+    return <CheckCircle className="h-4 w-4 text-green-600" />;
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-6">
+    <div className="w-full space-y-6">
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Search className="h-5 w-5" />
-            Detector de Contradições Ideológicas
+            Detector de Viés Ideológico
           </CardTitle>
           <CardDescription>
-            Analise textos através das lentes dialéticas de Rafael e Luísa
+            Analise textos para identificar possíveis vieses ideológicos, de confirmação e de fonte
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Textarea
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            placeholder="Cole aqui o texto que deseja analisar (notícia, discurso político, post de rede social...)"
-            className="min-h-32"
-          />
+          <div>
+            <label className="text-sm font-medium mb-2 block">
+              Cole o texto para análise:
+            </label>
+            <Textarea
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="Cole aqui o texto que deseja analisar - artigo, discurso, post de redes sociais, etc."
+              rows={6}
+              className="resize-none"
+            />
+          </div>
+          
           <Button 
-            onClick={analyzeText} 
-            disabled={!inputText.trim() || isAnalyzing}
+            onClick={analyzeBias} 
+            disabled={!text.trim() || analyzing}
             className="w-full gap-2"
           >
-            {isAnalyzing ? (
-              <>
-                <Zap className="h-4 w-4 animate-spin" />
-                Analisando...
-              </>
-            ) : (
-              <>
-                <Search className="h-4 w-4" />
-                Detectar Vieses
-              </>
-            )}
+            {analyzing ? 'Analisando...' : 'Analisar Viés'}
+            <Search className="h-4 w-4" />
           </Button>
         </CardContent>
       </Card>
 
-      {analysis && (
+      {results.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Análise Ideológica</CardTitle>
+            <CardTitle>Resultados da Análise</CardTitle>
+            <CardDescription>
+              Níveis de viés detectados no texto analisado
+            </CardDescription>
           </CardHeader>
-          <CardContent>
-            <Tabs defaultValue="bias" className="w-full">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="bias">Viés Detectado</TabsTrigger>
-                <TabsTrigger value="rafael">Rafael</TabsTrigger>
-                <TabsTrigger value="luisa">Luísa</TabsTrigger>
-                <TabsTrigger value="contradictions">Contradições</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="bias" className="space-y-4">
-                <div className="grid gap-4">
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium">Capitalista</span>
-                      <span className="text-sm text-gray-500">{analysis.ideologicalBias.capitalism}%</span>
-                    </div>
-                    <Progress value={analysis.ideologicalBias.capitalism} className="h-2" />
+          <CardContent className="space-y-6">
+            {results.map((result, index) => (
+              <div key={index} className="border-l-4 border-gray-200 pl-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    {getScoreIcon(result.score)}
+                    <h3 className="font-semibold">{result.type}</h3>
                   </div>
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium">Socialista</span>
-                      <span className="text-sm text-gray-500">{analysis.ideologicalBias.socialism}%</span>
-                    </div>
-                    <Progress value={analysis.ideologicalBias.socialism} className="h-2" />
-                  </div>
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm font-medium">Neutro</span>
-                      <span className="text-sm text-gray-500">{analysis.ideologicalBias.neutrality}%</span>
-                    </div>
-                    <Progress value={analysis.ideologicalBias.neutrality} className="h-2" />
-                  </div>
+                  <Badge variant={result.score >= 70 ? 'destructive' : result.score >= 40 ? 'default' : 'secondary'}>
+                    {result.score}%
+                  </Badge>
                 </div>
                 
-                {analysis.keywords.length > 0 && (
-                  <div className="space-y-2">
-                    <h4 className="font-medium">Palavras-chave Detectadas:</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {analysis.keywords.map((keyword, index) => (
-                        <Badge key={index} variant="outline">{keyword}</Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </TabsContent>
-              
-              <TabsContent value="rafael" className="space-y-4">
-                <div className="p-4 bg-red-50 dark:bg-red-950/20 rounded-lg border-l-4 border-red-500">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-2xl">{RAFAEL.avatar}</span>
-                    <h4 className="font-semibold" style={{ color: RAFAEL.color }}>
-                      Perspectiva de {RAFAEL.name}
-                    </h4>
-                  </div>
-                  <p className="text-sm text-gray-700 dark:text-gray-300">
-                    {analysis.rafaelPerspective}
-                  </p>
+                <Progress value={result.score} className="h-2" />
+                
+                <p className="text-sm text-gray-600 dark:text-gray-400">
+                  {result.description}
+                </p>
+                
+                <div>
+                  <h4 className="text-sm font-medium mb-2">Exemplos identificados:</h4>
+                  <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                    {result.examples.map((example, i) => (
+                      <li key={i} className="flex items-start gap-2">
+                        <span className="w-1 h-1 bg-gray-400 rounded-full mt-2 flex-shrink-0" />
+                        {example}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </TabsContent>
-              
-              <TabsContent value="luisa" className="space-y-4">
-                <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border-l-4 border-blue-500">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-2xl">{LUISA.avatar}</span>
-                    <h4 className="font-semibold" style={{ color: LUISA.color }}>
-                      Perspectiva de {LUISA.name}
-                    </h4>
-                  </div>
-                  <p className="text-sm text-gray-700 dark:text-gray-300">
-                    {analysis.luisaPerspective}
-                  </p>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="contradictions" className="space-y-4">
-                <div className="space-y-3">
-                  {analysis.contradictions.map((contradiction, index) => (
-                    <div key={index} className="flex items-start gap-3 p-3 bg-yellow-50 dark:bg-yellow-950/20 rounded-lg">
-                      <AlertTriangle className="h-5 w-5 text-yellow-600 mt-0.5 flex-shrink-0" />
-                      <p className="text-sm text-gray-700 dark:text-gray-300">{contradiction}</p>
-                    </div>
-                  ))}
-                </div>
-              </TabsContent>
-            </Tabs>
+              </div>
+            ))}
+            
+            <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
+              <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-2">
+                💡 Interpretação Dialética
+              </h4>
+              <p className="text-sm text-blue-800 dark:text-blue-200">
+                Lembre-se: todo texto carrega perspectivas. O objetivo não é eliminar completamente 
+                o viés, mas reconhecê-lo e considerá-lo na interpretação. A neutralidade absoluta 
+                é uma ilusão - o importante é a transparência sobre nossos pontos de partida.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+      
+      {text && !results.length && !analyzing && (
+        <Card>
+          <CardContent className="text-center py-8">
+            <Search className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+            <p className="text-gray-500">
+              Clique em "Analisar Viés" para começar a análise do texto
+            </p>
           </CardContent>
         </Card>
       )}
