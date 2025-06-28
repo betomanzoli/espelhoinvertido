@@ -1,17 +1,17 @@
-
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, RefreshCw, Wifi, WifiOff } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ChronicleCard from './ChronicleCard';
 import RecommendationsSection from './RecommendationsSection';
+import ChroniclesHeader from './ChroniclesHeader';
+import ChroniclesSearch from './ChroniclesSearch';
 import { convertSubstackPostsToChronicles, getFilteredChronicles, getRecommendations, searchChronicles } from './ChroniclesData';
 import { Chronicle } from '@/lib/debateData';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useSubstackData } from '@/hooks/useSubstackData';
 import { toast } from 'sonner';
-import { Input } from '@/components/ui/input';
 
 const ChroniclesSection = () => {
   const [activeTab, setActiveTab] = useState('todas');
@@ -96,51 +96,20 @@ const ChroniclesSection = () => {
   return (
     <section className="py-16 md:py-24">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-2">
-              Crônicas Ideológicas
-            </h2>
-            <div className="flex items-center gap-2">
-              {isOnline ? (
-                <div className="flex items-center gap-1 text-green-600 text-sm">
-                  <Wifi className="h-4 w-4" />
-                  <span>Conectado</span>
-                </div>
-              ) : (
-                <div className="flex items-center gap-1 text-orange-600 text-sm">
-                  <WifiOff className="h-4 w-4" />
-                  <span>Modo offline</span>
-                </div>
-              )}
-            </div>
-          </div>
-          
-          <Button 
-            variant="outline" 
-            size="sm" 
-            onClick={handleRefresh} 
-            className="gap-2"
-            disabled={loading}
-          >
-            <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-            Atualizar
-          </Button>
-        </div>
+        <ChroniclesHeader 
+          isOnline={isOnline}
+          loading={loading}
+          onRefresh={handleRefresh}
+        />
         
         <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-2xl">
           Explore diferentes perspectivas sobre temas contemporâneos através das nossas crônicas do Substack
         </p>
         
-        {/* Busca */}
-        <div className="max-w-md mx-auto mb-8">
-          <Input
-            placeholder="Buscar crônicas..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className="w-full"
-          />
-        </div>
+        <ChroniclesSearch 
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+        />
         
         <Tabs defaultValue="todas" className="w-full max-w-6xl mx-auto" onValueChange={handleTabChange}>
           <div className="flex justify-center mb-8">

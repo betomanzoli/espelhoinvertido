@@ -1,13 +1,10 @@
 
 import { Link } from 'react-router-dom';
-import { ExternalLink, Check, Users, TrendingUp } from 'lucide-react';
-import { SOCIAL_PLATFORMS } from './social/SocialMediaData';
+import FooterSocialMetrics from './Footer/FooterSocialMetrics';
+import FooterTrustIndicators from './Footer/FooterTrustIndicators';
+import FooterSocialLinks from './Footer/FooterSocialLinks';
 
 const Footer = () => {
-  const totalFollowers = SOCIAL_PLATFORMS.reduce((sum, platform) => 
-    sum + (platform.followerCount || 0), 0
-  );
-
   return (
     <footer className="bg-gray-100 dark:bg-gray-900 py-8 border-t border-gray-200 dark:border-gray-800">
       <div className="container mx-auto px-4">
@@ -25,35 +22,8 @@ const Footer = () => {
               Uma plataforma multimídia para explorar ideias complexas e desenvolver pensamento crítico.
             </p>
             
-            {/* Métricas das redes sociais */}
-            <div className="p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
-              <div className="flex items-center gap-2 mb-2">
-                <TrendingUp className="h-4 w-4 text-blue-600" />
-                <span className="text-sm font-medium text-blue-900 dark:text-blue-100">
-                  Comunidade Ativa
-                </span>
-              </div>
-              <div className="flex items-center gap-1 text-sm text-blue-700 dark:text-blue-300">
-                <Users className="h-3 w-3" />
-                <span>{totalFollowers.toLocaleString()} seguidores</span>
-              </div>
-            </div>
-            
-            {/* Certificados de confiança */}
-            <div className="mt-4 space-y-2">
-              <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                <Check className="h-4 w-4 text-green-500 mr-2" />
-                <span>Pensamento Crítico Garantido</span>
-              </div>
-              <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                <Check className="h-4 w-4 text-green-500 mr-2" />
-                <span>50+ publicações verificadas</span>
-              </div>
-              <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                <Check className="h-4 w-4 text-green-500 mr-2" />
-                <span>Conteúdo multi-plataforma</span>
-              </div>
-            </div>
+            <FooterSocialMetrics />
+            <FooterTrustIndicators />
           </div>
           
           <div>
@@ -120,30 +90,7 @@ const Footer = () => {
           
           <div>
             <h3 className="font-medium mb-4">Siga-nos em Todas as Plataformas</h3>
-            <div className="space-y-3">
-              {SOCIAL_PLATFORMS.map((platform) => (
-                <a
-                  key={platform.id}
-                  href={platform.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-3 text-sm text-gray-600 dark:text-gray-400 hover:text-blue-700 dark:hover:text-teal-400 transition-colors group"
-                >
-                  <span className="text-lg group-hover:scale-110 transition-transform">
-                    {platform.icon}
-                  </span>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium">{platform.displayName}</span>
-                      <ExternalLink className="h-3 w-3" />
-                    </div>
-                    <div className="text-xs text-gray-500 dark:text-gray-500">
-                      {platform.followerCount?.toLocaleString()} seguidores
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
+            <FooterSocialLinks />
             
             <div className="mt-4 p-3 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 rounded-lg border border-gray-200 dark:border-gray-700">
               <div className="text-xs font-medium text-gray-900 dark:text-gray-100 mb-1">

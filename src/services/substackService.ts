@@ -1,4 +1,6 @@
 import { toast } from "sonner";
+import { cache } from './substack/cache';
+import { fetchWithProxy, fetchDirect } from './substack/strategies';
 
 export interface SubstackPost {
   id: string;
@@ -12,120 +14,6 @@ export interface SubstackPost {
   content?: string;
 }
 
-// Cache melhorado com controle de estado
-class SubstackCache {
-  private posts: SubstackPost[] = [];
-  private lastFetchTime = 0;
-  private isLoading = false;
-  private failureCount = 0;
-  
-  private readonly CACHE_DURATION = 10 * 60 * 1000; // 10 minutos
-  private readonly MAX_RETRIES = 3;
-  
-  get cachedPosts() { return [...this.posts]; }
-  get loading() { return this.isLoading; }
-  get lastUpdate() { return this.lastFetchTime; }
-  
-  isExpired(): boolean {
-    return Date.now() - this.lastFetchTime > this.CACHE_DURATION;
-  }
-  
-  canRetry(): boolean {
-    return this.failureCount < this.MAX_RETRIES;
-  }
-  
-  setPosts(posts: SubstackPost[]) {
-    this.posts = posts;
-    this.lastFetchTime = Date.now();
-    this.failureCount = 0;
-  }
-  
-  setLoading(loading: boolean) {
-    this.isLoading = loading;
-  }
-  
-  incrementFailure() {
-    this.failureCount++;
-  }
-  
-  reset() {
-    this.failureCount = 0;
-  }
-}
-
-const cache = new SubstackCache();
-
-// Parser melhorado para RSS do Substack
-const parseSubstackRSS = (xmlText: string): SubstackPost[] => {
-  try {
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
-    
-    // Verificar se há erros de parsing
-    const parserError = xmlDoc.querySelector('parsererror');
-    if (parserError) {
-      throw new Error('XML parsing failed');
-    }
-    
-    const items = xmlDoc.querySelectorAll('item');
-    
-    if (items.length === 0) {
-      console.warn('Nenhum item encontrado no RSS');
-      return [];
-    }
-    
-    const posts: SubstackPost[] = [];
-    
-    items.forEach((item, index) => {
-      try {
-        const title = item.querySelector('title')?.textContent?.trim() || `Post ${index + 1}`;
-        const description = item.querySelector('description')?.textContent || '';
-        const link = item.querySelector('link')?.textContent?.trim() || '';
-        const pubDate = item.querySelector('pubDate')?.textContent || new Date().toISOString();
-        const guid = item.querySelector('guid')?.textContent || `post-${Date.now()}-${index}`;
-        
-        // Extrair imagem da descrição HTML
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = description;
-        const imgElement = tempDiv.querySelector('img');
-        const coverImage = imgElement?.src || 
-          `https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=800&h=600&fit=crop&q=80`;
-        
-        // Limpar descrição de HTML
-        const cleanDescription = tempDiv.textContent || tempDiv.innerText || description;
-        const truncatedDescription = cleanDescription.substring(0, 300) + 
-          (cleanDescription.length > 300 ? '...' : '');
-        
-        // Criar slug seguro
-        const slug = link.split('/').pop() || 
-          title.toLowerCase().replace(/[^a-z0-9]/gi, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
-        
-        posts.push({
-          id: slug,
-          title: title,
-          subtitle: cleanDescription.substring(0, 100) + (cleanDescription.length > 100 ? '...' : ''),
-          description: truncatedDescription,
-          coverImage,
-          publishedAt: new Date(pubDate).toISOString(),
-          slug,
-          url: link,
-          content: cleanDescription
-        });
-      } catch (itemError) {
-        console.warn(`Erro ao processar item ${index}:`, itemError);
-      }
-    });
-    
-    return posts.sort((a, b) => 
-      new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-    );
-  } catch (error) {
-    console.error('Erro ao fazer parse do RSS:', error);
-    throw error;
-  }
-};
-
-// Dados de fallback atualizados e expandidos
 const getFallbackPosts = (): SubstackPost[] => {
   return [
     {
@@ -219,21 +107,17 @@ const getFallbackPosts = (): SubstackPost[] => {
   ];
 };
 
-// Função principal melhorada com múltiplas estratégias
 export async function fetchSubstackPosts(): Promise<SubstackPost[]> {
-  // Verificar cache válido
   if (!cache.isExpired() && cache.cachedPosts.length > 0) {
     return cache.cachedPosts;
   }
 
-  // Evitar múltiplas requisições simultâneas
   if (cache.loading) {
     return cache.cachedPosts.length > 0 ? cache.cachedPosts : getFallbackPosts();
   }
 
   cache.setLoading(true);
 
-  // Lista de estratégias para buscar o RSS
   const strategies = [
     () => fetchWithProxy('https://api.allorigins.win/raw?url='),
     () => fetchWithProxy('https://api.codetabs.com/v1/proxy?quest='),
@@ -255,11 +139,9 @@ export async function fetchSubstackPosts(): Promise<SubstackPost[]> {
     }
   }
 
-  // Se todas as estratégias falharam, usar fallback
   cache.setLoading(false);
   const fallbackPosts = getFallbackPosts();
   
-  // Só mostrar toast se não temos posts em cache
   if (cache.cachedPosts.length === 0) {
     toast.info("Usando conteúdo offline", {
       description: "Conecte-se à internet para ver as últimas publicações"
@@ -269,47 +151,6 @@ export async function fetchSubstackPosts(): Promise<SubstackPost[]> {
   return cache.cachedPosts.length > 0 ? cache.cachedPosts : fallbackPosts;
 }
 
-// Estratégias de fetch
-async function fetchWithProxy(proxyUrl: string): Promise<SubstackPost[]> {
-  const rssUrl = 'https://espelhoinvertido.substack.com/feed';
-  const url = proxyUrl + encodeURIComponent(rssUrl);
-  
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'Accept': 'application/rss+xml, application/xml, text/xml',
-      'User-Agent': 'Mozilla/5.0 (compatible; RSS Reader)'
-    },
-    signal: AbortSignal.timeout(10000) // 10 segundos timeout
-  });
-  
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-  }
-  
-  const xmlText = await response.text();
-  return parseSubstackRSS(xmlText);
-}
-
-async function fetchDirect(): Promise<SubstackPost[]> {
-  const response = await fetch('https://espelhoinvertido.substack.com/feed', {
-    method: 'GET',
-    mode: 'cors',
-    headers: {
-      'Accept': 'application/rss+xml, application/xml, text/xml'
-    },
-    signal: AbortSignal.timeout(8000)
-  });
-  
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-  }
-  
-  const xmlText = await response.text();
-  return parseSubstackRSS(xmlText);
-}
-
-// Funções auxiliares
 export async function fetchPostBySlug(slug: string): Promise<SubstackPost | null> {
   try {
     const posts = await fetchSubstackPosts();
@@ -349,13 +190,11 @@ export function setupAutoRefresh(intervalMinutes = 15): ReturnType<typeof setInt
     }
   }, intervalMinutes * 60 * 1000);
   
-  // Buscar posts inicialmente
   fetchSubstackPosts().catch(console.error);
   
   return intervalId;
 }
 
-// Função para limpar cache (útil para debug)
 export function clearCache(): void {
   cache.reset();
   console.log("Cache do Substack limpo");
