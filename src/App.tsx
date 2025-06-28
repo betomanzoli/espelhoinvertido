@@ -20,6 +20,9 @@ import MuseuVirtual from "./pages/MuseuVirtual";
 import EconomiaAcao from "./pages/EconomiaAcao";
 import Laboratorio from "./pages/Laboratorio";
 import SubstackExpanded from "./pages/SubstackExpanded";
+import Chronicles from "./pages/Chronicles";
+import BiasLab from "./pages/BiasLab";
+import AnaliseDiscurso from "./pages/AnaliseDiscurso";
 
 const queryClient = new QueryClient();
 
