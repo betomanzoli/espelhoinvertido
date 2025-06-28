@@ -3,7 +3,9 @@ import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useEffect, useState } from 'react';
 import AnimatedLogo from '@/components/AnimatedLogo';
+
 const phrases = ["Explore ideias que desafiam suas certezas.", "Descubra como diferentes perspectivas ideológicas moldam nossa visão do mundo.", "Questione narrativas estabelecidas e construa seu próprio entendimento.", "Expanda seus horizontes com diálogos críticos e provocadores."];
+
 const HeroSection = () => {
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(true);
@@ -29,44 +31,45 @@ const HeroSection = () => {
       }
     }
   }, [displayText, isTyping, currentPhrase, currentPhraseIndex]);
-  return <section className="relative pt-24 md:pt-32 pb-16 md:pb-24 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-900 to-teal-500 opacity-90">
-        {/* Padrão de pontos sobrepostos */}
-        <div className="absolute inset-0 bg-dot-pattern bg-[length:20px_20px] opacity-20 bg-slate-50"></div>
+  return (
+    <section className="relative pt-24 md:pt-32 pb-16 md:pb-24 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-800">
+        {/* Padrão de pontos sobrepostos com melhor contraste */}
+        <div className="absolute inset-0 bg-dot-pattern bg-[length:20px_20px] opacity-10"></div>
         
-        {/* Círculos de luz flutuantes */}
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-blue-400/20 blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-teal-300/20 blur-3xl animate-pulse" style={{
-        animationDelay: '2s'
-      }}></div>
+        {/* Círculos de luz flutuantes com opacidade reduzida */}
+        <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-blue-500/10 blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-indigo-400/10 blur-3xl animate-pulse" style={{
+          animationDelay: '2s'
+        }}></div>
       </div>
       
-      <div className="container mx-auto px-4 relative">
+      <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <div className="mb-6 text-white animate-slide-up">
             <AnimatedLogo size="lg" showText={true} className="justify-center" />
           </div>
           
           <div className="h-24 md:h-20">
-            <p className="text-lg md:text-xl text-white mb-8 animate-slide-up min-h-[4rem]" style={{
-            animationDelay: '0.1s'
-          }}>
+            <p className="text-lg md:text-xl text-white/95 mb-8 animate-slide-up min-h-[4rem] font-medium" style={{
+              animationDelay: '0.1s'
+            }}>
               {displayText}
-              <span className="animate-pulse">|</span>
+              <span className="animate-pulse text-white/80">|</span>
             </p>
           </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style={{
-          animationDelay: '0.2s'
-        }}>
-            <Button asChild size="lg" className="gap-2 bg-white text-blue-900 hover:bg-gray-100 hover:scale-105 transition-all duration-300">
+            animationDelay: '0.2s'
+          }}>
+            <Button asChild size="lg" className="gap-2 bg-white text-slate-900 hover:bg-gray-100 hover:scale-105 transition-all duration-300 font-semibold">
               <Link to="/debate">
                 Comece a explorar
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </Button>
             
-            <Button asChild variant="outline" size="lg" className="gap-2 border-white text-white hover:bg-white/10 hover:scale-105 transition-all duration-300">
+            <Button asChild variant="outline" size="lg" className="gap-2 border-2 border-white/80 text-white hover:bg-white/10 hover:border-white hover:scale-105 transition-all duration-300 font-medium backdrop-blur-sm">
               <Link to="/library">
                 Explorar crônicas
                 <ArrowRight className="w-5 h-5" />
@@ -75,6 +78,8 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default HeroSection;
