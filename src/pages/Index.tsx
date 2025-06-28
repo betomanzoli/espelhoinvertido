@@ -2,14 +2,14 @@
 import { useEffect } from 'react';
 import HeroSection from '@/components/home/HeroSection';
 import ProjectsSection from '@/components/home/ProjectsSection';
-import ChroniclesSection from '@/components/home/ChroniclesSection'; 
 import CallToActionSection from '@/components/home/CallToActionSection';
 import SimuladorRevolucoesHighlight from '@/components/home/SimuladorRevolucoesHighlight';
 import DialecticChatbot from '@/components/dialectic/DialecticChatbot';
-import SocialContentHub from '@/components/social/SocialContentHub';
-import SubstackHighlight from '@/components/social/SubstackHighlight';
 import SocialMediaButton from '@/components/social/SocialMediaButton';
-import ChroniclesShowcase from '@/components/chronicles/ChroniclesShowcase';
+import ChroniclesTeaser from '@/components/chronicles/ChroniclesTeaser';
+import SocialHubTeaser from '@/components/social/SocialHubTeaser';
+import SubstackHighlight from '@/components/social/SubstackHighlight';
+import SubscriptionPopup from '@/components/ui/subscription-popup';
 import { setupAutoRefresh } from '@/services/substackService';
 import { toast } from 'sonner';
 
@@ -26,15 +26,15 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <HeroSection />
-      <ChroniclesShowcase />
+      <ChroniclesTeaser />
       <ProjectsSection />
       <SimuladorRevolucoesHighlight />
-      <ChroniclesSection />
       <SubstackHighlight />
-      <SocialContentHub />
+      <SocialHubTeaser />
       <CallToActionSection />
       <DialecticChatbot />
       <SocialMediaButton />
+      <SubscriptionPopup delay={45000} />
     </div>
   );
 };
