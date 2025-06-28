@@ -41,6 +41,10 @@ const App = () => (
                 <Route path="/library/chronicle/:chronicleId" element={<ChronicleDetail />} />
                 <Route path="/resources" element={<Resources />} />
                 
+                {/* Novas rotas do projeto autêntico */}
+                <Route path="/chronicles" element={<Chronicles />} />
+                <Route path="/bias-lab" element={<BiasLab />} />
+                
                 {/* Project routes - Agora implementadas */}
                 <Route path="/mapa-conflitos" element={<MapaConflitos />} />
                 <Route path="/simulador" element={<SimuladorRevolucoes />} />
@@ -53,7 +57,7 @@ const App = () => (
                 
                 {/* Projetos que ainda estão em desenvolvimento */}
                 <Route path="/cronicas" element={<ProjectComingSoon title="Escreva Sua Crônica" />} />
-                <Route path="/analise-discurso" element={<ProjectComingSoon title="Análise de Discurso" />} />
+                <Route path="/analise-discurso" element={<AnaliseDiscurso />} />
                 
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
