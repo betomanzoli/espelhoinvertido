@@ -13,45 +13,24 @@
   :root {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
-
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-
     --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 210 40% 98%;
-
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
-
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
-
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
-
     --radius: 0.5rem;
-
-    /* Espelho Invertido Brand Colors - Tema Viés de Confirmação */
-    --ei-primary: 234 29% 20%;       /* #2c3e50 - Azul escuro reflexivo */
-    --ei-secondary: 210 22% 49%;     /* #708090 - Cinza espelho */
-    --ei-accent: 45 100% 51%;        /* #FFD700 - Dourado revelação */
-    --ei-light: 210 40% 98%;         /* #f8fafc - Branco suave */
-    --ei-mirror: 220 13% 91%;        /* #e2e8f0 - Cinza espelho claro */
-    --ei-shadow: 220 43% 11%;        /* #0f172a - Sombra profunda */
-    --ei-reflection: 213 27% 84%;    /* #cbd5e1 - Reflexo sutil */
-    --ei-truth: 142 76% 36%;         /* #059669 - Verde verdade */
-    --ei-bias: 0 84% 60%;            /* #ef4444 - Vermelho viés */
-
     --burgundy: 320 50% 45%;
     --navy: 225 50% 40%;
   }
@@ -59,32 +38,23 @@
   .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
-
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-
     --primary: 217.2 91.2% 59.8%;
     --primary-foreground: 222.2 47.4% 11.2%;
-
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
-
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
-
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 224.3 76.5% 48%;
-
     --burgundy: 320 50% 65%;
     --navy: 225 50% 60%;
   }
@@ -101,24 +71,30 @@
   }
   
   body {
-    @apply bg-background text-foreground min-h-screen font-body;
+    @apply bg-background text-foreground min-h-screen;
+    font-family: 'Inter', system-ui, sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
-  }
-
-  .dark body {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
   }
 
   #root {
     @apply min-h-screen;
   }
 
-  /* Tipografia Hierárquica Sofisticada */
+  /* Layout Base Classes */
+  .page-container {
+    @apply min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800;
+  }
+
+  .content-wrapper {
+    @apply container mx-auto px-4 py-8;
+  }
+
+  /* Typography System */
   h1, .heading-1 {
-    @apply font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight;
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight;
+    font-family: 'Playfair Display', serif;
     background: linear-gradient(135deg, #2c3e50 0%, #708090 50%, #FFD700 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -126,232 +102,155 @@
   }
 
   h2, .heading-2 {
-    @apply font-display text-3xl md:text-4xl font-semibold tracking-tight;
-    color: #2c3e50;
+    @apply text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 dark:text-slate-100;
+    font-family: 'Playfair Display', serif;
   }
 
   h3, .heading-3 {
-    @apply font-display text-2xl md:text-3xl font-semibold;
-    color: #2c3e50;
+    @apply text-2xl md:text-3xl font-semibold text-slate-800 dark:text-slate-200;
+    font-family: 'Playfair Display', serif;
   }
 
   h4, .heading-4 {
-    @apply font-serif text-xl md:text-2xl font-medium;
-    color: #708090;
+    @apply text-xl md:text-2xl font-medium text-slate-700 dark:text-slate-300;
+    font-family: 'Crimson Text', serif;
   }
 
   h5, .heading-5, h6, .heading-6 {
-    @apply font-body text-lg md:text-xl font-medium;
-    color: #708090;
+    @apply text-lg md:text-xl font-medium text-slate-600 dark:text-slate-400;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .font-display {
+    font-family: 'Playfair Display', serif;
+  }
+
+  .font-body {
+    font-family: 'Inter', sans-serif;
+  }
+
+  .font-serif {
+    font-family: 'Crimson Text', serif;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
   }
 
   .lead {
-    @apply text-xl md:text-2xl font-light leading-relaxed;
-    color: #708090;
+    @apply text-xl md:text-2xl font-light leading-relaxed text-slate-600 dark:text-slate-300;
   }
 
-  .body-large {
-    @apply text-lg leading-relaxed;
-  }
+  /* Espelho Invertido Brand Colors */
+  .text-espelhoinvertido-primary { color: #2c3e50; }
+  .text-espelhoinvertido-secondary { color: #708090; }
+  .text-espelhoinvertido-accent { color: #FFD700; }
+  .text-espelhoinvertido-gold { color: #FFD700; }
+  .text-espelhoinvertido-dark { color: #0f172a; }
 
-  .body-small {
-    @apply text-sm leading-relaxed;
-  }
+  .bg-espelhoinvertido-primary { background-color: #2c3e50; }
+  .bg-espelhoinvertido-secondary { background-color: #708090; }
+  .bg-espelhoinvertido-accent { background-color: #FFD700; }
+  .bg-espelhoinvertido-light { background-color: #f8fafc; }
 
-  .caption {
-    @apply text-xs font-medium uppercase tracking-wider;
-    color: #708090;
-  }
+  .border-espelhoinvertido-accent { border-color: #FFD700; }
+  .border-espelhoinvertido-primary { border-color: #2c3e50; }
 
-  /* Elementos de Marca - Tema Espelho Invertido */
-  .mirror-gradient {
+  /* Gradient Classes */
+  .gradient-espelho {
     background: linear-gradient(135deg, #2c3e50 0%, #708090 50%, #FFD700 100%);
   }
 
-  .reflection-text {
+  .gradient-text {
     background: linear-gradient(135deg, #2c3e50 0%, #708090 50%, #FFD700 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
-  .bias-accent {
-    color: #FFD700;
+  /* Button Components */
+  .btn-primary {
+    @apply bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:from-blue-700 hover:to-blue-800 hover:shadow-lg;
   }
 
-  .truth-accent {
-    color: #059669;
+  .btn-accent {
+    @apply bg-gradient-to-r from-amber-500 to-orange-600 text-slate-900 px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:from-amber-600 hover:to-orange-700 hover:shadow-lg;
   }
 
-  .mirror-card {
-    @apply backdrop-blur-sm border border-gray-200/50 dark:border-gray-700/50 rounded-lg;
-    background: rgba(248, 250, 252, 0.8);
-    box-shadow: 0 8px 32px rgba(44, 62, 80, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  .btn-espelho {
+    @apply bg-gradient-to-r from-slate-700 to-slate-800 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:from-slate-800 hover:to-slate-900 hover:shadow-lg;
   }
 
-  .dark .mirror-card {
-    background: rgba(15, 23, 42, 0.8);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  /* Card Components */
+  .card-espelho {
+    @apply bg-white dark:bg-slate-800 rounded-xl shadow-lg border border-slate-200 dark:border-slate-700 transition-all duration-300 hover:shadow-xl;
   }
 
-  .reflection-pattern {
-    background-image: radial-gradient(circle at 25% 25%, rgba(44, 62, 80, 0.1) 0%, transparent 50%),
-                      radial-gradient(circle at 75% 75%, rgba(112, 128, 144, 0.1) 0%, transparent 50%);
+  .glass-card {
+    @apply backdrop-blur-sm bg-white/80 dark:bg-slate-800/80 border border-white/20 dark:border-slate-700/20 rounded-xl shadow-lg;
   }
 
-  .bias-gradient {
-    background: linear-gradient(45deg, #ef4444, #FFD700);
+  /* Interactive Elements */
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1 hover:shadow-lg;
   }
 
-  .truth-gradient {
-    background: linear-gradient(45deg, #059669, #FFD700);
+  .hover-glow {
+    @apply transition-all duration-300 hover:shadow-glow;
   }
 
-  /* Animações de Reflexão */
-  .animate-mirror-flip {
-    animation: mirror-flip 3s ease-in-out infinite;
+  /* Animation Classes */
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out forwards;
   }
 
-  .animate-reflection {
-    animation: reflection-shimmer 2s ease-in-out infinite;
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
   }
 
-  .hover-reflect {
-    @apply transform transition-all duration-300 hover:scale-105;
-    filter: drop-shadow(0 4px 20px rgba(44, 62, 80, 0.15));
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
   }
 
-  .hover-reflect:hover {
-    filter: drop-shadow(0 8px 40px rgba(255, 215, 0, 0.3));
-  }
-
-  /* Estados Interativos Sofisticados */
-  .interactive-mirror {
-    @apply cursor-pointer transform transition-all duration-300;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .interactive-mirror::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.4), transparent);
-    transition: left 0.5s;
-  }
-
-  .interactive-mirror:hover::before {
-    left: 100%;
-  }
-
-  .button-mirror {
-    @apply font-medium px-6 py-3 rounded-lg transition-all duration-300;
-    background: linear-gradient(135deg, #2c3e50 0%, #708090 100%);
-    color: white;
-    border: 1px solid rgba(255, 215, 0, 0.3);
-    box-shadow: 0 4px 15px rgba(44, 62, 80, 0.3);
-  }
-
-  .button-mirror:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
-    border-color: #FFD700;
-  }
-
-  .button-accent {
-    @apply font-medium px-6 py-3 rounded-lg transition-all duration-300;
-    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-    color: #2c3e50;
-    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-  }
-
-  .button-accent:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+  .animate-pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite;
   }
 }
 
-@layer utilities {
-  /* Utilidades de Sombra Sofisticadas */
-  .shadow-mirror {
-    box-shadow: 0 4px 20px rgba(44, 62, 80, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
-  }
-  
-  .shadow-reflection {
-    box-shadow: 0 8px 30px rgba(255, 215, 0, 0.2), 0 2px 8px rgba(44, 62, 80, 0.1);
-  }
-  
-  .shadow-bias {
-    box-shadow: 0 4px 20px rgba(239, 68, 68, 0.2);
-  }
-  
-  .shadow-truth {
-    box-shadow: 0 4px 20px rgba(5, 150, 105, 0.2);
-  }
-
-  /* Gradientes Utilitários */
-  .bg-mirror-gradient {
-    background: linear-gradient(135deg, #2c3e50 0%, #708090 50%, #FFD700 100%);
-  }
-
-  .bg-reflection-gradient {
-    background: linear-gradient(45deg, rgba(248, 250, 252, 0.9), rgba(226, 232, 240, 0.9));
-  }
-}
-
-/* Animações Personalizadas */
-@keyframes mirror-flip {
-  0%, 100% { transform: rotateY(0deg); }
-  50% { transform: rotateY(180deg); }
-}
-
-@keyframes reflection-shimmer {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
-}
-
-@keyframes slide-up {
+/* Keyframes */
+@keyframes slideUp {
   0% { transform: translateY(20px); opacity: 0; }
   100% { transform: translateY(0); opacity: 1; }
 }
 
-@keyframes fade-in {
+@keyframes fadeIn {
   0% { opacity: 0; transform: translateY(10px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsividade Aprimorada */
-@media (max-width: 640px) {
-  h1, .heading-1 {
-    @apply text-2xl;
-  }
-  h2, .heading-2 {
-    @apply text-xl;
-  }
-  .lead {
-    @apply text-base;
-  }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
 }
 
-/* Tema Escuro Aprimorado */
-.dark h2, .dark .heading-2,
-.dark h3, .dark .heading-3 {
-  color: #e2e8f0;
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
 }
 
-.dark h4, .dark .heading-4,
-.dark h5, .dark .heading-5,
-.dark h6, .dark .heading-6 {
-  color: #cbd5e1;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-.dark .lead {
-  color: #94a3b8;
+::-webkit-scrollbar-track {
+  @apply bg-slate-100 dark:bg-slate-800;
 }
 
-.dark .caption {
-  color: #64748b;
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-400 dark:bg-slate-600 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-500 dark:bg-slate-500;
 }

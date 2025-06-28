@@ -13,7 +13,6 @@ const SubscriptionPopup = ({ delay = 30000 }: SubscriptionPopupProps) => {
   const [hasShown, setHasShown] = useState(false);
 
   useEffect(() => {
-    // Verificar se já foi mostrado nesta sessão
     const popupShown = sessionStorage.getItem('subscriptionPopupShown');
     if (popupShown) return;
 
@@ -36,7 +35,7 @@ const SubscriptionPopup = ({ delay = 30000 }: SubscriptionPopupProps) => {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/20 backdrop-blur-sm flex items-center justify-center p-4">
-      <Card className="max-w-md w-full shadow-2xl border-2 border-amber-500/20 animate-slide-up">
+      <Card className="max-w-md w-full card-espelho animate-slide-up border-2 border-amber-500/20">
         <CardHeader className="relative">
           <Button
             variant="ghost"
@@ -64,7 +63,7 @@ const SubscriptionPopup = ({ delay = 30000 }: SubscriptionPopupProps) => {
           <div className="space-y-3">
             <Button 
               asChild 
-              className="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700"
+              className="w-full btn-accent"
             >
               <a 
                 href="https://espelhoinvertido.substack.com/" 

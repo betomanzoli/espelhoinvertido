@@ -20,7 +20,6 @@ const HeroSection = () => {
   const [displayText, setDisplayText] = useState('');
   const currentPhrase = phrases[currentPhraseIndex];
 
-  // Efeito de digitação aprimorado
   useEffect(() => {
     if (isTyping) {
       if (displayText.length < currentPhrase.length) {
@@ -42,9 +41,9 @@ const HeroSection = () => {
 
   return (
     <section className="relative pt-24 md:pt-32 pb-16 md:pb-24 overflow-hidden">
-      {/* Background sofisticado focado em viés de confirmação */}
+      {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-800">
-        {/* Elementos de reflexão e dualidade */}
+        {/* Floating orbs */}
         <div className="absolute inset-0 opacity-20">
           <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-gradient-to-r from-amber-400/30 to-orange-500/30 blur-3xl animate-pulse-glow"></div>
           <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-gradient-to-r from-blue-400/30 to-indigo-500/30 blur-3xl animate-pulse-glow" style={{
@@ -55,8 +54,11 @@ const HeroSection = () => {
           }}></div>
         </div>
         
-        {/* Padrão de espelhamento */}
-        <div className="absolute inset-0 bg-dot-pattern bg-[length:20px_20px] opacity-10"></div>
+        {/* Dot pattern */}
+        <div className="absolute inset-0 opacity-10" style={{
+          backgroundImage: 'radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 0)',
+          backgroundSize: '20px 20px'
+        }}></div>
       </div>
       
       <div className="container mx-auto px-4 relative z-10">
@@ -66,7 +68,7 @@ const HeroSection = () => {
           </div>
           
           <div className="mb-6 animate-slide-up" style={{ animationDelay: '0.1s' }}>
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
+            <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-4">
               Vieses e Narrativas
             </h1>
             <p className="text-xl md:text-2xl text-white/90 font-light">
@@ -86,41 +88,41 @@ const HeroSection = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up mb-8" style={{
             animationDelay: '0.3s'
           }}>
-            <Button asChild size="lg" className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-slate-900 font-semibold gap-2 text-lg px-8 py-4">
+            <Button asChild size="lg" className="btn-accent text-lg px-8 py-4">
               <Link to="/chronicles">
-                Explorar Crônicas
                 <BookOpen className="w-5 h-5" />
+                Explorar Crônicas
               </Link>
             </Button>
             
-            <Button asChild size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 gap-2 text-lg px-8 py-4">
+            <Button asChild size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 text-lg px-8 py-4">
               <Link to="/bias-lab">
-                Laboratório de Viés
                 <Users className="w-5 h-5" />
+                Laboratório de Viés
               </Link>
             </Button>
           </div>
 
-          {/* Indicadores temáticos focados em viés */}
+          {/* Indicators */}
           <div className="flex flex-wrap justify-center gap-4 text-sm text-white/80 animate-slide-up" style={{
             animationDelay: '0.4s'
           }}>
-            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
+            <div className="flex items-center gap-2 glass-card px-4 py-2 rounded-full">
               <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
               <span>Viés de Confirmação</span>
             </div>
-            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
+            <div className="flex items-center gap-2 glass-card px-4 py-2 rounded-full">
               <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
               <span>Narrativas Contrastantes</span>
             </div>
-            <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
+            <div className="flex items-center gap-2 glass-card px-4 py-2 rounded-full">
               <span className="w-2 h-2 rounded-full bg-red-400 animate-pulse"></span>
               <span>Reflexão Crítica</span>
             </div>
           </div>
 
-          {/* Call-to-action específico para o projeto */}
-          <div className="mt-12 p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 animate-slide-up" style={{
+          {/* CTA Box */}
+          <div className="mt-12 glass-card p-6 rounded-xl animate-slide-up" style={{
             animationDelay: '0.5s'
           }}>
             <p className="text-white/90 text-sm mb-4">

@@ -15,7 +15,6 @@ import { toast } from 'sonner';
 
 const Index = () => {
   useEffect(() => {
-    // Iniciar a busca de posts do Substack e configurar atualizações automáticas
     setupAutoRefresh();
     
     toast.success("Bem-vindo ao Espelho Invertido", {

@@ -9,13 +9,13 @@ const SocialHubTeaser = () => {
   const activePlatforms = SOCIAL_PLATFORMS.filter(platform => platform.isActive);
   
   return (
-    <section className="py-16 bg-gradient-to-br from-espelhoinvertido-primary/5 to-espelhoinvertido-accent/5 dark:from-espelhoinvertido-primary/10 dark:to-espelhoinvertido-accent/10">
-      <div className="container mx-auto px-4">
+    <section className="page-container py-16">
+      <div className="content-wrapper">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-espelhoinvertido-primary to-espelhoinvertido-accent bg-clip-text text-transparent">
+          <h2 className="heading-2 mb-4">
             Siga-nos em Todas as Plataformas
           </h2>
-          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+          <p className="lead max-w-3xl mx-auto">
             Conteúdo exclusivo e adaptado para cada rede social. Do aprofundamento no Substack 
             aos vídeos educativos no YouTube, análises no LinkedIn e reflexões visuais no Instagram.
           </p>
@@ -23,14 +23,14 @@ const SocialHubTeaser = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {activePlatforms.map((platform) => (
-            <Card key={platform.id} className="hover:shadow-lg transition-all duration-300 group border-2 border-transparent hover:border-espelhoinvertido-accent/20">
+            <Card key={platform.id} className="card-espelho hover-lift group">
               <CardHeader className="text-center">
                 <div className="w-16 h-16 mx-auto mb-4 text-4xl flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 group-hover:scale-110 transition-transform duration-300">
                   {platform.icon}
                 </div>
                 <CardTitle className="flex items-center justify-center gap-2">
                   {platform.displayName}
-                  {platform.verified && <Verified className="w-4 h-4 text-espelhoinvertido-gold" />}
+                  {platform.verified && <Verified className="w-4 h-4 text-amber-500" />}
                 </CardTitle>
                 <CardDescription className="text-sm">
                   {platform.description}
@@ -41,7 +41,7 @@ const SocialHubTeaser = () => {
                 <div className="flex justify-center">
                   <Badge 
                     variant="secondary" 
-                    className="bg-espelhoinvertido-accent/10 text-espelhoinvertido-primary text-xs"
+                    className="bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-300 text-xs"
                   >
                     {platform.id === 'substack' && '📧 Newsletter Gratuita'}
                     {platform.id === 'youtube' && '🎥 Vídeos Educativos'}
@@ -53,7 +53,7 @@ const SocialHubTeaser = () => {
                 
                 <Button 
                   asChild 
-                  className="w-full bg-gradient-to-r from-espelhoinvertido-primary to-espelhoinvertido-accent hover:from-espelhoinvertido-primary/90 hover:to-espelhoinvertido-accent/90"
+                  className="w-full btn-primary"
                 >
                   <a 
                     href={platform.url} 
@@ -71,20 +71,20 @@ const SocialHubTeaser = () => {
         </div>
 
         {/* Metrics e Social Proof */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl p-8 shadow-lg border border-slate-200 dark:border-slate-700">
+        <div className="card-espelho p-8">
           <div className="text-center mb-8">
-            <h3 className="text-2xl font-semibold mb-4">Uma Comunidade em Crescimento</h3>
+            <h3 className="heading-3 mb-4">Uma Comunidade em Crescimento</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               <div className="text-center">
-                <div className="text-2xl font-bold text-espelhoinvertido-primary mb-2">5+</div>
+                <div className="text-2xl font-bold text-blue-600 mb-2">5+</div>
                 <div className="text-sm text-slate-600 dark:text-slate-400">Plataformas Ativas</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-espelhoinvertido-accent mb-2">📝</div>
+                <div className="text-2xl font-bold text-green-600 mb-2">📝</div>
                 <div className="text-sm text-slate-600 dark:text-slate-400">Conteúdo Verificado</div>
               </div>
               <div className="text-center">
-                <div className="text-2xl font-bold text-espelhoinvertido-gold mb-2">✨</div>
+                <div className="text-2xl font-bold text-amber-500 mb-2">✨</div>
                 <div className="text-sm text-slate-600 dark:text-slate-400">Análises Autênticas</div>
               </div>
               <div className="text-center">
@@ -100,7 +100,7 @@ const SocialHubTeaser = () => {
               contradições ideológicas e reflexões sobre o mundo contemporâneo.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700">
+              <Button asChild size="lg" className="btn-accent">
                 <a 
                   href="https://espelhoinvertido.substack.com/" 
                   target="_blank" 
@@ -112,7 +112,7 @@ const SocialHubTeaser = () => {
                   <ExternalLink className="w-4 h-4" />
                 </a>
               </Button>
-              <Button variant="outline" size="lg" className="border-espelhoinvertido-accent text-espelhoinvertido-primary hover:bg-espelhoinvertido-accent/10">
+              <Button variant="outline" size="lg" className="border-blue-500 text-blue-600 hover:bg-blue-50">
                 <Users className="w-5 h-5 mr-2" />
                 Ver Todas as Redes
               </Button>
