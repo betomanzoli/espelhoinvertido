@@ -6,6 +6,9 @@ import ChroniclesSection from '@/components/home/ChroniclesSection';
 import CallToActionSection from '@/components/home/CallToActionSection';
 import SimuladorRevolucoesHighlight from '@/components/home/SimuladorRevolucoesHighlight';
 import DialecticChatbot from '@/components/dialectic/DialecticChatbot';
+import SocialContentHub from '@/components/social/SocialContentHub';
+import SubstackHighlight from '@/components/social/SubstackHighlight';
+import SocialMediaButton from '@/components/social/SocialMediaButton';
 import { setupAutoRefresh } from '@/services/substackService';
 import { toast } from 'sonner';
 
@@ -14,7 +17,6 @@ const Index = () => {
     // Iniciar a busca de posts do Substack e configurar atualizações automáticas
     setupAutoRefresh();
     
-    // Exibir mensagem de boas-vindas
     toast.success("Bem-vindo ao Espelho Invertido", {
       description: "Explore diferentes perspectivas sobre temas contemporâneos"
     });
@@ -26,8 +28,11 @@ const Index = () => {
       <ProjectsSection />
       <SimuladorRevolucoesHighlight />
       <ChroniclesSection />
+      <SubstackHighlight />
+      <SocialContentHub />
       <CallToActionSection />
       <DialecticChatbot />
+      <SocialMediaButton />
     </div>
   );
 };
