@@ -7,8 +7,8 @@ export interface SocialPlatform {
   icon: string;
   color: string;
   description: string;
-  followerCount?: number;
   isActive: boolean;
+  verified: boolean;
 }
 
 export const SOCIAL_PLATFORMS: SocialPlatform[] = [
@@ -19,9 +19,9 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     url: 'https://espelhoinvertido.substack.com/',
     icon: '📝',
     color: '#FF6719',
-    description: 'Análises profundas e crônicas dialéticas',
-    followerCount: 2500,
-    isActive: true
+    description: 'Análises profundas e crônicas dialéticas sobre temas contemporâneos',
+    isActive: true,
+    verified: true
   },
   {
     id: 'youtube',
@@ -30,9 +30,9 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     url: 'https://www.youtube.com/@EspelhoInvertido-mirrorshards',
     icon: '🎥',
     color: '#FF0000',
-    description: 'Vídeos educativos e debates ideológicos',
-    followerCount: 1200,
-    isActive: true
+    description: 'Vídeos educativos e debates sobre perspectivas ideológicas',
+    isActive: true,
+    verified: true
   },
   {
     id: 'linkedin',
@@ -41,9 +41,9 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     url: 'https://www.linkedin.com/in/espelhoinvertido/',
     icon: '💼',
     color: '#0077B5',
-    description: 'Artigos profissionais e networking acadêmico',
-    followerCount: 850,
-    isActive: true
+    description: 'Artigos profissionais e análises do mundo contemporâneo',
+    isActive: true,
+    verified: true
   },
   {
     id: 'instagram',
@@ -52,9 +52,9 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     url: 'https://www.instagram.com/espe.lhoinvertido/',
     icon: '📸',
     color: '#E4405F',
-    description: 'Conteúdo visual e stories filosóficos',
-    followerCount: 3400,
-    isActive: true
+    description: 'Conteúdo visual e reflexões sobre temas atuais',
+    isActive: true,
+    verified: true
   },
   {
     id: 'tiktok',
@@ -63,9 +63,9 @@ export const SOCIAL_PLATFORMS: SocialPlatform[] = [
     url: 'https://www.tiktok.com/@espelhoinvertido',
     icon: '🎵',
     color: '#000000',
-    description: 'Vídeos curtos e challenges filosóficos',
-    followerCount: 5600,
-    isActive: true
+    description: 'Vídeos curtos e análises rápidas de temas complexos',
+    isActive: true,
+    verified: true
   }
 ];
 
@@ -75,4 +75,8 @@ export const getSocialPlatform = (id: string): SocialPlatform | undefined => {
 
 export const getActivePlatforms = (): SocialPlatform[] => {
   return SOCIAL_PLATFORMS.filter(platform => platform.isActive);
+};
+
+export const getVerifiedPlatforms = (): SocialPlatform[] => {
+  return SOCIAL_PLATFORMS.filter(platform => platform.verified);
 };

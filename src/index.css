@@ -1,4 +1,10 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -34,6 +40,16 @@
     --ring: 221.2 83.2% 53.3%;
 
     --radius: 0.5rem;
+
+    /* Espelho Invertido Brand Colors */
+    --ei-primary: 231 45% 14%;     /* #1a1a2e */
+    --ei-secondary: 222 42% 16%;   /* #16213e */
+    --ei-accent: 215 68% 22%;      /* #0f3460 */
+    --ei-light: 259 44% 26%;       /* #533483 */
+    --ei-gold: 45 82% 67%;         /* #eeca57 */
+    --ei-silver: 184 9% 62%;       /* #95a5a6 */
+    --ei-dark: 0 0% 6%;            /* #0f0f0f */
+    --ei-text: 210 29% 29%;        /* #2c3e50 */
 
     --burgundy: 320 50% 45%;
     --navy: 225 50% 40%;
@@ -80,20 +96,76 @@
   
   html {
     @apply scroll-smooth;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
   
   body {
-    @apply bg-background text-foreground min-h-screen;
+    @apply bg-background text-foreground min-h-screen font-body;
     font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Garantir que o root sempre tenha altura mínima */
   #root {
     @apply min-h-screen;
   }
 
+  /* Tipografia Hierárquica */
+  h1, .heading-1 {
+    @apply font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight;
+  }
+
+  h2, .heading-2 {
+    @apply font-display text-3xl md:text-4xl font-semibold tracking-tight;
+  }
+
+  h3, .heading-3 {
+    @apply font-display text-2xl md:text-3xl font-semibold;
+  }
+
+  h4, .heading-4 {
+    @apply font-serif text-xl md:text-2xl font-medium;
+  }
+
+  h5, .heading-5, h6, .heading-6 {
+    @apply font-body text-lg md:text-xl font-medium;
+  }
+
+  .lead {
+    @apply text-xl md:text-2xl font-light leading-relaxed text-muted-foreground;
+  }
+
+  .body-large {
+    @apply text-lg leading-relaxed;
+  }
+
+  .body-small {
+    @apply text-sm leading-relaxed;
+  }
+
+  .caption {
+    @apply text-xs font-medium uppercase tracking-wider text-muted-foreground;
+  }
+
+  /* Brand Elements */
+  .brand-gradient {
+    @apply bg-espelhoinvertido-gradient;
+  }
+
+  .brand-text {
+    @apply bg-gradient-to-r from-espelhoinvertido-primary via-espelhoinvertido-accent to-espelhoinvertido-light bg-clip-text text-transparent;
+  }
+
+  .gold-accent {
+    @apply text-espelhoinvertido-gold;
+  }
+
   .glass-card {
-    @apply backdrop-blur-sm bg-white/95 dark:bg-gray-800/95 border border-gray-200/50 dark:border-gray-700/50 rounded-lg shadow-lg;
+    @apply backdrop-blur-sm bg-white/95 dark:bg-gray-800/95 border border-gray-200/50 dark:border-gray-700/50 rounded-lg shadow-medium;
+  }
+
+  .brand-card {
+    @apply bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-soft hover:shadow-medium transition-all duration-300;
   }
 
   .bg-light-gray {
@@ -101,16 +173,16 @@
   }
   
   .bg-dot-pattern {
-    background-image: radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(26, 26, 46, 0.1) 1px, transparent 1px);
     background-size: 20px 20px;
   }
   
   .dark .bg-dot-pattern {
-    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(238, 202, 87, 0.1) 1px, transparent 1px);
   }
 
   .gradient-text {
-    @apply bg-gradient-to-r from-blue-500 to-teal-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-espelhoinvertido-primary to-espelhoinvertido-accent bg-clip-text text-transparent;
   }
 
   .text-burgundy {
@@ -120,42 +192,65 @@
   .text-navy {
     @apply text-[#334B8C] dark:text-blue-400;
   }
-}
 
-@layer utilities {
+  /* Animações e Transições */
   .animate-slide-up {
     animation: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     opacity: 0;
     transform: translateY(20px);
   }
 
-  @keyframes slide-up {
-    to {
-      opacity: 1;
-      transform: translateY(0);
+  .animate-fade-in {
+    animation: fade-in 0.5s ease-out forwards;
+    opacity: 0;
+  }
+
+  .transition-smooth {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  .hover-lift {
+    @apply transform transition-transform duration-200 hover:-translate-y-1;
+  }
+
+  /* Estados Interativos */
+  .interactive-card {
+    @apply cursor-pointer transform transition-all duration-200 hover:-translate-y-1 hover:shadow-medium;
+  }
+
+  .button-primary {
+    @apply bg-espelhoinvertido-primary hover:bg-espelhoinvertido-secondary text-white font-medium px-6 py-3 rounded-lg transition-colors duration-200 shadow-soft hover:shadow-medium;
+  }
+
+  .button-gold {
+    @apply bg-espelhoinvertido-gold hover:bg-yellow-500 text-espelhoinvertido-dark font-medium px-6 py-3 rounded-lg transition-colors duration-200 shadow-soft hover:shadow-gold-glow;
+  }
+
+  /* Responsive Typography */
+  @media (max-width: 640px) {
+    h1, .heading-1 {
+      @apply text-3xl;
+    }
+    h2, .heading-2 {
+      @apply text-2xl;
+    }
+    .lead {
+      @apply text-lg;
     }
   }
-  
-  .animate-shimmer {
-    animation: shimmer 2s infinite linear;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    background-size: 200% 100%;
-  }
-  
-  @keyframes shimmer {
-    0% {
-      transform: translateX(-100%);
-    }
-    100% {
-      transform: translateX(100%);
-    }
-  }
-  
+}
+
+@layer utilities {
+  /* Utilidades personalizadas */
   .shadow-glow {
-    box-shadow: 0 0 20px rgba(56, 178, 172, 0.3);
+    box-shadow: 0 0 20px rgba(83, 52, 131, 0.3);
   }
   
-  /* Correções para páginas com tela preta */
+  .shadow-gold-glow {
+    box-shadow: 0 0 20px rgba(238, 202, 87, 0.4);
+  }
+  
+  /* Correções para páginas */
   .page-container {
     @apply min-h-screen bg-background text-foreground;
   }
@@ -163,9 +258,18 @@
   .content-wrapper {
     @apply container mx-auto px-4 py-8;
   }
+
+  /* Utilitários de marca */
+  .brand-shadow {
+    box-shadow: 0 4px 20px rgba(26, 26, 46, 0.1);
+  }
+
+  .dark .brand-shadow {
+    box-shadow: 0 4px 20px rgba(238, 202, 87, 0.1);
+  }
 }
 
-/* Correções específicas para React Flow */
+/* Correções para componentes específicos */
 .react-flow__background {
   @apply bg-gray-50 dark:bg-gray-800;
 }
