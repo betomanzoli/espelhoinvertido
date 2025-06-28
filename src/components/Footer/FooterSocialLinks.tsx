@@ -22,7 +22,7 @@ const FooterSocialLinks = () => {
               <ExternalLink className="h-3 w-3" />
             </div>
             <div className="text-xs text-gray-500 dark:text-gray-500">
-              {platform.followerCount?.toLocaleString()} seguidores
+              {platform.description}
             </div>
           </div>
         </a>
