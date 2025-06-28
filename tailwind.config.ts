@@ -53,23 +53,30 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-        // Identidade Visual Espelho Invertido
+        // Identidade Visual Sofisticada - Tema Espelho Invertido
         espelhoinvertido: {
-          primary: '#1a1a2e',      // Azul escuro profundo
-          secondary: '#16213e',     // Azul marinho
-          accent: '#0f3460',       // Azul médio
-          light: '#533483',        // Roxo suave
-          gold: '#eeca57',         // Dourado (destaque)
-          silver: '#95a5a6',       // Prata (neutro)
-          dark: '#0f0f0f',         // Preto profundo
-          text: '#2c3e50',         // Texto principal
+          primary: '#2c3e50',      // Azul escuro reflexivo
+          secondary: '#708090',     // Cinza espelho
+          accent: '#FFD700',       // Dourado revelação
+          light: '#f8fafc',        // Branco suave
+          mirror: '#e2e8f0',       // Cinza espelho claro
+          shadow: '#0f172a',       // Sombra profunda
+          reflection: '#cbd5e1',   // Reflexo sutil
+          truth: '#059669',        // Verde verdade
+          bias: '#ef4444',         // Vermelho viés
+          gold: '#FFD700',         // Dourado (compatibilidade)
+          silver: '#708090',       // Prata (compatibilidade)
+          dark: '#0f172a',         // Preto profundo (compatibilidade)
+          text: '#2c3e50',         // Texto principal (compatibilidade)
+        },
+        // Cores temáticas para diferentes perspectivas
+        perspective: {
+          rafael: '#8B1538',       // Bordô para Rafael
+          luisa: '#1e40af',        // Azul para Luísa
+          synthesis: '#7c3aed',    // Roxo para síntese
         },
         burgundy: 'hsl(var(--burgundy))',
         navy: 'hsl(var(--navy))',
-        'light-gray': 'hsl(var(--light-gray))',
-        'medium-gray': 'hsl(var(--medium-gray))',
-        'dark-gray': 'hsl(var(--dark-gray))',
-        'off-white': 'hsl(var(--off-white))',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -109,6 +116,33 @@ export default {
           '0%': { transform: 'rotate(0deg)' },
           '100%': { transform: 'rotate(360deg)' }
         },
+        // Animações específicas do tema espelho
+        'mirror-flip': {
+          '0%, 100%': { transform: 'rotateY(0deg)' },
+          '50%': { transform: 'rotateY(180deg)' }
+        },
+        'reflection-shimmer': {
+          '0%, 100%': { opacity: '0.5' },
+          '50%': { opacity: '1' }
+        },
+        'bias-pulse': {
+          '0%, 100%': { 
+            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+            transform: 'scale(1)' 
+          },
+          '50%': { 
+            backgroundColor: 'rgba(239, 68, 68, 0.2)',
+            transform: 'scale(1.02)' 
+          }
+        },
+        'truth-glow': {
+          '0%, 100%': { 
+            boxShadow: '0 0 5px rgba(5, 150, 105, 0.3)' 
+          },
+          '50%': { 
+            boxShadow: '0 0 20px rgba(5, 150, 105, 0.6)' 
+          }
+        }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -119,6 +153,11 @@ export default {
         'float': 'float 3s ease-in-out infinite',
         'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
         'rotate-slow': 'rotate-slow 10s linear infinite',
+        // Animações temáticas
+        'mirror-flip': 'mirror-flip 3s ease-in-out infinite',
+        'reflection-shimmer': 'reflection-shimmer 2s ease-in-out infinite',
+        'bias-pulse': 'bias-pulse 3s ease-in-out infinite',
+        'truth-glow': 'truth-glow 2s ease-in-out infinite',
 			},
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -144,18 +183,34 @@ export default {
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'dot-pattern': 'radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 0)',
-        'espelhoinvertido-gradient': 'linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)',
-        'gold-gradient': 'linear-gradient(135deg, #eeca57 0%, #f39c12 100%)',
+        'dot-pattern': 'radial-gradient(rgba(44, 62, 80, 0.1) 1px, transparent 0)',
+        'dark-dot-pattern': 'radial-gradient(rgba(255, 215, 0, 0.1) 1px, transparent 0)',
+        // Gradientes temáticos
+        'mirror-gradient': 'linear-gradient(135deg, #2c3e50 0%, #708090 50%, #FFD700 100%)',
+        'reflection-gradient': 'linear-gradient(45deg, rgba(248, 250, 252, 0.9), rgba(226, 232, 240, 0.9))',
+        'bias-gradient': 'linear-gradient(45deg, #ef4444, #FFD700)',
+        'truth-gradient': 'linear-gradient(45deg, #059669, #FFD700)',
+        'perspective-gradient': 'linear-gradient(135deg, #8B1538 0%, #1e40af 50%, #7c3aed 100%)',
       },
       boxShadow: {
         'soft': '0 2px 15px rgba(0, 0, 0, 0.05)',
         'medium': '0 4px 20px rgba(0, 0, 0, 0.08)',
         'strong': '0 8px 30px rgba(0, 0, 0, 0.12)',
         'inner-soft': 'inset 0 2px 4px rgba(0, 0, 0, 0.06)',
-        'glow': '0 0 15px rgba(83, 52, 131, 0.3)',
-        'gold-glow': '0 0 20px rgba(238, 202, 87, 0.4)',
+        // Sombras temáticas
+        'mirror': '0 4px 20px rgba(44, 62, 80, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1)',
+        'reflection': '0 8px 30px rgba(255, 215, 0, 0.2), 0 2px 8px rgba(44, 62, 80, 0.1)',
+        'bias': '0 4px 20px rgba(239, 68, 68, 0.2)',
+        'truth': '0 4px 20px rgba(5, 150, 105, 0.2)',
+        'glow': '0 0 15px rgba(255, 215, 0, 0.3)',
+        'gold-glow': '0 0 20px rgba(255, 215, 0, 0.4)',
       },
+      // Espaçamentos específicos para layout sofisticado
+      spacing: {
+        '18': '4.5rem',
+        '88': '22rem',
+        '128': '32rem',
+      }
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
