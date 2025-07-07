@@ -23,6 +23,8 @@ import SubstackExpanded from "./pages/SubstackExpanded";
 import Chronicles from "./pages/Chronicles";
 import BiasLab from "./pages/BiasLab";
 import AnaliseDiscurso from "./pages/AnaliseDiscurso";
+import CronicasInterativas from "./pages/CronicasInterativas";
+import ComoIAAjuda from "./pages/ComoIAAjuda";
 
 const queryClient = new QueryClient();
 
@@ -58,9 +60,10 @@ const App = () => (
                 <Route path="/laboratorio" element={<Laboratorio />} />
                 <Route path="/substack" element={<SubstackExpanded />} />
                 
-                {/* Projetos que ainda estão em desenvolvimento */}
-                <Route path="/cronicas" element={<ProjectComingSoon title="Escreva Sua Crônica" />} />
+                {/* Todas as rotas agora funcionais */}
+                <Route path="/cronicas" element={<CronicasInterativas />} />
                 <Route path="/analise-discurso" element={<AnaliseDiscurso />} />
+                <Route path="/como-a-ia-ajuda" element={<ComoIAAjuda />} />
                 
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />

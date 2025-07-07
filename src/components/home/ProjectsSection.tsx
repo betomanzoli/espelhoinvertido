@@ -75,7 +75,7 @@ const ProjectsSection = () => {
       link: "/cronicas",
       delay: 0.4,
       category: "creation",
-      available: false,
+      available: true,
       iconBackground: "bg-gradient-to-r from-green-500 to-emerald-500"
     },
     {
