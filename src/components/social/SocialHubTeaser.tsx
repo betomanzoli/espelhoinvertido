@@ -2,11 +2,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ExternalLink, Users, TrendingUp, Verified, Bell } from 'lucide-react';
+import { ExternalLink, Users, TrendingUp, Verified, Bell, RefreshCw } from 'lucide-react';
 import { SOCIAL_PLATFORMS } from './SocialMediaData';
+import { useSocialMetrics } from '@/hooks/useSocialMetrics';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const SocialHubTeaser = () => {
   const activePlatforms = SOCIAL_PLATFORMS.filter(platform => platform.isActive);
+  const { metrics, totalFollowers, avgEngagement, isLoading, refreshMetrics } = useSocialMetrics();
   
   return (
     <section className="page-container py-16">
@@ -70,22 +73,45 @@ const SocialHubTeaser = () => {
           ))}
         </div>
 
-        {/* Metrics e Social Proof */}
+        {/* Métricas Dinâmicas e Social Proof */}
         <div className="card-espelho p-8">
           <div className="text-center mb-8">
-            <h3 className="heading-3 mb-4">Uma Comunidade em Crescimento</h3>
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <h3 className="heading-3">Uma Comunidade em Crescimento</h3>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={refreshMetrics}
+                className="h-8 w-8"
+                disabled={isLoading}
+              >
+                <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+              </Button>
+            </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600 mb-2">5+</div>
+                {isLoading ? (
+                  <Skeleton className="h-8 w-16 mx-auto mb-2" />
+                ) : (
+                  <div className="text-2xl font-bold text-blue-600 mb-2">
+                    {totalFollowers.toLocaleString('pt-BR')}+
+                  </div>
+                )}
+                <div className="text-sm text-slate-600 dark:text-slate-400">Seguidores Totais</div>
+              </div>
+              <div className="text-center">
+                {isLoading ? (
+                  <Skeleton className="h-8 w-16 mx-auto mb-2" />
+                ) : (
+                  <div className="text-2xl font-bold text-green-600 mb-2">
+                    {avgEngagement.toFixed(1)}%
+                  </div>
+                )}
+                <div className="text-sm text-slate-600 dark:text-slate-400">Engajamento Médio</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-amber-500 mb-2">5+</div>
                 <div className="text-sm text-slate-600 dark:text-slate-400">Plataformas Ativas</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-green-600 mb-2">📝</div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">Conteúdo Verificado</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-amber-500 mb-2">✨</div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">Análises Autênticas</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-green-600 mb-2">🆓</div>
