@@ -190,6 +190,8 @@ const ChronicleAutomationDashboard = () => {
       toast.error('Erro ao detectar temas');
     }
   };
+
+  const updateSettings = async (key: string, value: any) => {
     try {
       const { error } = await supabase
         .from('automation_settings')
