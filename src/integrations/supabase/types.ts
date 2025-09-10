@@ -121,6 +121,225 @@ export type Database = {
         }
         Relationships: []
       }
+      content_adaptations: {
+        Row: {
+          chronicle_id: string
+          content_data: Json
+          content_type: string
+          created_at: string
+          engagement_metrics: Json | null
+          id: string
+          platform: string
+          published_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          chronicle_id: string
+          content_data: Json
+          content_type: string
+          created_at?: string
+          engagement_metrics?: Json | null
+          id?: string
+          platform: string
+          published_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          chronicle_id?: string
+          content_data?: Json
+          content_type?: string
+          created_at?: string
+          engagement_metrics?: Json | null
+          id?: string
+          platform?: string
+          published_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "content_adaptations_chronicle_id_fkey"
+            columns: ["chronicle_id"]
+            isOneToOne: false
+            referencedRelation: "chronicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      performance_metrics: {
+        Row: {
+          additional_data: Json | null
+          chronicle_id: string | null
+          id: string
+          measurement_date: string
+          metric_type: string
+          metric_value: number
+          platform: string
+        }
+        Insert: {
+          additional_data?: Json | null
+          chronicle_id?: string | null
+          id?: string
+          measurement_date?: string
+          metric_type: string
+          metric_value: number
+          platform: string
+        }
+        Update: {
+          additional_data?: Json | null
+          chronicle_id?: string | null
+          id?: string
+          measurement_date?: string
+          metric_type?: string
+          metric_value?: number
+          platform?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "performance_metrics_chronicle_id_fkey"
+            columns: ["chronicle_id"]
+            isOneToOne: false
+            referencedRelation: "chronicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      platform_integrations: {
+        Row: {
+          api_credentials: Json
+          created_at: string
+          error_count: number | null
+          id: string
+          is_enabled: boolean
+          last_error: string | null
+          last_successful_post: string | null
+          platform_name: string
+          rate_limits: Json | null
+          updated_at: string
+          webhook_urls: Json | null
+        }
+        Insert: {
+          api_credentials: Json
+          created_at?: string
+          error_count?: number | null
+          id?: string
+          is_enabled?: boolean
+          last_error?: string | null
+          last_successful_post?: string | null
+          platform_name: string
+          rate_limits?: Json | null
+          updated_at?: string
+          webhook_urls?: Json | null
+        }
+        Update: {
+          api_credentials?: Json
+          created_at?: string
+          error_count?: number | null
+          id?: string
+          is_enabled?: boolean
+          last_error?: string | null
+          last_successful_post?: string | null
+          platform_name?: string
+          rate_limits?: Json | null
+          updated_at?: string
+          webhook_urls?: Json | null
+        }
+        Relationships: []
+      }
+      prompt_templates: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          id: string
+          is_active: boolean
+          parameters: Json | null
+          performance_score: number | null
+          prompt_content: string
+          template_name: string
+          template_type: string
+          updated_at: string
+          usage_count: number | null
+          version: number
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          parameters?: Json | null
+          performance_score?: number | null
+          prompt_content: string
+          template_name: string
+          template_type: string
+          updated_at?: string
+          usage_count?: number | null
+          version?: number
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_active?: boolean
+          parameters?: Json | null
+          performance_score?: number | null
+          prompt_content?: string
+          template_name?: string
+          template_type?: string
+          updated_at?: string
+          usage_count?: number | null
+          version?: number
+        }
+        Relationships: []
+      }
+      theme_suggestions: {
+        Row: {
+          created_at: string
+          detection_date: string
+          id: string
+          polarization_indicators: Json | null
+          relevance_score: number
+          source_urls: string[] | null
+          status: string
+          suggested_theme: string
+          theme_category: string | null
+          used_chronicle_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          detection_date?: string
+          id?: string
+          polarization_indicators?: Json | null
+          relevance_score?: number
+          source_urls?: string[] | null
+          status?: string
+          suggested_theme: string
+          theme_category?: string | null
+          used_chronicle_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          detection_date?: string
+          id?: string
+          polarization_indicators?: Json | null
+          relevance_score?: number
+          source_urls?: string[] | null
+          status?: string
+          suggested_theme?: string
+          theme_category?: string | null
+          used_chronicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "theme_suggestions_used_chronicle_id_fkey"
+            columns: ["used_chronicle_id"]
+            isOneToOne: false
+            referencedRelation: "chronicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
