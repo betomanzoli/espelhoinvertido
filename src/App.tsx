@@ -25,6 +25,7 @@ import BiasLab from "./pages/BiasLab";
 import AnaliseDiscurso from "./pages/AnaliseDiscurso";
 import CronicasInterativas from "./pages/CronicasInterativas";
 import ComoIAAjuda from "./pages/ComoIAAjuda";
+import AutomacaoAdmin from "./pages/AutomacaoAdmin";
 
 const queryClient = new QueryClient();
 
@@ -64,6 +65,9 @@ const App = () => (
                 <Route path="/cronicas" element={<CronicasInterativas />} />
                 <Route path="/analise-discurso" element={<AnaliseDiscurso />} />
                 <Route path="/como-a-ia-ajuda" element={<ComoIAAjuda />} />
+                
+                {/* Admin routes */}
+                <Route path="/admin/automacao" element={<AutomacaoAdmin />} />
                 
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />

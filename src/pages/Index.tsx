@@ -14,6 +14,7 @@ import { SEOHead } from '@/components/seo/SEOHead';
 import { setupAutoRefresh } from '@/services/substackService';
 import { useReaderJourney } from '@/hooks/useReaderJourney';
 import { toast } from 'sonner';
+import ChronicleGeneratorTest from '@/components/chronicle/ChronicleGeneratorTest';
 
 const Index = () => {
   const { completeStep } = useReaderJourney();
@@ -40,6 +41,23 @@ const Index = () => {
       <ChroniclesTeaser />
       <ProjectsSection />
       <SimuladorRevolucoesHighlight />
+      
+      {/* Chronicle Generator Test Section */}
+      <section className="py-16 px-4 bg-gradient-to-br from-white via-espelhoinvertido-accent/5 to-espelhoinvertido-background/20">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-espelhoinvertido-primary mb-4">
+              🪞 Gerador de Crônicas IA
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Experimente nosso sistema de geração automática de crônicas dialéticas. 
+              Insira um tema e veja como a IA cria análises críticas sobre vieses ideológicos.
+            </p>
+          </div>
+          <ChronicleGeneratorTest />
+        </div>
+      </section>
+      
       <SubstackHighlight />
       <SocialHubTeaser />
       <CallToActionSection />

@@ -14,7 +14,113 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      automation_logs: {
+        Row: {
+          action_type: string
+          chronicle_id: string | null
+          created_at: string
+          error_message: string | null
+          id: string
+          platform: string
+          response_data: Json | null
+          status: string
+        }
+        Insert: {
+          action_type: string
+          chronicle_id?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          platform: string
+          response_data?: Json | null
+          status?: string
+        }
+        Update: {
+          action_type?: string
+          chronicle_id?: string | null
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          platform?: string
+          response_data?: Json | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "automation_logs_chronicle_id_fkey"
+            columns: ["chronicle_id"]
+            isOneToOne: false
+            referencedRelation: "chronicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      automation_settings: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          setting_key: string
+          setting_value: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          setting_key: string
+          setting_value: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          setting_key?: string
+          setting_value?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      chronicles: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          publish_date: string | null
+          sources: string[] | null
+          status: string
+          theme: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          publish_date?: string | null
+          sources?: string[] | null
+          status?: string
+          theme: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          publish_date?: string | null
+          sources?: string[] | null
+          status?: string
+          theme?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

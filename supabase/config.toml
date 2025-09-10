@@ -1,1 +1,13 @@
 project_id = "uvdyomzdgoavugcwhqfi"
+
+[functions.generate-chronicle]
+verify_jwt = false
+
+[functions.generate-chronicle-image]
+verify_jwt = false
+
+[functions.distribute-content]
+verify_jwt = false
+
+[functions.automation-trigger]
+verify_jwt = false
