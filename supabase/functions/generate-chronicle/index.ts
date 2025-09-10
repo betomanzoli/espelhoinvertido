@@ -13,7 +13,25 @@ const perplexityApiKey = Deno.env.get('PERPLEXITY_API_KEY')!;
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-const CHRONICLE_SYSTEM_PROMPT = `# 🪞 ESPELHO INVERTIDO – GERADOR AUTOMÁTICO DE CRÔNICAS
+// Function to get the current chronicle generation prompt from database
+async function getChroniclePrompt() {
+  try {
+    const { data: template } = await supabase
+      .from('prompt_templates')
+      .select('prompt_content')
+      .eq('template_name', 'chronicle_agent_v2')
+      .eq('is_active', true)
+      .single();
+
+    if (template) {
+      return template.prompt_content;
+    }
+  } catch (error) {
+    console.log('Using fallback prompt due to database error:', error);
+  }
+
+  // Fallback prompt if database is not available
+  return `# 🪞 ESPELHO INVERTIDO – GERADOR AUTOMÁTICO DE CRÔNICAS
 
 Função-alvo  
 • Ao receber uma única mensagem do usuário (ex.: "TEMA: Inteligência artificial na educação"), responda **somente** com uma crônica dialética em português (600 – 900 palavras).  
@@ -46,6 +64,7 @@ Restrições
 – Nunca peça esclarecimentos adicionais.  
 – Nunca explique o processo; devolva apenas a crônica + fontes.  
 – Caso faltem dados confiáveis, produza crônica parcial e declare a limitação no parágrafo final.`;
+}
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -56,6 +75,9 @@ serve(async (req) => {
     const { theme, auto = false } = await req.json();
 
     console.log(`Generating chronicle with theme: ${theme || 'auto-selected'}`);
+
+    // Get the current prompt from database
+    const chroniclePrompt = await getChroniclePrompt();
 
     // Prepare the user message
     const userMessage = theme ? `TEMA: ${theme}` : 'Surpreenda-me';
@@ -72,7 +94,7 @@ serve(async (req) => {
         messages: [
           {
             role: 'system',
-            content: CHRONICLE_SYSTEM_PROMPT
+            content: chroniclePrompt
           },
           {
             role: 'user',

@@ -91,7 +91,21 @@ serve(async (req) => {
       console.log('Image generated successfully');
     }
 
-    // Step 3: Distribute content
+    // Step 3: Generate content adaptations
+    const adaptationsResponse = await supabase.functions.invoke('generate-content-adaptations', {
+      body: {
+        chronicleId: chronicle.id,
+        platforms: ['substack', 'linkedin', 'instagram']
+      }
+    });
+
+    if (adaptationsResponse.error) {
+      console.warn(`Failed to generate content adaptations: ${adaptationsResponse.error}`);
+    } else {
+      console.log('Content adaptations generated successfully');
+    }
+
+    // Step 4: Distribute content
     const distributeResponse = await supabase.functions.invoke('distribute-content', {
       body: {
         chronicleId: chronicle.id
@@ -127,6 +141,7 @@ serve(async (req) => {
       actions: {
         chronicle_generated: true,
         image_generated: !imageResponse.error,
+        adaptations_generated: !adaptationsResponse.error,
         content_distributed: !distributeResponse.error
       }
     }), {

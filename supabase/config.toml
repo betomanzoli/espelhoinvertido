@@ -1,5 +1,11 @@
 project_id = "uvdyomzdgoavugcwhqfi"
 
+[functions.generate-content-adaptations]
+verify_jwt = false
+
+[functions.detect-themes]
+verify_jwt = false
+
 [functions.generate-chronicle]
 verify_jwt = false
 

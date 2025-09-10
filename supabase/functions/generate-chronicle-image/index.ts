@@ -13,6 +13,27 @@ const perplexityApiKey = Deno.env.get('PERPLEXITY_API_KEY')!;
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
+// Function to get the image generation prompt from database
+async function getImagePrompt() {
+  try {
+    const { data: template } = await supabase
+      .from('prompt_templates')
+      .select('prompt_content')
+      .eq('template_name', 'image_director_agent_v2')
+      .eq('is_active', true)
+      .single();
+
+    if (template) {
+      return template.prompt_content;
+    }
+  } catch (error) {
+    console.log('Using fallback prompt due to database error:', error);
+  }
+
+  // Fallback prompt
+  return `Create a sophisticated editorial illustration representing the philosophical theme. The image should be conceptual and abstract, using warm contrasting colors, symbolizing dialectical thinking and multiple perspectives. Style: modern editorial illustration, philosophical symbolism.`;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -23,17 +44,10 @@ serve(async (req) => {
 
     console.log(`Generating image for chronicle: ${chronicleId}`);
 
-    // Create image prompt based on chronicle content
-    const imagePrompt = `Create an artistic, philosophical illustration representing "${theme}". The image should be: 
-    - Conceptual and abstract, not literal
-    - Sophisticated and thought-provoking
-    - Using warm, contrasting colors
-    - Symbolizing dialectical thinking and multiple perspectives
-    - In a modern editorial illustration style
-    - High quality, professional appearance
-    Style: Editorial illustration, conceptual art, philosophical symbolism`;
+    // Get the image generation prompt from database
+    const imagePrompt = await getImagePrompt();
 
-    // Generate image using Perplexity API (they support image generation)
+    // Generate image description using refined prompt
     const imageResponse = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
       headers: {
@@ -45,11 +59,17 @@ serve(async (req) => {
         messages: [
           {
             role: 'system',
-            content: 'You are an expert art director. When asked to create an image, provide a detailed, artistic description that could be used to generate a sophisticated editorial illustration.'
+            content: imagePrompt
           },
           {
             role: 'user',
-            content: `Create a detailed artistic description for an editorial illustration based on this theme: "${theme}". The description should be suitable for AI image generation and capture the philosophical essence of the topic.`
+            content: `Analise esta crônica e gere uma descrição visual que capture sua dualidade central:
+
+TEMA: ${theme}
+TÍTULO: ${title}
+CONTEÚDO: ${content.substring(0, 500)}...
+
+Gere uma descrição detalhada para ilustração editorial que represente visualmente a contradição filosófica exposta na crônica.`
           }
         ],
         temperature: 0.8,
