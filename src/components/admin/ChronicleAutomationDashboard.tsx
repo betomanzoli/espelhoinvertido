@@ -338,7 +338,153 @@ const ChronicleAutomationDashboard = () => {
             </Card>
           </div>
 
-          {/* ... keep existing settings and chronicles sections ... */}
+          {/* Settings Section */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Configurações da Automação</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <Label>Automação Ativa</Label>
+                  <p className="text-sm text-gray-600">Ativar geração automática de crônicas</p>
+                </div>
+                <Switch
+                  checked={settings?.chronicle_frequency?.enabled || false}
+                  onCheckedChange={(checked) => updateSettings('chronicle_frequency', { 
+                    ...settings?.chronicle_frequency, 
+                    enabled: checked 
+                  })}
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <Label>Frequência (horas)</Label>
+                <Input
+                  type="number"
+                  value={settings?.chronicle_frequency?.hours || 24}
+                  onChange={(e) => updateSettings('chronicle_frequency', { 
+                    ...settings?.chronicle_frequency, 
+                    hours: parseInt(e.target.value) 
+                  })}
+                  min="1"
+                  max="168"
+                />
+              </div>
+
+              <div className="space-y-3">
+                <Label>Plataformas Ativas</Label>
+                <div className="grid grid-cols-2 gap-4">
+                  {['substack', 'linkedin', 'instagram', 'twitter'].map(platform => (
+                    <div key={platform} className="flex items-center space-x-2">
+                      <Switch
+                        checked={settings?.platforms?.[platform] || false}
+                        onCheckedChange={(checked) => updateSettings('platforms', { 
+                          ...settings?.platforms, 
+                          [platform]: checked 
+                        })}
+                      />
+                      <Label className="capitalize">{platform}</Label>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Chronicles Section */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Crônicas Recentes</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {chronicles.length > 0 ? (
+                  chronicles.slice(0, 5).map(chronicle => (
+                    <div key={chronicle.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h4 className="font-medium">{chronicle.title}</h4>
+                          <Badge className={
+                            chronicle.status === 'published' ? 'bg-green-100 text-green-800' :
+                            chronicle.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-gray-100 text-gray-800'
+                          }>
+                            {chronicle.status}
+                          </Badge>
+                        </div>
+                        <p className="text-sm text-gray-600">
+                          Tema: {chronicle.theme} • {new Date(chronicle.created_at).toLocaleString('pt-BR')}
+                        </p>
+                      </div>
+                      <div className="flex gap-2">
+                        {chronicle.image_url && (
+                          <Button size="sm" variant="outline">
+                            <Image className="h-4 w-4" />
+                          </Button>
+                        )}
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => generateContentAdaptations(chronicle.id)}
+                        >
+                          <Share2 className="h-4 w-4 mr-1" />
+                          Adaptar
+                        </Button>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-8 text-gray-500">
+                    <Activity className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>Nenhuma crônica encontrada</p>
+                    <Button 
+                      className="mt-4" 
+                      onClick={() => generateChronicle()}
+                      disabled={generating}
+                    >
+                      Gerar Primeira Crônica
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Activity Logs */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Logs de Atividade</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2 max-h-64 overflow-y-auto">
+                {logs.length > 0 ? (
+                  logs.slice(0, 10).map(log => (
+                    <div key={log.id} className="flex items-center justify-between p-2 text-sm border-b">
+                      <div className="flex items-center gap-2">
+                        {log.status === 'success' ? (
+                          <CheckCircle className="h-4 w-4 text-green-500" />
+                        ) : log.status === 'error' ? (
+                          <XCircle className="h-4 w-4 text-red-500" />
+                        ) : (
+                          <AlertCircle className="h-4 w-4 text-yellow-500" />
+                        )}
+                        <span>{log.action_type}</span>
+                        {log.platform && <Badge variant="outline">{log.platform}</Badge>}
+                      </div>
+                      <span className="text-gray-500">
+                        {new Date(log.created_at).toLocaleTimeString('pt-BR')}
+                      </span>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-4 text-gray-500">
+                    <p>Nenhum log de atividade</p>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
 
         {/* Theme Detection Tab */}
